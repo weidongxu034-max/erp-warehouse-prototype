@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="nL3bl8M0vAdUgi8TDQxtGX">
+<head data-page-node-id="O5o6l4XXA7HasO4JTUAbLf">
+<meta charset="UTF-8" data-page-node-id="pYWbwfFGxr1Pq2K0maALA5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="d2pF15OZqUDmxw3eKSWnVp">
+<title>ERP - 仓储 - 入库 - 退包签收</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;
+    font-size:14px; color:#333; background:#F5F5F5; min-width:1280px; overflow-x:auto; padding-top:38px;
+  }
+  body::after { content:""; position:fixed; inset:38px 0 0; pointer-events:none; z-index:90; opacity:.035; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='150' viewBox='0 0 220 150'%3E%3Ctext x='18' y='76' fill='%235d6b7a' font-family='Arial,sans-serif' font-size='14' transform='rotate(-22 18 76)'%3E001-7AA2%3C/text%3E%3C/svg%3E"); }
+  ::-webkit-scrollbar { width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb { background:#d0d0d0; border-radius:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  button { font-family:inherit; }
+
+  /* 顶部导航 / 左侧菜单：样式与结构由 layout.js 统一注入（见页面底部 script 引用） */
+
+  /* ============ 温馨提示 ============ */
+  .notice { min-height:79px; background:#E8F1FF; border:1px solid #9fc2ff; border-radius:6px; padding:14px 18px; display:flex; gap:10px; margin-bottom:6px; position:relative; }
+  .notice .n-icon { flex:none; margin-top:2px; }
+  .notice .n-title { font-size:14px; font-weight:600; color:#1f2f3d; margin-bottom:5px; }
+  .notice .n-text { font-size:14px; color:#4a5a6a; line-height:1.7; }
+  .notice .n-close { position:absolute; right:10px; top:8px; width:22px; height:22px; display:flex; align-items:center; justify-content:center; color:#8aa; cursor:pointer; border-radius:4px; font-size:14px; }
+  .notice .n-close:hover { background:rgba(0,0,0,.06); color:#333; }
+
+  /* ============ 卡片 ============ */
+  .card { background:#fff; border-radius:2px; border:1px solid #f0f0f0; margin-bottom:6px; }
+  .filter-card { padding:8px 6px 28px; }
+  .filter-card .ctl, .filter-card .range, .filter-card .btn { height:32px; }
+
+  /* ============ 查询区 ============ */
+  .filter-grid { display:grid; grid-template-columns:2fr repeat(6,minmax(0,1fr)); gap:12px 8px; }
+  .fitem .flabel { font-size:14px; color:#666; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ctl { height:26px; border:1px solid #d9d9d9; border-radius:4px; background:#fff; font-size:14px; display:flex; align-items:center; width:100%; }
+  .ctl:hover { border-color:#3D68FF; }
+  .ctl.focus { border-color:#3D68FF; box-shadow:0 0 0 2px rgba(61,104,255,.08); }
+  input.ipt { height:100%; border:none; outline:none; flex:1; min-width:0; font-size:14px; padding:0 8px; background:transparent; color:#333; }
+  input.ipt::placeholder { color:#bbb; }
+  .txt-ctl { display:flex; align-items:center; }
+  .select { cursor:pointer; user-select:none; position:relative; padding:0 24px 0 8px; justify-content:flex-start; }
+  .select .ph { color:#bbb; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .select .val { color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .select .caret { position:absolute; right:8px; top:50%; transform:translateY(-50%); color:#999; pointer-events:none; display:flex; }
+  .select .clear { position:absolute; right:6px; top:50%; transform:translateY(-50%); color:#999; display:none; width:16px; height:16px; align-items:center; justify-content:center; border-radius:50%; background:#f0f0f0; font-size:14px; }
+  .select .clear:hover { color:#666; }
+  .select:hover .clear.has-v { display:flex; }
+  .select:hover .clear.has-v ~ .caret { display:none; }
+  .select.multi { padding:0 24px 0 4px; gap:3px; overflow:hidden; }
+  .tag { background:#F5F7FF; border:1px solid #C9D6FF; color:#3D68FF; height:19px; padding:0 5px; border-radius:3px; display:inline-flex; align-items:center; gap:3px; font-size:14px; flex:none; max-width:90px; }
+  .tag i { font-style:normal; cursor:pointer; font-size:14px; color:#7d92d9; }
+  .tag i:hover { color:#3D68FF; }
+  .tag.more { background:#f5f5f5; border-color:#e0e0e0; color:#666; }
+  .scan-group { display:flex; gap:0; }
+  .scan-group .select { width:106px; flex:none; border-right:none; border-radius:4px 0 0 4px; padding:0 20px 0 8px; color:#333; }
+  .scan-group .scan-ipt { flex:1; border-radius:0 4px 4px 0; min-width:0; }
+  .range { height:26px; display:flex; align-items:center; border:1px solid #d9d9d9; border-radius:3px; background:#fff; }
+  .range:hover { border-color:#3D68FF; }
+  .range .range-part { height:100%; flex:1; min-width:0; cursor:pointer; padding:0 4px; color:#333; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:4px; }
+  .range .range-part .ph { color:#bbb; }
+  .range .range-part .val { grid-column:1 / -1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .range .sep { color:#333; flex:none; }
+  .filter-foot { display:flex; align-items:flex-end; margin-top:18px; gap:12px; }
+  .filter-foot .ftime { width:430px; flex:none; }
+  .filter-foot .fbtns { margin-left:auto; display:flex; gap:8px; }
+
+  /* ============ 按钮 ============ */
+  .btn { height:26px; padding:0 12px; border-radius:4px; font-size:14px; cursor:pointer; border:1px solid #d9d9d9; background:#fff; color:#333; display:inline-flex; align-items:center; justify-content:center; gap:5px; user-select:none; }
+  .btn:hover { border-color:#3D68FF; color:#3D68FF; }
+  .btn.primary { background:#3D68FF; border-color:#3D68FF; color:#fff; }
+  .btn.primary:hover { background:#2F56E6; border-color:#2F56E6; }
+  .btn:active { transform:translateY(.5px); }
+  .btn.sm { padding:0 12px; }
+
+  /* ============ 表格 ============ */
+  .table-card { padding:12px 6px 38px; }
+  .table-toolbar { display:flex; justify-content:flex-end; margin-bottom:6px; }
+  .table-toolbar .btn { padding:0 6px; }
+  .table-wrap { overflow:visible; border:1px solid #bfbfbf; border-radius:0; }
+  table.tbl { width:100%; min-width:1240px; border-collapse:separate; border-spacing:0; table-layout:fixed; }
+  .tbl thead th { height:40px; background:#EFEFEF; color:#222; font-weight:600; text-align:left; padding:0 7px; font-size:14px; border-right:1px solid #bfbfbf; border-bottom:1px solid #bfbfbf; white-space:nowrap; position:sticky; top:38px; z-index:5; }
+  .tbl tbody td { height:40px; padding:0 7px; color:#333; border-right:1px solid #c9c9c9; border-bottom:1px solid #c9c9c9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tbl tr > :last-child { border-right:0; }
+  .tbl tbody tr { cursor:pointer; }
+  .tbl tbody tr:hover td { background:#FFFEE2; }
+  .tbl tbody tr.selected td { background:#FFFEE2; }
+  .tbl tbody tr.selected.flash td { animation:selflash 1.4s ease; }
+  @keyframes selflash { 0%{background:#FFE9A8;} 100%{background:#FFFEE2;} }
+  .tbl th.c, .tbl td.c { text-align:center; }
+  .cell-copy { display:flex; align-items:center; gap:5px; min-width:0; }
+  .cell-copy .txt { overflow:hidden; text-overflow:ellipsis; }
+  .copy-btn { flex:none; width:15px; height:18px; display:inline-flex; align-items:center; justify-content:center; color:#3D68FF; border-radius:3px; cursor:pointer; }
+  .copy-btn:hover { color:#3D68FF; background:#EDF1FF; }
+  .st-normal { color:#333; }
+  .st-abnormal { color:#D46B08; }
+  .st-abnormal::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#FA8C16; margin-right:6px; vertical-align:middle; }
+
+  .empty { padding:46px 0 54px; text-align:center; color:#999; }
+  .empty svg { margin-bottom:12px; }
+  .empty .e-txt { font-size:14px; color:#888; }
+
+  /* ============ 分页 ============ */
+  .pg { height:32px; position:fixed; left:140px; right:0; bottom:0; z-index:95; display:flex; align-items:center; justify-content:flex-end; padding:3px 22px 3px 7px; margin:0; border-top:1px solid #e8e8e8; background:#fff; font-size:14px; color:#666; }
+  .pg-total { margin-right:8px; }
+  .pg-list { display:flex; gap:4px; align-items:center; }
+  .pg-item { min-width:22px; height:24px; padding:0 5px; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:4px; background:#fff; cursor:pointer; color:#333; }
+  .pg-item:hover { border-color:#3D68FF; color:#3D68FF; }
+  .pg-item.active { background:#fff; border:1px solid #3D68FF; color:#3D68FF; cursor:default; }
+  .pg-item.dot { border:none; background:none; cursor:default; color:#999; }
+  .pg-item.dot:hover { color:#999; }
+  .pg-item.arrow i { font-style:normal; font-size:14px; }
+  .pg-item.disabled { color:#ccc; cursor:not-allowed; border-color:#e5e5e5; }
+  .pg-item.disabled:hover { color:#ccc; border-color:#e5e5e5; }
+  .pg-size { width:88px; margin-left:10px; flex:none; }
+  .pg-jump { margin-left:10px; display:flex; align-items:center; gap:6px; }
+  .pg-jump input { width:40px; height:26px; border:1px solid #d9d9d9; border-radius:4px; outline:none; text-align:center; font-size:14px; }
+  .pg-jump input:focus { border-color:#3D68FF; }
+
+  /* ============ 下拉面板 ============ */
+  .dropdown-panel { position:fixed; z-index:2000; background:#fff; border:1px solid #e5e5e5; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.09); min-width:120px; animation:dpin .12s ease; }
+  @keyframes dpin { from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;} }
+  .dp-search { padding:7px 8px; border-bottom:1px solid #f0f0f0; }
+  .dp-search input { width:100%; height:24px; border:1px solid #d9d9d9; border-radius:4px; outline:none; padding:0 7px; font-size:14px; }
+  .dp-search input:focus { border-color:#3D68FF; }
+  .dp-list { max-height:264px; overflow-y:auto; padding:4px; }
+  .dp-opt { display:flex; align-items:center; gap:7px; height:28px; padding:0 8px; border-radius:3px; cursor:pointer; color:#333; white-space:nowrap; }
+  .dp-opt:hover { background:#F5F7FF; }
+  .dp-opt.sel { color:#3D68FF; background:#EDF1FF; font-weight:500; }
+  .dp-empty { padding:18px 0; text-align:center; color:#999; }
+  .ck { width:13px; height:13px; border:1px solid #c8c8c8; border-radius:2px; flex:none; display:inline-flex; align-items:center; justify-content:center; background:#fff; }
+  .dp-opt.sel .ck { background:#3D68FF; border-color:#3D68FF; color:#fff; font-size:14px; }
+
+  /* ============ 日历面板 ============ */
+  .calendar-panel { position:fixed; z-index:2000; background:#fff; border:1px solid #e5e5e5; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.09); width:232px; padding:10px; animation:dpin .12s ease; }
+  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .cal-head .cal-title { font-weight:600; font-size:14px; color:#333; }
+  .cal-nav { width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#666; border-radius:3px; }
+  .cal-nav:hover { background:#f0f2f5; color:#3D68FF; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+  .cal-wk { height:24px; display:flex; align-items:center; justify-content:center; color:#999; font-size:14px; }
+  .cal-cell { height:24px; display:flex; align-items:center; justify-content:center; border-radius:3px; cursor:pointer; color:#333; font-size:14px; }
+  .cal-cell:hover { background:#EDF1FF; }
+  .cal-cell.muted { color:#c8c8c8; }
+  .cal-cell.today { color:#3D68FF; font-weight:600; }
+  .cal-cell.sel { background:#3D68FF; color:#fff; }
+  .cal-foot { display:flex; justify-content:space-between; margin-top:8px; padding-top:8px; border-top:1px solid #f0f0f0; }
+  .cal-foot a { color:#3D68FF; cursor:pointer; font-size:14px; }
+  .cal-foot a:hover { text-decoration:underline; }
+
+  /* ============ 全局提示 ============ */
+  .toast-wrap { position:fixed; top:18px; left:50%; transform:translateX(-50%); z-index:3000; display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
+  .toast { background:#fff; border:1px solid #ececec; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:8px 14px; display:flex; align-items:center; gap:8px; font-size:14px; color:#333; animation:tin .22s ease; pointer-events:auto; max-width:480px; }
+  .toast.out { animation:tout .25s ease forwards; }
+  @keyframes tin { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:none;} }
+  @keyframes tout { to{opacity:0; transform:translateY(-8px);} }
+  .t-ico { width:16px; height:16px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:700; }
+  .toast.info .t-ico { background:#3D68FF; }
+  .toast.success .t-ico { background:#52C41A; }
+  .toast.warning .t-ico { background:#FA8C16; }
+  .toast.error .t-ico { background:#FF4D4F; }
+</style>
+<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
+</head>
+<body data-page-node-id="WwFGOMFkfPZVke9iNF0xEu">
+
+<div class="layout" data-page-node-id="DMsuHggY0kB7doSS553XeZ">
+
+  <!-- 主内容 -->
+  <main class="main" data-page-node-id="Zky9g6Nt6gE6JKQEwqxRLp">
+    <!-- 温馨提示 -->
+    <div class="notice" id="notice" data-page-node-id="TfpWCwbQVGR7s91KTD4R7n">
+      <span class="n-icon" data-page-node-id="wsuoIbDQYZmNOQ8YEUjU3B">
+        <svg width="16" height="16" viewBox="0 0 16 16" data-page-node-id="FV97XuHVdxEy28ItcinJj3"><circle cx="8" cy="8" r="8" fill="#3D68FF" data-page-node-id="lmW8pQrNg5fBYcnHuoYQu4"/><rect x="7.2" y="6.8" width="1.6" height="5" rx=".8" fill="#fff" data-page-node-id="riRbuxkzDBM8ZqoH1LNHH0"/><circle cx="8" cy="4.6" r="1" fill="#fff" data-page-node-id="HNto5HkPZ5UHC1DwYnCWkD"/></svg>
+      </span>
+      <div data-page-node-id="yxaT9DJAifAO7SeXc8Y8rw">
+        <div class="n-title" data-page-node-id="kiMEfwNx5WWyZ3gkVhOeGC">温馨提示</div>
+        <div class="n-text" data-page-node-id="y6LuF6pYCckuUPTqxUlYSB">此处签收包裹，只做快递包裹的签收记录，不打印标签，不影响后续的wms入库流程，此处签收不代表已入库</div>
+      </div>
+    </div>
+
+    <!-- 查询卡片 -->
+    <div class="card filter-card" data-page-node-id="ohZEPFblgHGWDrqUnMR6kO">
+      <div class="filter-grid" data-page-node-id="Yba5TGuIQnQAD8G34SxCr5">
+        <div class="fitem" data-page-node-id="cJuVefNCU2bKzON9tspxJj">
+          <div class="flabel" title="扫描/输入" data-page-node-id="QuwBYcoDIYPFsBDbvPy1Y4">扫描/输入</div>
+          <div class="scan-group" data-page-node-id="bPBQmDVmFkMkcv1kDDCCvn">
+            <div class="ctl select" id="scanWhSel" data-page-node-id="82FWXFz20bqh6GDuELu4OV"></div>
+            <div class="ctl scan-ipt txt-ctl" data-page-node-id="BLoLaJfEbc0oyzq0GqEaCF">
+              <input class="ipt" id="scanInput" placeholder="扫描/输入物流单号" data-page-node-id="o3r96wEWH6usj8dwPQ4BqK">
+            </div>
+          </div>
+        </div>
+        <div class="fitem" data-page-node-id="2Ag3nFZKzXHA7oosAD55Ef">
+          <div class="flabel" data-page-node-id="Lodd33XBwsBhLucNfw2ngL">物流单号</div>
+          <div class="ctl txt-ctl" data-page-node-id="2MFIaYWxQAtChTwyDTiGaC"><input class="ipt" id="fNo" placeholder="请输入" data-page-node-id="UFwfjxic3um6I8YezLXod2"></div>
+        </div>
+        <div class="fitem" data-page-node-id="vSvOE80Da1z1BRM9FP7HT4">
+          <div class="flabel" data-page-node-id="i08KYFLNJYELvlZYm3mEgq">关联单号</div>
+          <div class="ctl txt-ctl" data-page-node-id="0ANB9Z5wzxiliFfaIWWMD6"><input class="ipt" id="fRef" placeholder="请输入" data-page-node-id="8tXIxMZoxpEmvO1uhtAcCt"></div>
+        </div>
+        <div class="fitem" data-page-node-id="mxhwl2Bl7UKMrXAURIjOCp">
+          <div class="flabel" data-page-node-id="vSPyqLT87N99see28KFZVd">签收员</div>
+          <div class="ctl select" id="fOpSel" data-page-node-id="ppAWgMUUdUZPmDCLNjKJts"></div>
+        </div>
+        <div class="fitem" data-page-node-id="sRMKAhAvtpgkAvIlgRp2zE">
+          <div class="flabel" data-page-node-id="Ei13avNbv97d6DI5hJSIAV">签收状态</div>
+          <div class="ctl select" id="fStSel" data-page-node-id="JFRMWDk80FxfxeSm9D33k9"></div>
+        </div>
+        <div class="fitem" data-page-node-id="Ptyuu7uHLqCZTVcEdPA56R">
+          <div class="flabel" data-page-node-id="ukOZzFsdAXpqjrLeyMalc0">发货仓</div>
+          <div class="ctl select" id="fFkSel" data-page-node-id="2YoNFxEcNflzeWfirRQE2G"></div>
+        </div>
+        <div class="fitem" data-page-node-id="AyscdcEKJsk5Bahx4rNdMA">
+          <div class="flabel" data-page-node-id="LFXOe1mDrL2VRPcigrjUP8">签收仓</div>
+          <div class="ctl select" id="fSkSel" data-page-node-id="5wM3GpJyVDWQRQd4KUXXpF"></div>
+        </div>
+      </div>
+      <div class="filter-foot" data-page-node-id="tedLBDPD008dURAa0r7ZUW">
+        <div class="fitem" style="width:180px;flex:none;" data-page-node-id="fth1">
+          <div class="flabel" data-page-node-id="fth2">退货处理方式</div>
+          <div class="ctl select" id="fThSel" data-page-node-id="fth3"></div>
+        </div>
+        <div class="fitem" style="width:180px;flex:none;" data-page-node-id="frs1">
+          <div class="flabel" data-page-node-id="frs2">退货原因</div>
+          <div class="ctl select" id="fRsSel" data-page-node-id="frs3"></div>
+        </div>
+        <div class="fitem ftime" data-page-node-id="9cfQwXHJMvTn44WjnpWtDX">
+          <div class="flabel" data-page-node-id="yug7xhs2vhYaaNDVqd00Zv">签收时间</div>
+          <div class="range" data-page-node-id="8cYi738yencBw3jXBxpLHh">
+            <div class="range-part" id="fT1" data-page-node-id="BQGWjsIifQoDFAaZTgGGsN"><span class="ph" data-page-node-id="z5P2afiRnVynTgE0QjI146">开始日期</span><span class="ph">开始时间</span></div>
+            <span class="sep" data-page-node-id="SAJCDLsCNNRuRvlIWrtek3">~</span>
+            <div class="range-part" id="fT2" data-page-node-id="NtZ4ZEio7bA4tA0yYAus6Q"><span class="ph">结束日期</span><span class="ph" data-page-node-id="UuRzg3QZCxJJE4dEK01eUv">结束时间</span></div>
+          </div>
+        </div>
+        <div class="fbtns" data-page-node-id="0GEkdE1bsdXE8OLASynpoo">
+          <button class="btn" id="btnReset" data-page-node-id="KjXUR2hHWZxB6r0VBoV4Eh">重 置</button>
+          <button class="btn primary" id="btnQuery" data-page-node-id="lsMnBudpbNBFhZ0aE4C3Mi">查 询</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 列表卡片 -->
+    <div class="card table-card" data-page-node-id="U9OACZqrWWHQC2pYxlr7uk">
+      <div class="table-toolbar" data-page-node-id="0OVpbKsvRA9RM0ZkvlXtGX">
+        <button class="btn primary" id="btnExport" data-page-node-id="NfALI7y8XG7kuM97Cw2ipe">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" data-page-node-id="S35UBJb9JQCoWH0EnZ7c4y"><path d="M6 1v7M6 8 3.2 5.4M6 8l2.8-2.6M1.5 10.5h9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="4VO3gjGCrZxQQwqNn5Uiuz"/></svg>
+          导出
+        </button>
+      </div>
+      <div class="table-wrap" data-page-node-id="YCBmvNmtEDwXCuDnJ7n2bY">
+        <table class="tbl" data-page-node-id="6zS4n5iYRHYwnpgMzoOFpS">
+          <colgroup data-page-node-id="NCotJwsWnuWlGUZZ8i5QQI">
+            <col style="width:48px" data-page-node-id="yAOWBHDRgE6VoY3yoMybQp"><col data-page-node-id="SLLSCIxk0DeBEEDktRdZBu"><col data-page-node-id="GAlvS5G0p9W6C9lyZvduOa"><col data-page-node-id="dUmvOZaTpcpZINybz3CJBp">
+            <col data-page-node-id="PMWT6WMz3jw7KfSfSUUxE7"><col data-page-node-id="TDlyDd070beX3pc4nUW5nn"><col data-page-node-id="274U3F48WcqNIMk6YD2TFv"><col data-page-node-id="fpqqoUJsKhpbHTHfICTMt0"><col data-page-node-id="3asJ0P6DJBIvGHzhxueiYv"><col data-page-node-id="ck01"><col data-page-node-id="ck02">
+          </colgroup>
+          <thead data-page-node-id="MzlgZYKqpevcD3ewL1Zli9">
+            <tr data-page-node-id="lWSKo6AaJ7T0mw9irGnGZb">
+              <th class="c" data-page-node-id="7yEUkpeJOoWLArfNYHKmre">序号</th><th data-page-node-id="spOSyUemMO91ZaChZgwW0X">物流单号</th><th data-page-node-id="p6WybNuOo6gI3MGWHJcGtL">退货处理方式</th><th data-page-node-id="thrs">退货原因</th><th data-page-node-id="d1gC8betU7rbl3kptjlmFh">关联单号</th><th data-page-node-id="KdTK4aKoJoNtSOTg7AgLjF">发货仓</th><th data-page-node-id="thsk">签收仓</th>
+              <th data-page-node-id="G35MpHUuwkzkLeuPdZ0oLI">签收员</th><th data-page-node-id="1YS4jQYiG19DDw5UnMLNTu">签收状态</th><th data-page-node-id="yvzAZsH4kLhZmORuDhptuf">签收时间</th><th data-page-node-id="u59s4xap5KHsRHeo6j6O9J">关联时间</th>
+            </tr>
+          </thead>
+          <tbody id="tbody" data-page-node-id="pjimDIswl1n3pBstbjTNt2"></tbody>
+        </table>
+      </div>
+      <div class="pg" data-page-node-id="Ms5CBcR5GCEfU05P5c24CI">
+        <span class="pg-total" id="pgTotal" data-page-node-id="hHKV0GUheXCpykREDbpVWN"></span>
+        <div class="pg-list" id="pgList" data-page-node-id="Rrm87BklXF5GEZtfgt50y8"></div>
+        <div class="ctl select pg-size" id="pgSizeSel" data-page-node-id="uCsHhJPsgiC0xSkWwkLpSH"></div>
+        <div class="pg-jump" data-page-node-id="fsFtdgI5wHYyWKrZcFiAWm">跳至 <input id="pgJump" type="number" min="1" data-page-node-id="CRFLXccueI3lsDfX2FlsWs"> 页</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-wrap" id="toastWrap" data-page-node-id="H32b1QdlVKmkxeyQzBXtw4"></div>
+
+<script>
+/* ====== 退包签收EX数据表（真实数据，来自退包快递签收Excel，共531条）====== */
+const RAW = [["WD20260820023723", "到仓后换单发货", "全列表测试-启用 1778091191", "WD20260820023723", "smile", "YP集成测试仓库1", "ZENGUQ", "正常签收", "2026-09-07 18:05:16", "2026-09-07 18:05:16"], ["SF0824783653139464", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165624-R2hTE", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:56:47", "2026-08-24 16:56:47"], ["SF0824258679721036", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165622-N2eIf", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:56:46", "2026-08-24 16:56:46"], ["SF0824843258041187", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165526-mfIUV", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:55:46", "2026-08-24 16:55:46"], ["SF0824685881363894", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165521-rbFGE", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:55:45", "2026-08-24 16:55:45"], ["SF0824393970204288", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165514-3ViaR", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:55:27", "2026-08-24 16:55:27"], ["SF0824259361439627", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165436-HhEIS", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:54:50", "2026-08-24 16:54:50"], ["SF0824602431621781", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165418-VF82Q", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:54:43", "2026-08-24 16:54:43"], ["SF0824403550662061", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824165411-O37IY", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 16:54:42", "2026-08-24 16:54:42"], ["SF0824278217724038", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122624-X24h0", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:26:37", "2026-08-24 12:26:37"], ["SF0824595108879949", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122531-OnclJ", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:25:44", "2026-08-24 12:25:44"], ["SF0824997758550886", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122454-NN3ds", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:25:11", "2026-08-24 12:25:11"], ["SF0824421936519802", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122404-rQGH2", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:24:29", "2026-08-24 12:24:29"], ["SF0824324878999596", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122401-Zo98H", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:24:28", "2026-08-24 12:24:28"], ["SF0824500804597025", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122401-RqXyc", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:24:18", "2026-08-24 12:24:18"], ["SF0824106752127660", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122301-UrCyw", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:23:25", "2026-08-24 12:23:25"], ["SF0824123673214606", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0824122257-k9t0B", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-24 12:23:24", "2026-08-24 12:23:24"], ["SF1", "入库后无需重发", "东西很次，不想要了", "WD20260319014054", "smile", "smile", "SXY", "正常签收", "2026-08-24 10:55:20", "2026-08-24 10:55:20"], ["SF0628693607068515", "入库后重发", "有问题，要重发一份", "clf-Auto-0628235919-YszvX", "00298902893890839082", "waq-仓库03", "安琪拉", "正常签收", "2026-08-19 15:49:56", "2026-08-19 15:49:56"], ["ZC56873104199", "入库后重发", "有问题，要重发一份", "clf-Auto-CA-0628235115-XHNWm", "00298902893890839082", "waq-仓库03", "OA测试-客服一部-01", "正常签收", "2026-08-19 15:26:07", "2026-08-19 15:26:07"], ["hq_0818001", "入库后重发", "启用筛选测试原因 1778091409", "WD20260817080757", "smile", "HQ", "HQ", "正常签收", "2026-08-17 16:10:26", "2026-08-17 16:10:26"], ["HQ_0817001", "入库后重发", "全列表测试-启用 1778091191", "WD20260817074522_a", "smile", "HQ", "HQ", "正常签收", "2026-08-17 16:03:45", "2026-08-17 16:03:45"], ["hq0817001", "入库后重发", "有问题，要重发一份", "WD20260817074522", "smile", "HQ", "HQ", "正常签收", "2026-08-17 15:49:18", "2026-08-17 15:49:18"], ["SF08143999862511925668", "入库后无需重发", "物品与商品描述不符", "Test0814824306642428367", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2026-08-14 15:03:25", "2026-08-14 15:03:25"], ["SF0814014917738032", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814143315-D3Phh", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "HF", "正常签收", "2026-08-14 14:33:37", "2026-08-14 14:33:37"], ["SF0814738485389961", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814143310-Ynxs3", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "HF", "正常签收", "2026-08-14 14:33:36", "2026-08-14 14:33:36"], ["SF0814460531392370", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814143137-A1TDR", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "HF", "正常签收", "2026-08-14 14:32:00", "2026-08-14 14:32:00"], ["SF0814475119353298", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814143135-oe8PW", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "HF", "正常签收", "2026-08-14 14:31:59", "2026-08-14 14:31:59"], ["SF0814794706795386", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142921-fI8XN", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:29:35", "2026-08-14 14:29:35"], ["SF0814903671298349", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142851-hHPiE", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:29:04", "2026-08-14 14:29:04"], ["SF0814170492683899", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142323-AfSJH", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:23:45", "2026-08-14 14:23:45"], ["SF0814140616755713", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142322-MM0sy", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:23:44", "2026-08-14 14:23:44"], ["SF0814409216533848", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142239-JXQfJ", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:23:02", "2026-08-14 14:23:02"], ["SF0814310144916715", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0814142235-ac3Mi", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-14 14:22:59", "2026-08-14 14:22:59"], ["hq_0813001", "入库后重发", "物品与商品描述不符", "clf-Auto-0804174639-7Dcga", "00298902893890839082", "HQ", "HQ", "正常签收", "2026-08-13 17:42:43", "2026-08-13 17:42:43"], ["HQ0813", "入库后无需重发", "东西很次，不想要了", "AUTO_TEST_20260515162300_5589", "waq-仓库03", "HQ", "HQ", "正常签收", "2026-08-13 17:40:57", "2026-08-13 17:40:57"], ["a25TT98490", "入库后重发", "启用筛选测试原因 1778091191，有问题，要重发一份，全列表测试-启用 1778091191，有问题，要重发一份", "WD20260813075240", "tang01", "马甲一", "tzx-ES账号", "正常签收", "2026-08-13 16:09:42", "2026-08-13 16:09:42"], ["a25TT235741", "入库后重发", "启用筛选测试原因 1778091191，有问题，要重发一份，启用筛选测试原因 1778091191，东西很次，不想要了", "WD20260813080233", "tang01", "甜品仓", "tzx", "正常签收", "2026-08-13 16:08:49", "2026-08-13 16:08:49"], ["152458678", "到仓后换单发货", "东西很次，不想要了", "WD20260813064207", "振华仓", "喜气洋洋仓", "果果", "正常签收", "2026-08-13 14:44:02", "2026-08-13 14:44:02"], ["SF05085976438343296021", "入库后无需重发", "不想要了嘿嘿", "AUTO_TEST_20260519102131_2820", "waq-仓库03", "waq-仓库02", "安琪拉", "正常签收", "2026-08-12 11:49:43", "2026-08-12 11:49:43"], ["SF0807721218405590", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0807005948-eUjDH", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-07 01:00:02", "2026-08-07 01:00:02"], ["SF0807801817190001", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0807005927-4ugCZ", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-07 00:59:40", "2026-08-07 00:59:40"], ["SF0807985393205112", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0807000712-XtI9v", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-07 00:07:24", "2026-08-07 00:07:24"], ["SF0807022814731015", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0807000649-yMwdp", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-07 00:07:03", "2026-08-07 00:07:03"], ["SF0806438703174611", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806180258-b77mp", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 18:03:11", "2026-08-06 18:03:11"], ["SF0806280517375502", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806180237-LUKLM", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 18:02:50", "2026-08-06 18:02:50"], ["SF0806293961376100", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173809-iP3Gl", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:38:22", "2026-08-06 17:38:22"], ["SF0806504239514468", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173713-Jye0P", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:37:26", "2026-08-06 17:37:26"], ["SF0806830117618511", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173619-5vXSi", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:36:33", "2026-08-06 17:36:33"], ["SF0806279416309996", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173526-4LjtW", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:35:40", "2026-08-06 17:35:40"], ["SF0806506674554709", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173432-PWiyc", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:34:46", "2026-08-06 17:34:46"], ["SF0806060580857250", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173339-Az553", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:33:52", "2026-08-06 17:33:52"], ["SF0806127568128495", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173315-Ah7eV", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:33:29", "2026-08-06 17:33:29"], ["SF0806005503317586", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173221-RUH2Z", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:32:35", "2026-08-06 17:32:35"], ["SF0806349811897538", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173128-L9u7x", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:31:41", "2026-08-06 17:31:41"], ["SF0806530863569655", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806173034-zaROr", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:30:48", "2026-08-06 17:30:48"], ["SF0806825395652732", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806172941-AAR6E", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:29:54", "2026-08-06 17:29:54"], ["SF0806220056982216", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806172846-HG8XV", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 17:29:00", "2026-08-06 17:29:00"], ["SF0806577841725459", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806150031-axDY3", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 15:00:46", "2026-08-06 15:00:46"], ["SF0806685637679481", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0806145956-yKUOI", "规则验证仓库", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-06 15:00:18", "2026-08-06 15:00:18"], ["SF0805583279409874", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0805004458-TZ1ej", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-05 00:45:26", "2026-08-05 00:45:26"], ["SF0805143789709898", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0805004419-vSFJR", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-05 00:44:36", "2026-08-05 00:44:36"], ["SF0804647311015576", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804225256-P0Cs3", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 22:53:18", "2026-08-04 22:53:18"], ["SF0804521735721285", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804225225-oFOu2", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 22:52:41", "2026-08-04 22:52:41"], ["SF0804290712230057", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804211027-AoUHy", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 21:10:43", "2026-08-04 21:10:43"], ["SF0804990085974160", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804210936-L70kG", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 21:09:52", "2026-08-04 21:09:52"], ["SF0804028320504463", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804172348-ACCzy", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 17:24:04", "2026-08-04 17:24:04"], ["SF0804166783779843", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0804172312-YadZ8", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-04 17:23:27", "2026-08-04 17:23:27"], ["SF06182056284957535114", "入库后无需重发", "启用筛选测试原因 1778091409", "clf-Auto-tx1230-0618262522618489845", "最优路径测试仓库5", "HQ", "孔令杰", "正常签收", "2026-08-04 10:53:53", "2026-08-04 10:53:53"], ["SF06188331057580994952", "入库后无需重发", "启用筛选测试原因 1778091409", "clf-Auto-tx1230-0618416295932706738", "最优路径测试仓库5", "HQ", "孔令杰", "正常签收", "2026-08-04 10:41:05", "2026-08-04 10:41:05"], ["SF0803115359507613", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0803201702-xwaT7", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-03 20:17:16", "2026-08-03 20:17:16"], ["SF0803769942100367", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0803201631-qBH5e", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-03 20:16:45", "2026-08-03 20:16:45"], ["SF0803780941683850", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0803200727-jpf8s", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-03 20:07:41", "2026-08-03 20:07:41"], ["SF0803188702890961", "入库后无需重发", "物品与商品描述不符", "clf-Auto-0803200656-YN3U3", "接口自动化测试1仓库（勿选）", "接口自动化测试1仓库（勿选）", "mysql玲-auto-勿动", "正常签收", "2026-08-03 20:07:10", "2026-08-03 20:07:10"], ["ZS16208768099", "入库后无需重发", "没有收到商品", "WD20260803021358", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-08-03 14:35:40", "2026-08-03 14:35:40"], ["ZS16592346699", "入库后无需重发", "有更好的商品", "WD20260803014526", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-08-03 13:59:50", "2026-08-03 13:59:50"], ["ZS15763054599", "入库后重发", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，有更好的商品", "WD20260728054220", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-07-28 14:00:37", "2026-07-28 14:00:37"], ["ZS18467207199", "到仓后换单发货", "1233", "WD20260722072005", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-07-22 15:35:44", "2026-07-22 15:35:44"], ["ZS17552984599", "入库后无需重发", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260720100136", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-07-21 14:59:21", "2026-07-21 14:59:21"], ["ZS16941450999", "到仓后换单发货", "1233", "WD20260720071228_a", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-07-21 13:52:33", "2026-07-21 13:52:33"], ["ZS16932815599", "入库后重发", "有问题，要重发一份", "WD20260720071228", "虚拟仓", "虚拟仓", "WSQ", "正常签收", "2026-07-21 11:09:44", "2026-07-21 11:09:44"], ["SF102253158538", "入库后无需重发", "", "hotcombo1013A880002041633677", "HF的私人仓库5别选", "XWD仓", "XWD", "正常签收", "2026-07-07 14:51:13", "2026-07-07 14:51:13"], ["u3495345345", "入库后重发", "东西很次，不想要了", "WD20260706062542", "smile", "HQ", "HQ", "正常签收", "2026-07-06 15:03:11", "2026-07-06 15:03:11"], ["4345454ds", "入库后重发", "东西很次，不想要了", "WD20260706062650", "smile", "HQ", "HQ", "正常签收", "2026-07-06 14:59:43", "2026-07-06 14:59:43"], ["HY439970578230", "入库后无需重发", "质量太差", "TY2026052910482360", "马甲一", "马甲一", "11t", "正常签收", "2026-07-06 11:51:47", "2026-07-06 11:51:47"], ["0625001", "入库后重发", "有问题，要重发一份", "WD20260604023130", "smile", "HQ", "HQ", "正常签收", "2026-06-25 16:11:09", "2026-06-25 16:11:09"], ["0617002", "未设置", "启用筛选测试原因 1778091409", "WD20260525082530", "smile", "HQ", "HQ", "正常签收", "2026-06-17 16:11:06", "2026-06-17 16:11:06"], ["T6831584850CN", "入库后重发", "东西很次，不想要了，有问题，要重发一份", "WD20260617065209", "tang01", "仓库002", "tzx-ES账号", "正常签收", "2026-06-17 14:54:24", "2026-06-17 14:54:24"], ["T6831584850CN", "未设置", "", "", "", "仓库002", "tzx-ES账号", "异常签收", "2026-06-17 14:53:26", ""], ["ZF0211380849872986", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲一", "11t", "正常签收", "2026-06-17 14:52:26", "2026-06-17 14:52:26"], ["ZF0211380849872986", "未设置", "", "", "", "马甲一", "11t", "异常签收", "2026-06-17 14:52:05", ""], ["ZF0102738275", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲二", "YP-ES", "正常签收", "2026-06-17 14:50:36", "2026-06-17 14:50:36"], ["ZF0102738275", "未设置", "", "", "", "马甲二", "YP-ES", "异常签收", "2026-06-17 14:50:14", ""], ["ZF2775692063099", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲二", "YP-ES", "正常签收", "2026-06-17 14:26:03", "2026-06-17 14:26:03"], ["ZF2775692063099", "未设置", "", "", "", "马甲一", "11t", "异常签收", "2026-06-17 14:25:37", ""], ["ZF2987489256", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲二", "YP-ES", "正常签收", "2026-06-17 14:10:31", "2026-06-17 14:10:31"], ["ZF2987489256", "未设置", "", "", "", "马甲二", "YP-ES", "异常签收", "2026-06-17 14:09:52", ""], ["HY296024122179", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲一", "11t", "正常签收", "2026-06-16 16:48:32", "2026-06-16 16:48:32"], ["HY296024122179", "入库后无需重发", "全列表测试-启用 1778091409，有问题，要重发一份，没有收到商品", "TY2026052910483608", "马甲一", "马甲一", "11t", "正常签收", "2026-06-16 16:48:32", "2026-06-16 16:48:32"], ["Tyc4153521", "未设置", "", "", "", "仓库002", "tzx-ES账号", "异常签收", "2026-06-15 10:42:31", ""], ["i888022", "未设置", "", "", "", "smile", "XWD", "异常签收", "2026-06-05 10:09:21", ""], ["YT892658926982", "入库后无需重发", "不想要了嘿嘿", "TY2026052910580096", "马甲一", "马甲一", "11t", "正常签收", "2026-06-04 16:41:11", "2026-06-04 16:41:11"], ["YT8729472893579284", "入库后无需重发", "不好用", "TY2026052911511513", "马甲一", "马甲一", "11t", "正常签收", "2026-06-04 16:40:28", "2026-06-04 16:40:28"], ["SF0601400580107751", "入库后重发", "启用筛选测试原因 1778091409", "clf-Auto-0601182017-lek0p", "00298902893890839082", "smile", "XWD", "正常签收", "2026-06-04 15:49:05", "2026-06-04 15:49:05"], ["ZC48197123999", "到仓后换单发货", "不想要了嘿嘿", "WD20260511065033", "ck01", "smile", "XWD", "正常签收", "2026-06-04 15:31:29", "2026-06-04 15:31:29"], ["TransferNo05221548417812090580", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:47:28", "2026-06-04 13:47:28"], ["TransferNo05221548417812090580", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:47:28", "2026-06-04 13:47:28"], ["TransferNo05221548417812090580", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:47:28", "2026-06-04 13:47:28"], ["TransferNo05221548417812090580", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:47:28", "2026-06-04 13:47:28"], ["TransferNo05221548417812090580", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:47:28", "2026-06-04 13:47:28"], ["98511000", "到仓后换单发货", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:46:58", "2026-06-04 13:46:58"], ["SF05229782788622975717", "入库后重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:38:39", "2026-06-04 13:38:39"], ["SF05229782788622975717", "入库后重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:38:39", "2026-06-04 13:38:39"], ["SF05229782788622975717", "入库后无需重发", "全列表测试-启用 1778091409，全列表测试-启用 1778091191，启用筛选测试原因 1778091409，全列表测试-启用 1778091409，全列表测试-启用 1778091409", "Test0522167055576342313", "HF的私人仓库5别选", "smile", "XWD", "正常签收", "2026-06-04 13:38:39", "2026-06-04 13:38:39"], ["SF0602985251633039", "未设置", "", "", "", "HQ", "XWD", "异常签收", "2026-06-03 17:20:31", ""], ["9895151", "未设置", "", "", "", "XWD仓", "XWD", "异常签收", "2026-06-03 16:56:58", ""], ["0010985151", "到仓后换单发货", "东西很次，不想要了，有问题，要重发一份", "WD20260525082430", "smile", "XWD仓", "XWD", "正常签收", "2026-06-03 16:35:34", "2026-06-03 16:35:34"], ["clf-Auto-0601182017-lek0p", "入库后重发", "启用筛选测试原因 1778091409", "clf-Auto-0601182017-lek0p", "00298902893890839082", "采购2", "林小明222", "正常签收", "2026-06-01 19:18:09", "2026-06-01 19:18:09"], ["clf-Auto-0601161104-8KY1F", "入库后重发", "启用筛选测试原因 1778091409", "clf-Auto-0601161104-8KY1F", "00298902893890839082", "采购2", "林小明222", "正常签收", "2026-06-01 19:16:09", "2026-06-01 19:16:09"], ["ceshi001", "入库后重发", "全列表测试-启用 1778091409", "WD20250730061054_1", "tang01", "HQ", "孔令杰", "正常签收", "2026-06-01 15:37:55", "2026-06-01 15:37:55"], ["fj9", "未设置", "", "", "", "HQ", "HQ", "异常签收", "2026-06-01 11:11:43", ""], ["0601001", "到仓后换单发货", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20250618083929", "振华仓", "HQ", "HQ", "正常签收", "2026-06-01 11:01:56", "2026-06-01 11:01:56"], ["ZC52616883299", "入库后重发", "东西很次，不想要了", "WD20260408082946", "YCS002", "ck03", "YCS", "正常签收", "2026-05-29 18:28:38", "2026-05-29 18:28:38"], ["HY713863350345", "入库后无需重发", "质量太差", "TY2026052910591010", "马甲一", "马甲一", "11t", "正常签收", "2026-05-29 11:37:27", "2026-05-29 11:37:27"], ["CD184123487", "入库后无需重发", "启用筛选测试原因 1778091409", "TY2026051318290222_a", "马甲一", "马甲一", "11t", "正常签收", "2026-05-28 09:58:49", "2026-05-28 09:58:49"], ["TY54822584", "入库后无需重发", "东西很次，不想要了", "TY2026051318290222", "马甲一", "马甲一", "11t", "正常签收", "2026-05-28 09:58:29", "2026-05-28 09:58:29"], ["HY965151675991", "入库后无需重发", "没有收到商品", "TY2026617853723018_a", "马甲一", "马甲一", "11t", "正常签收", "2026-05-28 09:57:24", "2026-05-28 09:57:24"], ["HY965151675991", "入库后无需重发", "东西很次，不想要了", "TY2026617853723018", "马甲一", "马甲一", "11t", "正常签收", "2026-05-28 09:57:24", "2026-05-28 09:57:24"], ["SF98765555", "入库后无需重发", "东西很次，不想要了", "WD20260521100730", "ck02", "ck01", "SXY", "正常签收", "2026-05-21 18:15:44", "2026-05-21 18:15:44"], ["WD20260521100730", "未设置", "", "", "", "ck01", "LS", "异常签收", "2026-05-21 18:09:23", ""], ["991151515", "入库后无需重发", "有问题，要重发一份，东西很次，不想要了，启用筛选测试原因 1778091409", "WD20260515035317", "仓库003", "XWD仓", "XWD", "正常签收", "2026-05-15 13:39:02", "2026-05-15 13:39:02"], ["0513001", "入库后重发", "没有收到商品", "WD20250908095731", "振华仓", "振华仓", "HQ", "正常签收", "2026-05-13 19:16:16", "2026-05-13 19:16:16"], ["SF05136730807666280557", "入库后无需重发", "不好用，不好用，有更好的商品", "Test0513888710917674338", "HF的私人仓库5别选", "仓库002", "tzx-ES账号", "正常签收", "2026-05-13 15:16:42", "2026-05-13 15:16:42"], ["TransferNo05130084448024981824", "入库后无需重发", "不好用，不好用，有更好的商品", "Test0513888710917674338", "HF的私人仓库5别选", "仓库002", "tzx-ES账号", "正常签收", "2026-05-13 15:16:16", "2026-05-13 15:16:16"], ["SF05120758429254070126", "入库后无需重发", "质量太差", "Test0512768321271851870", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2026-05-12 20:13:26", "2026-05-12 20:13:26"], ["SF06056922635948835815", "入库后重发", "没有收到商品", "clf-Auto-0605997990178303326", "最优路径测试仓库5", "仓库003", "tzx-ES账号", "正常签收", "2026-05-11 15:59:11", "2026-05-11 15:59:11"], ["ZC50670915999", "到仓后换单发货", "有问题，要重发一份，东西很次，不想要了", "WD20260413135538", "YCS002", "ck03", "YCS", "正常签收", "2026-05-11 10:13:35", "2026-05-11 10:13:35"], ["ZC50670915999", "入库后无需重发", "有问题，要重发一份，东西很次，不想要了", "WD20260413135538", "YCS002", "ck03", "YCS", "正常签收", "2026-05-11 10:13:35", "2026-05-11 10:13:35"], ["SF12161034522208495666", "入库后重发", "东西很次，不想要了，未经授权的交易", "clf-Auto-jc5w-1216147643343215530", "最优路径测试仓库5", "最优路径测试仓库1", "tzx-ES账号", "正常签收", "2026-05-09 16:54:41", "2026-05-09 16:54:41"], ["SF12162178969597808201", "入库后重发", "东西很次，不想要了，未经授权的交易", "clf-Auto-jc5w-1216951534562272008", "最优路径测试仓库5", "昇辉-金华仓", "tzx-ES账号", "正常签收", "2026-05-09 16:54:31", "2026-05-09 16:54:31"], ["ZC46198496799", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260325014034", "ck02", "ck01", "LS", "正常签收", "2026-05-08 17:49:37", "2026-05-08 17:49:37"], ["0429011", "入库后无需重发", "质量太差", "Test0429917536651715353", "HF的私人仓库5别选", "振华仓", "HQ", "正常签收", "2026-04-29 15:31:54", "2026-04-29 15:31:54"], ["0429001", "未设置", "东西很次，不想要了", "WD20260304100038_b", "smile", "振华仓", "HQ", "正常签收", "2026-04-29 15:21:02", "2026-04-29 15:21:02"], ["SF04292283326860682229", "入库后无需重发", "质量太差", "Test0429917536651715353", "HF的私人仓库5别选", "smile", "黄小可", "正常签收", "2026-04-29 14:22:43", "2026-04-29 14:22:43"], ["SF04236095864623254069", "入库后无需重发", "质量太差", "Test0423668232572892675", "HF的私人仓库5别选", "sang2", "YCS", "正常签收", "2026-04-27 13:55:58", "2026-04-27 13:55:58"], ["ZC45562186199", "未设置", "东西很次，不想要了", "WD20260326095443", "ck02", "最优路径测试仓库5", "孔令杰", "正常签收", "2026-04-27 11:52:57", "2026-04-27 11:52:57"], ["ZC49498032299", "未设置", "有问题，要重发一份", "WD20260422095816", "ck02", "ck02", "LS", "正常签收", "2026-04-27 11:27:30", "2026-04-27 11:27:30"], ["RO20260427032414319502", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-27 11:24:59", ""], ["56554545", "未设置", "", "", "", "sang2", "YCS", "异常签收", "2026-04-27 11:16:39", ""], ["454656445", "未设置", "", "", "", "sang2", "YCS", "异常签收", "2026-04-27 11:16:14", ""], ["SF5676846145458646", "未设置", "东西很次，不想要了，不想要了嘿嘿", "WAQ20260401-01-2950", "waq-仓库03", "仓库003", "tzx", "正常签收", "2026-04-27 10:54:52", "2026-04-27 10:54:52"], ["HYDH81248480708141", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，做工太差", "Yan2026032620420809", "YP-TEST-WAREHOUSE", "仓库003", "tzx", "正常签收", "2026-04-27 10:49:12", "2026-04-27 10:49:12"], ["ZC49364938399", "未设置", "东西很次，不想要了", "WD20260414075530", "ck02", "ck02", "LS", "正常签收", "2026-04-27 10:39:41", "2026-04-27 10:39:41"], ["HYDH22494040998309", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，做工太差", "Yan2026032678843623", "YP-TEST-WAREHOUSE", "仓库003", "tzx-ES账号", "正常签收", "2026-04-27 10:39:36", "2026-04-27 10:39:36"], ["WD20260414075530", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-27 10:37:12", ""], ["20996M1763071", "入库后无需重发", "有问题，要重发一份，东西很次，不想要了", "20996M176307", "smile", "仓库003", "tzx-ES账号", "正常签收", "2026-04-27 10:36:37", "2026-04-27 10:36:37"], ["WD202604210830231", "未设置", "做工太差，不想要了嘿嘿，有问题，要重发一份，东西很次，不想要了", "WD20260421083023", "振华仓", "采购2", "林小明222", "正常签收", "2026-04-23 12:17:12", "2026-04-23 12:17:12"], ["WD202604210830232", "入库后无需重发", "做工太差，不想要了嘿嘿，有问题，要重发一份，东西很次，不想要了", "WD20260421083023", "振华仓", "采购2", "林小明222", "正常签收", "2026-04-23 12:17:10", "2026-04-23 12:17:10"], ["WD20260421083023_g", "到仓后换单发货", "做工太差，不想要了嘿嘿，有问题，要重发一份，东西很次，不想要了", "WD20260421083023", "振华仓", "采购2", "林小明222", "正常签收", "2026-04-23 12:16:07", "2026-04-23 12:16:07"], ["clf-Auto-0422165325", "未设置", "有问题，要重发一份", "clf-Auto-0422165325", "00298902893890839082", "采购2", "林小明222", "正常签收", "2026-04-22 17:54:41", "2026-04-22 17:54:41"], ["042100", "到仓后换单发货", "做工太差，不想要了嘿嘿，有问题，要重发一份，东西很次，不想要了", "WD20260421083023", "振华仓", "XWD仓", "HQ", "正常签收", "2026-04-21 17:07:24", "2026-04-21 17:07:24"], ["HQ042102", "入库后重发", "没有收到商品", "58382M100025", "仓库003", "欧洲仓", "HQ", "正常签收", "2026-04-21 15:55:11", "2026-04-21 15:55:11"], ["ZC50669361899", "入库后重发", "有问题，要重发一份，有问题，要重发一份，有问题，要重发一份", "WD20260413140226", "YCS002", "sang2", "YCS", "正常签收", "2026-04-21 12:54:41", "2026-04-21 12:54:41"], ["ZC50669361899", "入库后重发", "有问题，要重发一份，有问题，要重发一份，有问题，要重发一份", "WD20260413140226", "YCS002", "sang2", "YCS", "正常签收", "2026-04-21 12:54:41", "2026-04-21 12:54:41"], ["ZC50669361899", "入库后重发", "有问题，要重发一份，有问题，要重发一份，有问题，要重发一份", "WD20260413140226", "YCS002", "sang2", "YCS", "正常签收", "2026-04-21 12:54:41", "2026-04-21 12:54:41"], ["042101", "未设置", "没有收到商品，做工太差", "WD20260421030410", "振华仓", "欧洲仓", "HQ", "正常签收", "2026-04-21 11:10:11", "2026-04-21 11:10:11"], ["ZC50670937099", "入库后重发", "有问题，要重发一份", "WD20260413134955", "YCS002", "smile", "YCS", "正常签收", "2026-04-21 10:45:01", "2026-04-21 10:45:01"], ["clf-Auto-new12050420634992546892744", "入库后无需重发", "东西很次，不想要了，东西很次，不想要了", "clf-Auto-new12050420634992546892744", "最优路径测试仓库5", "采购2", "林小明222", "正常签收", "2026-04-20 21:21:14", "2026-04-20 21:21:14"], ["clf-Auto-0618908390327335802", "入库后重发", "东西很次，不想要了", "clf-Auto-0618908390327335802", "最优路径测试仓库5", "采购2", "林小明222", "正常签收", "2026-04-20 20:27:31", "2026-04-20 20:27:31"], ["TransferNo04205803864841390263", "入库后重发", "质量太差", "Test0420207312611994224", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2026-04-20 19:57:36", "2026-04-20 19:57:36"], ["27682M196084", "入库后无需重发", "东西很次，不想要了，东西很次，不想要了", "27682M196084", "GM的仓库", "采购2", "林小明222", "正常签收", "2026-04-20 19:45:05", "2026-04-20 19:45:05"], ["aa683a1312", "入库后重发", "不想要了嘿嘿，没有收到商品", "WD20260420111547", "tang01", "仓库003", "tzx", "正常签收", "2026-04-20 19:23:11", "2026-04-20 19:23:11"], ["GMM2024080719232541", "入库后无需重发", "有问题，要重发一份", "GMM2024080719232541", "最优路径测试仓库1", "采购2", "林小明222", "正常签收", "2026-04-20 19:20:00", "2026-04-20 19:20:00"], ["HTKY0474589671", "到仓后换单发货", "有问题，要重发一份", "que0224340433609522290", "喜气洋洋仓", "仓库003", "tzx-ES账号", "正常签收", "2026-04-16 15:52:05", "2026-04-16 15:52:05"], ["ZC45738360999", "入库后重发", "有问题，要重发一份", "WD20260319070542", "YCS002", "smile", "YCS", "正常签收", "2026-04-14 15:03:01", "2026-04-14 15:03:01"], ["2026041302", "未设置", "不想要了嘿嘿", "WD20260413105824", "振华仓", "振华仓", "HQ", "正常签收", "2026-04-13 19:04:31", "2026-04-13 19:04:31"], ["yd98511515", "入库后无需重发", "东西很次，不想要了", "WD20260413094430", "XWD仓", "XWD仓", "XWD", "正常签收", "2026-04-13 17:54:11", "2026-04-13 17:54:11"], ["yd1233210", "入库后无需重发", "东西很次，不想要了，启用筛选测试原因 1778091409", "WD20260413094328", "XWD仓", "XWD仓", "XWD", "正常签收", "2026-04-13 17:53:48", "2026-04-13 17:53:48"], ["WD20260401083843", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-11 23:56:59", ""], ["WD20260408080110", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-11 23:49:22", ""], ["WD20260408081121", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-08 17:46:55", ""], ["WD20260408080929", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-08 16:54:42", ""], ["WD20260401063959_b", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-08 16:47:50", ""], ["WD20260407101736", "未设置", "", "", "", "ck02", "LS", "异常签收", "2026-04-08 16:31:50", ""], ["LW20260401-TDBDQ", "未设置", "", "", "", "HF的私人仓库4可选", "黄小可", "异常签收", "2026-04-01 17:52:19", ""], ["ZC46438427899", "到仓后换单发货", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，不想要了嘿嘿", "WD20260323093703_a", "ck02", "ck02", "LS", "正常签收", "2026-03-24 06:19:15", "2026-03-24 06:19:15"], ["ZC48905622599", "入库后重发", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260323093703", "ck02", "ck02", "LS", "正常签收", "2026-03-24 06:05:22", "2026-03-24 06:05:22"], ["ZC51321955899", "入库后无需重发", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260323213111", "ck02", "ck02", "LS", "正常签收", "2026-03-24 05:44:49", "2026-03-24 05:44:49"], ["EW11146979NN", "未设置", "", "WD20250813023921", "waq-仓库01", "振华仓", "ZENGUQ", "正常签收", "2026-03-23 11:47:47", "2026-03-23 11:47:47"], ["ZC46757848599", "到仓后换单发货", "有更好的商品", "WD20260319072847", "ck02", "ck02", "LS", "正常签收", "2026-03-19 22:15:56", "2026-03-19 22:15:56"], ["SF98765123", "入库后无需重发", "不想要了嘿嘿", "WD20260319073938", "smile", "smile", "SXY", "正常签收", "2026-03-19 17:27:25", "2026-03-19 17:27:25"], ["ZC45735034099", "入库后重发", "不想要了嘿嘿", "WD20260319060236", "ck03", "ck02", "LS", "正常签收", "2026-03-19 17:22:09", "2026-03-19 17:22:09"], ["1122333", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260319024137", "ck02", "YCS01", "YCS", "正常签收", "2026-03-19 16:27:19", "2026-03-19 16:27:19"], ["ZC46900944799", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货", "WD20260319024137", "ck02", "ck02", "LS", "正常签收", "2026-03-19 15:48:11", "2026-03-19 15:48:11"], ["58887", "未设置", "", "", "", "XWD仓", "XWD", "异常签收", "2026-03-18 13:51:37", ""], ["001000", "到仓后换单发货", "未经授权的交易", "27682S95875_a", "smile", "XWD仓", "XWD", "正常签收", "2026-03-18 13:45:55", "2026-03-18 13:45:55"], ["SF08277573274266440658", "入库后无需重发", "结算问题，做工太差", "clf-Auto-qh1-0827400481711615397", "最优路径测试仓库5", "最优路径测试仓库5", "tzx-ES账号", "正常签收", "2026-03-17 19:15:48", "2026-03-17 19:15:48"], ["SF08270879748008185990", "入库后重发", "结算问题，做工太差", "clf-Auto-dz49-0827529666723303223", "最优路径测试仓库5", "最优路径测试仓库5", "tzx-ES账号", "正常签收", "2026-03-17 16:34:08", "2026-03-17 16:34:08"], ["SF03256619839843196387", "入库后重发", "没有收到商品", "clf-Auto-0325566053747462514", "最优路径测试仓库5", "最优路径测试仓库5", "test006", "正常签收", "2026-03-17 16:28:05", "2026-03-17 16:28:05"], ["43243543543543", "入库后重发", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，结算问题", "Test0312679631919839125", "HF的私人仓库5别选", "HF的私人仓库5别选", "test006", "正常签收", "2026-03-17 16:22:52", "2026-03-17 16:22:52"], ["123456789101", "入库后重发", "结算问题，没有收到商品", "WD20260312081210_a", "smile", "232", "YCS", "正常签收", "2026-03-17 16:22:03", "2026-03-17 16:22:03"], ["98500", "入库后无需重发", "不想要了嘿嘿，有更好的商品，不想要了嘿嘿，没有收到商品，结算问题，质量太差，1233，不想要了嘿嘿", "WD20260129035424", "tang01", "XWD仓", "XWD", "正常签收", "2026-03-17 14:57:13", "2026-03-17 14:57:13"], ["SF98765", "到仓后换单发货", "做工太差", "WD20260312081210", "YCS002", "smile", "SXY", "正常签收", "2026-03-16 17:36:18", "2026-03-16 17:36:18"], ["031201", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，结算问题", "Test0312679631919839125", "HF的私人仓库5别选", "振华仓", "HQ", "正常签收", "2026-03-12 15:55:45", "2026-03-12 15:55:45"], ["TransferNo03125945855919461615", "未设置", "7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货7天无理由退货，结算问题", "Test0312679631919839125", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2026-03-12 15:21:12", "2026-03-12 15:21:12"], ["SF03128708422625835139", "入库后无需重发", "物品与商品描述不符", "Test0312581221484200850", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2026-03-12 15:18:42", "2026-03-12 15:18:42"], ["Test0312581221484200850", "未设置", "", "", "", "HF的私人仓库5别选", "黄小可", "异常签收", "2026-03-12 15:16:46", ""], ["ZC55557443599", "到仓后换单发货", "物品与商品描述不符", "WD20260303065342", "smile", "马甲二", "11t", "正常签收", "2026-03-12 15:02:41", "2026-03-12 15:02:41"], ["YT34547452346", "入库后无需重发", "没有收到商品，结算问题", "GMM20240807191916669", "最优路径测试仓库1", "马甲二", "11t", "正常签收", "2026-03-12 14:36:23", "2026-03-12 14:36:23"], ["SF08281475861232511045", "入库后无需重发", "没有收到商品，物品与商品描述不符，有更好的商品", "clf-Auto-qh1-0828113868479113903", "最优路径测试仓库5", "232", "tzx-ES账号", "正常签收", "2026-03-12 14:05:30", "2026-03-12 14:05:30"], ["SF08284074624751464914", "入库后无需重发", "没有收到商品，物品与商品描述不符，有更好的商品", "clf-Auto-qh1-0828357065521077718", "最优路径测试仓库5", "232", "tzx-ES账号", "正常签收", "2026-03-12 14:03:07", "2026-03-12 14:03:07"], ["UY53453223", "入库后无需重发", "，不好用，结算问题，没有收到商品", "XDD20251127070256", "马甲一", "马甲二", "11t", "正常签收", "2026-03-12 13:48:39", "2026-03-12 13:48:39"], ["ty78687598", "入库后无需重发", "，不好用，结算问题，没有收到商品", "XDD20251127070256", "马甲一", "马甲二", "11t", "正常签收", "2026-03-10 18:08:14", "2026-03-10 18:08:14"], ["YT7858851546421", "到仓后换单发货", "没有收到商品，结算问题", "GMM20240807191916669", "最优路径测试仓库1", "马甲二", "11t", "正常签收", "2026-03-10 11:37:06", "2026-03-10 11:37:06"], ["qq1234563", "未设置", "", "", "", "马甲二", "11t", "异常签收", "2026-03-09 17:38:42", ""], ["a878781", "未设置", "没有收到商品，做工太差，不好用，未经授权的交易", "7692M157273", "smile", "232", "tzx-ES账号", "正常签收", "2026-03-06 14:07:18", "2026-03-06 14:07:18"], ["EW11128744NN", "到仓后换单发货", "结算问题", "WD20250624062816", "YCS002", "YCS01", "YCS", "正常签收", "2026-03-06 14:06:49", "2026-03-06 14:06:49"], ["ZC57427397799", "未设置", "不想要了嘿嘿", "WD20260305082219", "smile", "smile", "SXY", "正常签收", "2026-03-05 16:27:34", "2026-03-05 16:27:34"], ["ZC59506548499", "入库后重发", "不好用", "WD20260304100038", "smile", "smile", "SXY", "正常签收", "2026-03-05 10:40:25", "2026-03-05 10:40:25"], ["YT2605722121000001", "入库后重发", "不想要了嘿嘿", "WD20260226031446", "XWD仓", "XWD仓", "XWD", "正常签收", "2026-02-27 20:46:23", "2026-02-27 20:46:23"], ["1000058M107605123", "入库后重发", "不想要了嘿嘿", "1000058M107605", "smile", "XWD仓", "XWD", "正常签收", "2026-02-26 13:40:35", "2026-02-26 13:40:35"], ["100051", "未设置", "", "", "", "振华仓", "XWD", "异常签收", "2026-02-24 16:07:23", ""], ["123567567657", "入库后无需重发", "，质量太差，，质量太差，不好用，，质量太差，物品与商品描述不符，，质量太差", "2026012017280698193", "采购2", "采购2", "林小明222", "正常签收", "2026-02-09 17:07:25", "2026-02-09 17:07:25"], ["afsgdsyhth001", "入库后无需重发", "", "hotcombo1013A310446257365680", "HF的私人仓库5别选", "waq-仓库03", "安琪拉-ES", "正常签收", "2026-02-09 14:53:10", "2026-02-09 14:53:10"], ["HYDH92765778642943", "入库后无需重发", "", "YAN2025122369391750", "YP-TEST-WAREHOUSE", "waq-仓库03", "安琪拉-ES", "正常签收", "2026-02-09 14:45:34", "2026-02-09 14:45:34"], ["2401", "入库后无需重发", "没有收到商品", "WAQ20251231-02-4609", "waq-仓库02", "振华仓", "HQ", "正常签收", "2026-02-04 11:18:41", "2026-02-04 11:18:41"], ["2401", "未设置", "", "WD20250324084610", "振华仓", "振华仓", "HQ", "正常签收", "2026-02-04 11:18:41", "2026-02-04 11:18:41"], ["SF06041781610210334885", "入库后无需重发", "有更好的商品，不想要了嘿嘿，结算问题", "clf-Auto-0604743270931477054", "最优路径测试仓库5", "最优路径测试仓库5", "XWD", "正常签收", "2026-02-02 16:12:32", "2026-02-02 16:12:32"], ["PH900601319XX", "入库后无需重发", "有更好的商品，做工太差，1233，不好用，质量太差，未经授权的交易，物品与商品描述不符，不想要了嘿嘿，结算问题，没有收到商品", "WD20240524091203", "smile", "YCS002", "XWD", "正常签收", "2026-01-29 16:39:30", "2026-01-29 16:39:30"], ["SF11030833641393601688", "未设置", "", "clf-Auto-dz21103616742827961017", "CLF-22222", "YCS002", "XWD", "正常签收", "2026-01-29 16:11:11", "2026-01-29 16:11:11"], ["00002", "入库后重发", "结算问题", "WD20260129023453_b", "YCS002", "YCS002", "XWD", "正常签收", "2026-01-29 15:19:53", "2026-01-29 15:19:53"], ["AA0456712345", "入库后重发", "1233，没有收到商品，不想要了嘿嘿，1233", "WD20260129055253", "tang01", "232", "tzx-ES账号", "正常签收", "2026-01-29 13:54:30", "2026-01-29 13:54:30"], ["AA0456712345", "入库后无需重发", "1233，没有收到商品，不想要了嘿嘿，1233", "WD20260129055253", "tang01", "232", "tzx-ES账号", "正常签收", "2026-01-29 13:54:30", "2026-01-29 13:54:30"], ["014999", "到仓后换单发货", "结算问题", "WD20260129023453_a", "XWD仓", "YCS002", "XWD", "正常签收", "2026-01-29 13:49:31", "2026-01-29 13:49:31"], ["AT699351258", "入库后无需重发", "不想要了嘿嘿，有更好的商品，不想要了嘿嘿，没有收到商品，结算问题，质量太差，1233，不想要了嘿嘿", "WD20260129035424", "tang01", "232", "tzx-ES账号", "正常签收", "2026-01-29 13:45:47", "2026-01-29 13:45:47"], ["AT699351258", "入库后无需重发", "不想要了嘿嘿，有更好的商品，不想要了嘿嘿，没有收到商品，结算问题，质量太差，1233，不想要了嘿嘿", "WD20260129035424", "tang01", "232", "tzx-ES账号", "正常签收", "2026-01-29 13:45:47", "2026-01-29 13:45:47"], ["9599191", "入库后无需重发", "结算问题，结算问题", "WD20260129023453", "XWD仓", "YCS002", "XWD", "正常签收", "2026-01-29 10:51:30", "2026-01-29 10:51:30"], ["123452321", "未设置", "，做工太差", "WD20251128072752", "振华仓", "test111", "test006", "正常签收", "2026-01-29 10:39:45", "2026-01-29 10:39:45"], ["1234567", "未设置", "，做工太差", "WD20251128072752", "振华仓", "马甲二", "test006", "正常签收", "2026-01-29 10:39:27", "2026-01-29 10:39:27"], ["0090", "入库后无需重发", "不想要了嘿嘿", "WD20260128025640_b", "YCS002", "YCS002", "XWD", "正常签收", "2026-01-28 17:21:58", "2026-01-28 17:21:58"], ["YT2602822121000013", "入库后重发", "不想要了嘿嘿", "WD20260128025640_a", "YCS002", "YCS002", "XWD", "正常签收", "2026-01-28 17:07:53", "2026-01-28 17:07:53"], ["ZC58396772599", "到仓后换单发货", "结算问题", "WD20260128025640", "YCS002", "YCS002", "XWD", "正常签收", "2026-01-28 16:55:10", "2026-01-28 16:55:10"], ["SF06056550102819280474", "入库后重发", "不好用", "clf-Auto-0605901147870153303", "最优路径测试仓库5", "232", "tzx-ES账号", "正常签收", "2026-01-26 14:01:47", "2026-01-26 14:01:47"], ["885522", "入库后重发", "没有收到商品", "WAQ20251231-02-2642", "waq-仓库02", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 17:27:38", "2026-01-23 17:27:38"], ["221133", "入库后重发", "没有收到商品", "WD20240528022156", "振华仓", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 17:06:34", "2026-01-23 17:06:34"], ["665544", "入库后重发", "没有收到商品", "WAQ20251231-02-4978", "waq-仓库02", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 17:00:09", "2026-01-23 17:00:09"], ["SF12175171501206775207", "未设置", "不想要了嘿嘿", "clf-Auto-new12051217335719884716086", "clf-测试停用的仓库", "waq-仓库03", "安琪拉", "正常签收", "2026-01-23 16:29:28", "2026-01-23 16:29:28"], ["ZC55359734599", "未设置", "结算问题", "WD20260121021631", "waq-仓库02", "YP-TEST-WAREHOUSE", "安琪拉", "正常签收", "2026-01-23 16:27:59", "2026-01-23 16:27:59"], ["445566", "入库后重发", "结算问题", "WAQ20251231-02-9077", "waq-仓库02", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 16:14:39", "2026-01-23 16:14:39"], ["332211", "到仓后换单发货", "没有收到商品", "WAQ20251231-02-4098", "waq-仓库02", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 16:12:23", "2026-01-23 16:12:23"], ["778899", "到仓后换单发货", "结算问题", "WAQ20251231-02-3867", "waq-仓库02", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 16:09:26", "2026-01-23 16:09:26"], ["888899999", "入库后无需重发", "结算问题，不想要了嘿嘿，不好用，质量太差，做工太差", "WD20240528073854", "振华仓", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 15:45:29", "2026-01-23 15:45:29"], ["323232323", "入库后重发", "结算问题", "WD20260123063207", "clf-001", "中堂（1）楼仓", "果果", "正常签收", "2026-01-23 14:33:52", "2026-01-23 14:33:52"], ["SF072957331367", "入库后重发", "有更好的商品，做工太差，1233，不好用，质量太差，未经授权的交易，物品与商品描述不符", "hotcombo0729A226323165163724", "最优路径测试仓库3", "232", "tzx-ES账号", "正常签收", "2026-01-23 11:47:53", "2026-01-23 11:47:53"], ["SF072942552404", "入库后无需重发", "有更好的商品，做工太差，不好用，物品与商品描述不符", "hotcombo0729A609618961980707", "最优路径测试仓库3", "232", "tzx-ES账号", "正常签收", "2026-01-23 11:41:36", "2026-01-23 11:41:36"], ["35345455", "入库后无需重发", "不想要了嘿嘿，质量太差，做工太差，1233", "WAQ20251231-02-1033", "waq-仓库02", "waq-仓库02", "外部CXY-001", "正常签收", "2026-01-12 23:04:42", "2026-01-12 23:04:42"], ["SF09220288283715852515", "入库后无需重发", "", "clf-Auto-qh203-0922681456537436747", "最优路径测试仓库5", "tang01", "tzx", "正常签收", "2026-01-04 09:57:11", "2026-01-04 09:57:11"], ["ZC51850657899", "入库后重发", "结算问题", "WD20250904130908_a", "YCS002", "马甲二", "YCS", "正常签收", "2025-12-29 16:20:45", "2025-12-29 16:20:45"], ["122801", "未设置", "，做工太差", "WD20251128072752", "振华仓", "AAA测试仓库", "HQ", "正常签收", "2025-12-28 13:49:32", "2025-12-28 13:49:32"], ["YT77546456724550871", "到仓后换单发货", "结算问题", "WD20251203014247", "YCS002", "waq-仓库03", "林小明222", "正常签收", "2025-12-26 16:50:55", "2025-12-26 16:50:55"], ["12111", "入库后重发", "", "AUT-瓜皮5d015d", "跑01", "昇辉-金华仓", "大熊01", "正常签收", "2025-12-26 14:58:56", "2025-12-26 14:58:56"], ["523", "入库后重发", "", "AUT-瓜皮14c9e6", "昇辉-金华仓", "昇辉-金华仓", "大熊01", "正常签收", "2025-12-26 14:56:15", "2025-12-26 14:56:15"], ["122601", "入库后无需重发", "", "WD20251210035539", "YCS002", "振华仓", "HQ", "正常签收", "2025-12-26 14:37:21", "2025-12-26 14:37:21"], ["YT7754645672455087", "到仓后换单发货", "结算问题", "WD20251203014247", "YCS002", "马甲二", "11t", "正常签收", "2025-12-26 11:39:46", "2025-12-26 11:39:46"], ["ZC48864566799", "入库后无需重发", "", "WD20251210035505", "YCS002", "test111", "11t", "正常签收", "2025-12-26 11:33:50", "2025-12-26 11:33:50"], ["alkjhfhfklkjoi", "入库后无需重发", "没有收到商品，结算问题", "WD20251218030012", "waq-仓库01", "马甲二", "11t", "正常签收", "2025-12-26 11:28:19", "2025-12-26 11:28:19"], ["YT90475834547980", "到仓后换单发货", "物品与商品描述不符", "AUT-瓜皮ecab73", "clf-仓库1", "马甲二", "11t", "正常签收", "2025-12-26 11:28:05", "2025-12-26 11:28:05"], ["131318", "到仓后换单发货", "物品与商品描述不符", "AUT-瓜皮ecab73", "clf-仓库1", "东莞服装仓", "大熊01", "正常签收", "2025-12-25 15:39:51", "2025-12-25 15:39:51"], ["131317", "到仓后换单发货", "物品与商品描述不符", "AUT-瓜皮ecab73", "clf-仓库1", "东莞服装仓", "大熊01", "正常签收", "2025-12-25 15:38:22", "2025-12-25 15:38:22"], ["SF12177203962560450519", "入库后无需重发", "", "clf-Auto-new12051217184901745787719", "CLF-22222", "CLF-22222", "ZENGUQ", "正常签收", "2025-12-18 14:42:44", "2025-12-18 14:42:44"], ["haudhgujbfj", "入库后无需重发", "没有收到商品，结算问题", "WD20251218030012", "waq-仓库01", "waq-仓库01", "安琪拉", "正常签收", "2025-12-18 11:20:14", "2025-12-18 11:20:14"], ["ZC52070399699", "到仓后换单发货", "结算问题", "WD20251203014247", "YCS002", "HF的私人仓库5别选", "黄小可", "正常签收", "2025-12-17 15:40:50", "2025-12-17 15:40:50"], ["SF12171673031220689637", "入库后无需重发", "未经授权的交易", "Test1217643980911903699", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2025-12-17 15:38:56", "2025-12-17 15:38:56"], ["9864986459", "未设置", "", "", "", "", "11t", "异常签收", "2025-12-17 11:52:09", ""], ["SF09111516539758674440", "入库后无需重发", "", "clf-Auto-qh15-0911901119624604726", "clf-001", "clf-001", "YCS", "正常签收", "2025-12-11 09:48:06", "2025-12-11 09:48:06"], ["SF050859764383431327601", "未设置", "", "25375M112935", "smile", "smile", "安琪拉", "正常签收", "2025-12-10 19:10:51", "2025-12-10 19:10:51"], ["AT420644080CN2321", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "YP-TEST-WAREHOUSE", "安琪拉", "正常签收", "2025-12-08 13:43:50", "2025-12-08 13:43:50"], ["sgkdehgcjzkhn", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-12-08 13:43:08", "2025-12-08 13:43:08"], ["AKJHfujhajng", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "waq-仓库03", "安琪拉", "正常签收", "2025-12-08 13:43:02", "2025-12-08 13:43:02"], ["hcsjkbgfjbswjg", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-12-08 13:42:32", "2025-12-08 13:42:32"], ["ahfusjbfjh", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "waq-仓库01", "安琪拉", "正常签收", "2025-12-08 13:42:23", "2025-12-08 13:42:23"], ["aDJKHJKEFG", "未设置", "", "GY20251203103440645329", "最优路径测试仓库1", "sang2", "安琪拉", "正常签收", "2025-12-08 13:42:08", "2025-12-08 13:42:08"], ["q8768nhhgkidf", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-12-08 13:37:59", "2025-12-08 13:37:59"], ["aljfiokg", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "sang2", "安琪拉", "正常签收", "2025-12-08 13:37:18", "2025-12-08 13:37:18"], ["sgdtrjytfk", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "振华仓", "安琪拉", "正常签收", "2025-12-08 13:36:56", "2025-12-08 13:36:56"], ["SF10217574030720412798", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-08 09:56:06", "2025-12-08 09:56:06"], ["fafvsgvkwrjnlkg", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-08 09:53:51", "2025-12-08 09:53:51"], ["agferhbrytk", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "喜气洋洋仓", "安琪拉", "正常签收", "2025-12-08 09:53:40", "2025-12-08 09:53:40"], ["afskgbopdlh", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "waq-仓库03", "安琪拉", "正常签收", "2025-12-08 09:53:28", "2025-12-08 09:53:28"], ["aksfjljlkmfv", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "YP集成测试仓库1", "安琪拉", "正常签收", "2025-12-08 09:53:14", "2025-12-08 09:53:14"], ["kskljgvkmz", "到仓后换单发货", "", "clf-Auto-1021673007942589761", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-08 09:52:53", "2025-12-08 09:52:53"], ["q8768nhcjafdadf", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "YP集成测试仓库1", "安琪拉", "正常签收", "2025-12-08 09:50:08", "2025-12-08 09:50:08"], ["zszfsgdhka05ag", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "waq-仓库03", "安琪拉", "正常签收", "2025-12-08 09:49:41", "2025-12-08 09:49:41"], ["szgdhdh", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "AAA测试仓库", "安琪拉", "正常签收", "2025-12-08 09:49:03", "2025-12-08 09:49:03"], ["dgfhbfgjfj", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-12-08 09:48:37", "2025-12-08 09:48:37"], ["zsfsghjkj", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "waq-仓库02", "安琪拉", "正常签收", "2025-12-08 09:47:04", "2025-12-08 09:47:04"], ["SF10212853608489264883", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-12-08 09:46:49", "2025-12-08 09:46:49"], ["sgsdghsrfh", "入库后重发", "", "clf-Auto-dz21021585302119170465", "最优路径测试仓库5", "AAA测试仓库", "安琪拉", "正常签收", "2025-12-08 09:46:42", "2025-12-08 09:46:42"], ["cfhjgfhjf", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "AAA测试仓库", "安琪拉", "正常签收", "2025-12-08 09:45:13", "2025-12-08 09:45:13"], ["shgdfhd", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "tang02", "安琪拉", "正常签收", "2025-12-08 09:44:56", "2025-12-08 09:44:56"], ["dfhjgjfgj", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-12-08 09:44:11", "2025-12-08 09:44:11"], ["SF072928873155", "入库后无需重发", "", "hotcombo0729A998835627832830", "最优路径测试仓库1", "waq-仓库01", "安琪拉", "正常签收", "2025-12-08 09:44:05", "2025-12-08 09:44:05"], ["SF091399565692312314", "入库后无需重发", "", "Test1202656068200700454", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-12-02 18:01:48", "2025-12-02 18:01:48"], ["wqryhhbdfh000", "入库后无需重发", "没有收到商品，", "clf-Auto-qh15-0911717283890907776", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 17:55:52", "2025-12-02 17:55:52"], ["asfsgbj02", "入库后重发", "，", "clf-Auto-qh15-0911800933358484810", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 17:49:57", "2025-12-02 17:49:57"], ["asfsgbj01", "入库后重发", "结算问题，", "clf-Auto-qh15-0911796830883952766", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 17:40:29", "2025-12-02 17:40:29"], ["SF09112387020765761276", "入库后无需重发", "结算问题，", "clf-Auto-qh15-0911796830883952766", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 17:35:33", "2025-12-02 17:35:33"], ["SF09111692426381871799", "入库后无需重发", "没有收到商品，", "clf-Auto-qh15-0911717283890907776", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 17:33:49", "2025-12-02 17:33:49"], ["hjkfjd00", "到仓后换单发货", "没有收到商品，", "clf-Auto-qh15-0911717283890907776", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 17:33:24", "2025-12-02 17:33:24"], ["SF09114003164790754308", "到仓后换单发货", "，做工太差", "clf-Auto-qh15-0911838943326146426", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 17:29:29", "2025-12-02 17:29:29"], ["SF09119268788457286448", "未设置", "未经授权的交易，", "clf-Auto-qh15-0911564348366366659", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 17:27:42", "2025-12-02 17:27:42"], ["wijfoiknsokngo01", "入库后重发", "未经授权的交易，", "clf-Auto-qh15-0911564348366366659", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 17:26:56", "2025-12-02 17:26:56"], ["oytuikryt001", "入库后无需重发", "", "", "", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 14:58:48", "2025-12-02 14:58:48"], ["SF09117898583977274353", "入库后无需重发", "", "clf-Auto-qh15-0911736071969123462", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 14:58:38", "2025-12-02 14:58:38"], ["asfgdhb01", "入库后无需重发", "", "clf-Auto-qh15-0911595828827919508", "clf-001", "clf-001", "安琪拉", "正常签收", "2025-12-02 14:19:53", "2025-12-02 14:19:53"], ["SF09111184816032169926", "入库后无需重发", "", "clf-Auto-qh15-0911595828827919508", "clf-001", "waq-仓库02", "安琪拉", "正常签收", "2025-12-02 14:19:16", "2025-12-02 14:19:16"], ["112808", "入库后无需重发", "", "WD20251015090719", "振华仓", "最优路径测试仓库5", "HQ", "正常签收", "2025-11-28 18:59:49", "2025-11-28 18:59:49"], ["112809", "入库后无需重发", "", "WD20251015090719", "振华仓", "振华仓", "HQ", "正常签收", "2025-11-28 18:59:11", "2025-11-28 18:59:11"], ["112802", "未设置", "1233，1233", "WD20251111100908", "振华仓", "欧洲仓", "HQ", "正常签收", "2025-11-28 18:43:53", "2025-11-28 18:43:53"], ["112801", "未设置", "", "WD20251015090719", "振华仓", "振华仓", "HQ", "正常签收", "2025-11-28 18:41:42", "2025-11-28 18:41:42"], ["qfwff1", "入库后无需重发", "，", "clf-Auto-xxx1127901355886541972", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-28 16:52:38", "2025-11-28 16:52:38"], ["SF11180307462746640637", "入库后无需重发", "不想要了嘿嘿，", "clf-Auto-xxx1118594765124489844", "CLF-22222", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:42:08", "2025-11-28 16:42:08"], ["SF11184430244543800113", "入库后无需重发", "，", "clf-Auto-xxx1118830031893870850", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-28 16:40:37", "2025-11-28 16:40:37"], ["SF11184430244543800113", "入库后无需重发", "，", "clf-Auto-xxx1118830031893870850", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-28 16:40:37", "2025-11-28 16:40:37"], ["kk1002", "入库后无需重发", "，", "WD20250812065541", "YP-TEST-WAREHOUSE", "最优路径测试仓库5", "孔令杰", "正常签收", "2025-11-28 16:32:32", "2025-11-28 16:32:32"], ["SF03180419514697704250", "入库后无需重发", "，", "clf-Auto-0318671488361998679", "最优路径测试仓库5", "YCS01", "11t", "正常签收", "2025-11-28 16:32:11", "2025-11-28 16:32:11"], ["SF03180419514697704250", "到仓后换单发货", "，", "clf-Auto-0318671488361998679", "最优路径测试仓库5", "YCS01", "11t", "正常签收", "2025-11-28 16:32:11", "2025-11-28 16:32:11"], ["SF08129600538908567812", "入库后无需重发", "未经授权的交易", "Test0812577647521982787", "HF的私人仓库5别选", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:25:35", "2025-11-28 16:25:35"], ["21826525265", "入库后无需重发", "不好用，有更好的商品，没有收到商品", "WD20250828092547", "HF的私人仓库5别选", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:20:52", "2025-11-28 16:20:52"], ["21826525265", "到仓后换单发货", "不好用，有更好的商品，没有收到商品", "WD20250828092547", "HF的私人仓库5别选", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:20:52", "2025-11-28 16:20:52"], ["21826525265", "入库后无需重发", "不好用，有更好的商品，没有收到商品", "WD20250828092547", "HF的私人仓库5别选", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:20:52", "2025-11-28 16:20:52"], ["TransferNo08189154170314280854", "入库后无需重发", "未经授权的交易", "Test0818331037601384212", "smile", "waq-仓库02", "安琪拉", "正常签收", "2025-11-28 16:20:05", "2025-11-28 16:20:05"], ["6262692151", "入库后无需重发", "，", "WD20250828092104", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-11-28 16:18:05", "2025-11-28 16:18:05"], ["6262692151", "入库后无需重发", "，", "WD20250828092104", "最优路径测试仓库5", "HF的私人仓库5别选", "安琪拉", "正常签收", "2025-11-28 16:18:05", "2025-11-28 16:18:05"], ["SF09181988625761109061", "入库后无需重发", "", "hotcombo0918S425655058641876", "HF的私人仓库5别选", "HF的私人仓库5别选", "安琪拉", "正常签收", "2025-11-28 16:16:51", "2025-11-28 16:16:51"], ["agfagv", "入库后无需重发", "", "hotcombo0731GY984038846462517", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 16:15:53", "2025-11-28 16:15:53"], ["rfqwfeg", "入库后无需重发", "", "hotcombo0731GY984038846462517", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 16:15:24", "2025-11-28 16:15:24"], ["1564521afe", "入库后无需重发", "", "hotcombo0731GY984038846462517", "最优路径测试仓库1", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 16:14:42", "2025-11-28 16:14:42"], ["ZC40735967299", "到仓后换单发货", "结算问题", "WD20250904100749", "YCS002", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 16:14:05", "2025-11-28 16:14:05"], ["agsgrg", "入库后重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 16:13:08", "2025-11-28 16:13:08"], ["YT2533022121000010", "入库后无需重发", "", "WD20251126013415", "test111", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 16:12:08", "2025-11-28 16:12:08"], ["YT2531022121000004", "入库后无需重发", "", "WD20251106083924", "test111", "test111", "安琪拉", "正常签收", "2025-11-28 16:11:43", "2025-11-28 16:11:43"], ["XDD010502", "入库后无需重发", "，不好用，结算问题，没有收到商品", "XDD20251127070256", "马甲一", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 16:08:54", "2025-11-28 16:08:54"], ["omksh02", "入库后重发", "", "clf-Auto-xxx1127627884754361782", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-28 15:47:12", "2025-11-28 15:47:12"], ["kk1001", "入库后重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "最优路径测试仓库5", "孔令杰", "正常签收", "2025-11-28 15:45:56", "2025-11-28 15:45:56"], ["afwergr12", "入库后无需重发", "", "clf-Auto-0318261058388595645", "最优路径测试仓库5", "wind测试仓库", "安琪拉", "正常签收", "2025-11-28 15:43:46", "2025-11-28 15:43:46"], ["wghhs14", "入库后无需重发", "", "clf-Auto-0318261058388595645", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-11-28 15:43:25", "2025-11-28 15:43:25"], ["SF03188496149435975557", "入库后无需重发", "", "clf-Auto-0318261058388595645", "最优路径测试仓库5", "test830", "安琪拉", "正常签收", "2025-11-28 15:42:02", "2025-11-28 15:42:02"], ["wrf00001qafa", "到仓后换单发货", "结算问题", "WD20250904100749", "YCS002", "YCS002", "安琪拉", "正常签收", "2025-11-28 15:38:29", "2025-11-28 15:38:29"], ["sf4564650qdfqf", "入库后重发", "", "clf-Auto-xxx1127627884754361782", "CLF-22222", "test830", "安琪拉", "正常签收", "2025-11-28 15:38:03", "2025-11-28 15:38:03"], ["afgewgf01", "入库后无需重发", "，", "clf-Auto-xxx1127901355886541972", "CLF-22222", "test830", "安琪拉", "正常签收", "2025-11-28 15:37:30", "2025-11-28 15:37:30"], ["SF73291175744qf", "到仓后换单发货", "，", "clf-Auto-xxx1127901355886541972", "CLF-22222", "test830", "安琪拉", "正常签收", "2025-11-28 15:35:57", "2025-11-28 15:35:57"], ["qafwfv1", "到仓后换单发货", "，", "clf-Auto-xxx1127901355886541972", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-28 15:34:52", "2025-11-28 15:34:52"], ["ajvjk02", "入库后重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "waq-仓库01", "安琪拉", "正常签收", "2025-11-28 15:31:42", "2025-11-28 15:31:42"], ["qwer1", "入库后重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "YCS01", "11t", "正常签收", "2025-11-28 15:28:39", "2025-11-28 15:28:39"], ["SF03186303372602256395", "入库后重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-11-28 15:25:40", "2025-11-28 15:25:40"], ["SF03186303372602256395", "入库后无需重发", "，", "clf-Auto-0318843362678493455", "最优路径测试仓库5", "最优路径测试仓库5", "安琪拉", "正常签收", "2025-11-28 15:25:40", "2025-11-28 15:25:40"], ["XDD010501", "入库后无需重发", "，不好用，结算问题，没有收到商品", "XDD20251127070256", "马甲一", "YP集成测试仓库1", "11t", "正常签收", "2025-11-28 15:04:07", "2025-11-28 15:04:07"], ["591728308264", "入库后无需重发", "", "WD20251011071638", "振华仓", "waq-仓库01", "安琪拉", "正常签收", "2025-11-28 15:01:51", "2025-11-28 15:01:51"], ["EW11127547NN", "入库后无需重发", "", "WD20250618083805", "振华仓", "振华仓", "安琪拉", "正常签收", "2025-11-28 15:00:57", "2025-11-28 15:00:57"], ["kk001", "入库后无需重发", "", "WD20251127071921", "tang01", "tang01", "安琪拉", "正常签收", "2025-11-28 14:57:23", "2025-11-28 14:57:23"], ["9552251", "入库后无需重发", "", "WD20251011071638", "振华仓", "振华仓", "安琪拉", "正常签收", "2025-11-28 14:55:06", "2025-11-28 14:55:06"], ["XDD010500", "入库后无需重发", "，不好用，结算问题，没有收到商品", "XDD20251127070256", "马甲一", "马甲一", "11t", "正常签收", "2025-11-28 14:54:46", "2025-11-28 14:54:46"], ["HYDH90929378064703", "未设置", "", "YP97046324437613", "YP-TEST-WAREHOUSE", "YP-TEST-WAREHOUSE", "安琪拉", "正常签收", "2025-11-28 14:54:34", "2025-11-28 14:54:34"], ["qtrfwetg", "未设置", "", "GMM20240807194240145", "最优路径测试仓库1", "waq-仓库01", "安琪拉", "正常签收", "2025-11-28 14:53:41", "2025-11-28 14:53:41"], ["PH900308564XX", "未设置", "", "GMM20240807194240145", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807194053571", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240926094601278", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164155527715", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20241023102010926", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191539398", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164153449315", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20241018104107896", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122093059033288", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122093009631442", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191539642", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191540895", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191540705", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191541954", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191541177", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807191542905", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GMM20240807194103294", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170632615369", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "WD20241114140940", "smile", "smile", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170815143788", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170817617143", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170809584348", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170812582954", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170814156478", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170804344933", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170805453366", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170809304474", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170752118045", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170753385326", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170753822271", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170751368449", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170751650481", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170749354510", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170750153266", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170750126905", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164142732822", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164145175871", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164146516073", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164151822194", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170712485262", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170712444012", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170713138238", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170749141631", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164131764128", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164133727593", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164136083190", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164137783490", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164141384674", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170710462840", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170711446148", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170711454787", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164114818971", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164116975120", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122164118223763", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170709814793", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170709763572", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170702840526", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170703746769", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170708968228", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170633868225", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170634058969", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170635380052", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170632313454", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241114170633164853", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122093034649695", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122093050688622", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092948874337", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092957960847", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122093022247519", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092853750441", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092920459739", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092927116635", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092938327474", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092454796558", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092830564442", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["PH900308564XX", "入库后无需重发", "", "GY20241122092847224906", "最优路径测试仓库1", "最优路径测试仓库1", "安琪拉", "正常签收", "2025-11-28 14:51:34", "2025-11-28 14:51:34"], ["XDD1223344", "到仓后换单发货", "", "WD20250624102847", "YCS002", "YCS002", "11t", "正常签收", "2025-11-28 11:13:20", "2025-11-28 11:13:20"], ["asd123456", "到仓后换单发货", "", "WD20250624102847", "YCS002", "YCS002", "zy", "正常签收", "2025-11-28 10:49:21", "2025-11-28 10:49:21"], ["SF082582249094", "入库后无需重发", "未经授权的交易", "hotcombo0824M100895829173016", "HF的私人仓库5别选", "HF的私人仓库5别选", "安琪拉", "正常签收", "2025-11-27 15:23:27", "2025-11-27 15:23:27"], ["43534543543534", "到仓后换单发货", "", "WD20251125023350", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-11-25 10:35:07", "2025-11-25 10:35:07"], ["1324324325", "到仓后换单发货", "", "WD20251125023350", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-11-25 10:34:57", "2025-11-25 10:34:57"], ["SF11051693438567715722", "入库后无需重发", "，", "clf-Auto-1105188354119661026", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-20 13:47:32", "2025-11-20 13:47:32"], ["SF11051693438567715722", "入库后无需重发", "，", "clf-Auto-1105188354119661026", "CLF-22222", "CLF-22222", "安琪拉", "正常签收", "2025-11-20 13:47:32", "2025-11-20 13:47:32"], ["EW11126638NN", "到仓后换单发货", "", "WD20250624102847", "YCS002", "YCS002", "YCS", "正常签收", "2025-11-19 16:38:12", "2025-11-19 16:38:12"], ["ZC38449109799", "入库后无需重发", "结算问题", "WD20250924062357", "YCS002", "YCS002", "YCS", "正常签收", "2025-11-19 16:17:48", "2025-11-19 16:17:48"], ["432432432432", "入库后无需重发", "未经授权的交易，物品与商品描述不符，，", "WD20251110080448", "smile", "smile", "test006", "正常签收", "2025-11-13 18:17:06", "2025-11-13 18:17:06"], ["1123", "入库后无需重发", "", "hotcombo0731GY984038846462517", "最优路径测试仓库1", "最优路径测试仓库1", "HQ", "正常签收", "2025-11-06 15:19:06", "2025-11-06 15:19:06"], ["SF102298886735", "到仓后换单发货", "", "hotcombo1013A946285538154029", "HF的私人仓库5别选", "HF的私人仓库5别选", "YCS", "正常签收", "2025-11-03 09:22:19", "2025-11-03 09:22:19"], ["SF073103704557", "到仓后换单发货", "", "hotcombo0731GY394980397563369", "最优路径测试仓库1", "最优路径测试仓库1", "tzx", "正常签收", "2025-10-31 09:53:39", "2025-10-31 09:53:39"], ["SF073190762729", "到仓后换单发货", "", "hotcombo0731GY196545333329444", "最优路径测试仓库1", "最优路径测试仓库1", "tzx", "正常签收", "2025-10-31 09:49:58", "2025-10-31 09:49:58"], ["SF073100361269", "到仓后换单发货", "", "hotcombo0731GY551549922076637", "最优路径测试仓库1", "最优路径测试仓库1", "tzx", "正常签收", "2025-10-31 09:48:57", "2025-10-31 09:48:57"], ["SF073185248759", "到仓后换单发货", "", "hotcombo0731GY984038846462517", "最优路径测试仓库1", "最优路径测试仓库1", "tzx", "正常签收", "2025-10-30 18:22:43", "2025-10-30 18:22:43"], ["SF09232226593779566726", "入库后无需重发", "", "Custom0923463623630450614", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2025-09-23 10:43:01", "2025-09-23 10:43:01"], ["20250902", "未设置", "结算问题", "WD20250902122003", "YCS002", "YCS002", "YCS", "正常签收", "2025-09-02 23:03:47", "2025-09-02 23:03:47"], ["20250813001", "到仓后换单发货", "结算问题", "WD20250813134257", "YCS002", "YCS002", "YCS", "正常签收", "2025-08-13 21:53:25", "2025-08-13 21:53:25"], ["202508120002", "入库后无需重发", "结算问题，结算问题", "WD20250812034857", "YCS01", "YCS01", "YCS", "正常签收", "2025-08-12 19:40:32", "2025-08-12 19:40:32"], ["202508120001", "未设置", "结算问题，结算问题", "WD20250812034857", "YCS01", "YCS01", "YCS", "正常签收", "2025-08-12 19:19:12", "2025-08-12 19:19:12"], ["YT2519722121000014", "未设置", "未经授权的交易", "WD20250707065345", "振华仓", "振华仓", "HQ", "正常签收", "2025-08-12 17:34:11", "2025-08-12 17:34:11"], ["11111", "未设置", "", "WD20250701023016_a", "振华仓", "振华仓", "HQ", "正常签收", "2025-08-12 17:33:59", "2025-08-12 17:33:59"], ["EW11150897NN", "入库后无需重发", "", "WD20250812072321", "tang01", "tang01", "tzx", "正常签收", "2025-08-12 16:25:08", "2025-08-12 16:25:08"], ["SF08127604502398401746", "入库后无需重发", "未经授权的交易", "Test0812760045332792412", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-08-12 15:49:48", "2025-08-12 15:49:48"], ["D20250812065649", "入库后无需重发", "，不想要了嘿嘿", "WD20250812065649", "马甲一", "马甲一", "11t", "正常签收", "2025-08-12 15:00:24", "2025-08-12 15:00:24"], ["D20250812065541", "入库后无需重发", "，", "WD20250812065541", "YP-TEST-WAREHOUSE", "YP-TEST-WAREHOUSE", "11t", "正常签收", "2025-08-12 15:00:17", "2025-08-12 15:00:17"], ["SF08129079316786000326", "入库后无需重发", "物品与商品描述不符", "Test0812430137488038902", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-08-12 14:43:50", "2025-08-12 14:43:50"], ["20250723001", "入库后无需重发", "结算问题", "WD20250612031516", "YCS002", "YCS002", "YCS", "正常签收", "2025-07-23 09:40:24", "2025-07-23 09:40:24"], ["110700", "到仓后换单发货", "", "clf-Auto-0701209853519905868", "最优路径测试仓库5", "最优路径测试仓库5", "HQ", "正常签收", "2025-07-22 14:12:11", "2025-07-22 14:12:11"], ["1232333", "到仓后换单发货", "", "WD20250707071302", "振华仓", "振华仓", "HQ", "正常签收", "2025-07-22 14:07:36", "2025-07-22 14:07:36"], ["SF07229664255276552931", "到仓后换单发货", "", "Test0722325389082897180", "HF的私人仓库5别选", "HF的私人仓库5别选", "黄小可", "正常签收", "2025-07-22 11:24:48", "2025-07-22 11:24:48"], ["EW11135772NN", "入库后重发", "结算问题，结算问题", "WD20250625065131", "YCS002", "YCS002", "tzx", "正常签收", "2025-07-04 14:35:07", "2025-07-04 14:35:07"], ["EW11135772NN", "入库后重发", "结算问题，结算问题", "WD20250625065131", "YCS002", "YCS002", "tzx", "正常签收", "2025-07-04 14:35:07", "2025-07-04 14:35:07"], ["TransferNo11124682885915789356", "入库后重发", "", "hotcombo1112810664479619287", "HF的私人仓库5别选", "HF的私人仓库5别选", "tzx", "正常签收", "2025-06-20 13:57:24", "2025-06-20 13:57:24"], ["SF11126498435331185728", "入库后重发", "", "hotcombo1112810664479619287", "HF的私人仓库5别选", "HF的私人仓库5别选", "tzx", "正常签收", "2025-06-20 13:57:13", "2025-06-20 13:57:13"], ["3216743957852", "入库后无需重发", "", "WD20250519030541", "smile", "smile", "tzx", "正常签收", "2025-06-20 13:56:53", "2025-06-20 13:56:53"], ["EW11123039NN", "到仓后换单发货", "结算问题", "WD20250612031317", "YCS002", "YCS002", "tzx", "正常签收", "2025-06-20 11:59:28", "2025-06-20 11:59:28"], ["EW11139817NN", "入库后无需重发", "结算问题，结算问题", "WD20250611141528", "YCS002", "YCS002", "外部CXY-001", "正常签收", "2025-06-16 13:53:55", "2025-06-16 13:53:55"], ["989q8e9wqe", "到仓后换单发货", "", "WD20241226031812", "最优路径测试仓库5", "最优路径测试仓库5", "test006", "正常签收", "2025-06-13 10:25:47", "2025-06-13 10:25:47"], ["PH900308564XX", "到仓后换单发货", "，未经授权的交易", "GMM20240715161708", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "入库后无需重发", "", "GY20250414102511446542", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GMM20240807194109799", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GY20250325105635911851", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GY20250325105649761893", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GY20250325105650356752", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GY20250325105650824284", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["PH900308564XX", "未设置", "", "GY20250325105651533183", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2025-06-13 09:55:07", "2025-06-13 09:55:07"], ["SF06061225733477464029", "入库后重发", "", "clf-Auto-0606713281027258718", "最优路径测试仓库5", "最优路径测试仓库5", "金冬天", "正常签收", "2025-06-06 17:08:57", "2025-06-06 17:08:57"], ["EW11138187NN", "入库后重发", "", "WD20250606072412", "最优路径测试仓库5", "最优路径测试仓库5", "金冬天", "正常签收", "2025-06-06 17:08:21", "2025-06-06 17:08:21"], ["12345678910", "入库后无需重发", "物品与商品描述不符", "WD20250604083134", "YCS002", "YCS002", "YCS", "正常签收", "2025-06-05 11:12:18", "2025-06-05 11:12:18"], ["YT2515522121000010", "入库后无需重发", "物品与商品描述不符", "WD20250604083134", "YCS002", "YCS002", "YCS", "正常签收", "2025-06-05 10:50:49", "2025-06-05 10:50:49"], ["yt2513322121000002", "到仓后换单发货", "", "WD20250513054306", "欧洲仓", "欧洲仓", "HQ", "正常签收", "2025-05-28 16:29:18", "2025-05-28 16:29:18"], ["20250513185619672", "入库后无需重发", "", "WD20250513105420", "振华仓", "振华仓", "HQ", "正常签收", "2025-05-28 16:25:22", "2025-05-28 16:25:22"], ["SF05289978744197585345", "入库后无需重发", "", "Test0528400590755139806", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-05-28 16:08:23", "2025-05-28 16:08:23"], ["SF05289978744197585345B", "入库后无需重发", "", "Test0528400590755139806", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-05-28 16:08:09", "2025-05-28 16:08:09"], ["SF05289978744197585345A", "入库后无需重发", "", "Test0528400590755139806", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-05-28 16:07:15", "2025-05-28 16:07:15"], ["PH900375793XX", "入库后无需重发", "物品与商品描述不符", "WD20250527090521", "smile", "smile", "YCS", "正常签收", "2025-05-27 17:22:41", "2025-05-27 17:22:41"], ["68WD20250527060203X226", "未设置", "", "", "", "", "YCS", "异常签收", "2025-05-27 17:03:55", ""], ["9cB0dF32E1", "入库后无需重发", "", "6032S10987", "smile", "smile", "test006", "正常签收", "2025-05-20 17:28:17", "2025-05-20 17:28:17"], ["8787877", "入库后无需重发", "", "6032S10960", "smile", "smile", "test006", "正常签收", "2025-05-20 14:05:58", "2025-05-20 14:05:58"], ["124241234123", "入库后无需重发", "", "6032S10967", "smile", "smile", "林小明222", "正常签收", "2025-05-20 13:59:36", "2025-05-20 13:59:36"], ["YTS8562455600000", "入库后重发", "，，未经授权的交易", "6032S10944", "smile", "smile", "外部CXY-001", "正常签收", "2025-04-23 17:39:25", "2025-04-23 17:39:25"], ["JSEDU1439808272YQ", "入库后重发", "，，未经授权的交易", "WD20250423074303", "clf-仓库4", "clf-仓库4", "外部CXY-001", "正常签收", "2025-04-23 17:39:17", "2025-04-23 17:39:17"], ["zdHQ003452CL", "入库后重发", "", "WD20250407080740", "振华仓", "振华仓", "HQ", "正常签收", "2025-04-21 19:27:38", "2025-04-21 19:27:38"], ["SF04214539254654260243", "入库后无需重发", "物品与商品描述不符", "Test0421662264411308523", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-04-21 13:46:27", "2025-04-21 13:46:27"], ["TransferNo04214112687266413046", "入库后无需重发", "物品与商品描述不符", "Test0421858044090609727", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-04-21 13:46:03", "2025-04-21 13:46:03"], ["SF02114568645401054137", "入库后无需重发", "", "hotcombo0211134523274639245", "HF的私人仓库5别选", "HF的私人仓库5别选", "外部CXY-001", "正常签收", "2025-02-11 18:25:20", "2025-02-11 18:25:20"], ["SF02113073613398587229", "入库后无需重发", "", "hotcombo0211518831467621771", "HF的私人仓库4可选", "HF的私人仓库4可选", "外部CXY-001", "正常签收", "2025-02-11 17:11:58", "2025-02-11 17:11:58"], ["SF072924507866", "未设置", "未经授权的交易", "hotcombo0729A500890306535970", "最优路径测试仓库3", "最优路径测试仓库3", "HF", "正常签收", "2025-02-11 14:42:50", "2025-02-11 14:42:50"], ["SF10288471732117311873", "未设置", "", "clf-Auto-1028187807211741228", "振华仓", "振华仓", "ZENGUQ", "正常签收", "2025-01-20 11:46:18", "2025-01-20 11:46:18"], ["YD01155110178434886461", "未设置", "", "2025011533", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-01-16 11:41:17", "2025-01-16 11:41:17"], ["SF01155110178434886331", "未设置", "", "2025011599", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-01-15 21:53:11", "2025-01-15 21:53:11"], ["SF072911871648", "未设置", "", "hotcombo0729A709341445650572", "最优路径测试仓库2", "最优路径测试仓库2", "HF", "正常签收", "2025-01-15 21:51:24", "2025-01-15 21:51:24"], ["SF05160472993531231231", "未设置", "", "2025011599", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2025-01-15 21:50:55", "2025-01-15 21:50:55"], ["SF01092823650116750765", "未设置", "，，未经授权的交易，物品与商品描述不符", "clf-Auto-0109397928911622901", "最优路径测试仓库5", "最优路径测试仓库5", "HF", "正常签收", "2025-01-15 19:17:43", "2025-01-15 19:17:43"], ["SF01027919000938411758", "未设置", "物品与商品描述不符", "clf-Auto-0102592001590687708", "最优路径测试仓库5", "最优路径测试仓库5", "HF", "正常签收", "2025-01-13 15:58:20", "2025-01-13 15:58:20"], ["PH900308564XX", "未设置", "", "GY20241226193545216572", "最优路径测试仓库1", "最优路径测试仓库1", "外部CXY-001", "正常签收", "2025-01-03 11:11:56", "2025-01-03 11:11:56"], ["PH900308564XX", "入库后无需重发", "，物品与商品描述不符", "GMM20240708110320", "最优路径测试仓库1", "最优路径测试仓库1", "外部CXY-001", "正常签收", "2025-01-03 11:11:56", "2025-01-03 11:11:56"], ["SF01022793294695122932", "未设置", "", "clf-Auto-0102536137361077963", "中堂（1）楼仓", "中堂（1）楼仓", "test006", "正常签收", "2025-01-03 09:29:38", "2025-01-03 09:29:38"], ["SF01025465949302046294", "未设置", "，", "clf-Auto-0102565040320690316", "中堂（1）楼仓", "中堂（1）楼仓", "test006", "正常签收", "2025-01-03 09:28:19", "2025-01-03 09:28:19"], ["SF01025465949302046294", "未设置", "，", "clf-Auto-0102565040320690316", "中堂（1）楼仓", "中堂（1）楼仓", "test006", "正常签收", "2025-01-03 09:28:19", "2025-01-03 09:28:19"], ["PH900287135XX", "未设置", "", "WD20240813030911", "最优路径测试仓库1", "最优路径测试仓库1", "test006", "正常签收", "2024-12-31 16:02:44", "2024-12-31 16:02:44"], ["3434343434555", "入库后无需重发", "", "CLF_DEVS1018197254508949760", "最优路径测试仓库5", "最优路径测试仓库5", "外部CXY-001", "正常签收", "2024-12-11 20:00:30", "2024-12-11 20:00:30"], ["SF102239231666", "未设置", "物品与商品描述不符", "hotcombo1013A454811584544229", "HF的私人仓库5别选", "HF的私人仓库5别选", "外部CXY-001", "正常签收", "2024-11-20 16:52:28", "2024-11-20 16:52:28"], ["SF09190409208553211454", "入库后无需重发", "", "hotcombo0918S602946674857157", "HF的私人仓库5别选", "HF的私人仓库5别选", "外部CXY-001", "正常签收", "2024-09-20 21:22:52", "2024-09-20 21:22:52"], ["SF09204338952224964409", "未设置", "", "WD20240918133023", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2024-09-20 20:20:25", "2024-09-20 20:20:25"], ["SF09184961155928192691", "未设置", "", "WD20240918133023", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2024-09-20 20:19:10", "2024-09-20 20:19:10"], ["SF09191750259540932317", "入库后无需重发", "", "hotcombo0918S407392099027003", "HF的私人仓库5别选", "HF的私人仓库5别选", "HF", "正常签收", "2024-09-20 20:18:35", "2024-09-20 20:18:35"], ["1111", "未设置", "", "189271470", "", "wind测试仓库", "hbb", "正常签收", "2023-09-12 17:40:46", ""]];
+
+/* ---------- 工具 ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+function fmtDT(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); }
+
+/* ---------- 全局提示：信息/成功/警示/错误，3 秒自动消失 ---------- */
+const TOAST_ICON = {
+  info:    '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#3D68FF"/><rect x="7.2" y="6.8" width="1.6" height="5" rx=".8" fill="#fff"/><circle cx="8" cy="4.6" r="1" fill="#fff"/></svg>',
+  success: '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#52C41A"/><path d="M4.6 8.4 7 10.6l4.4-5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  warning: '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#FA8C16"/><rect x="7.2" y="3.8" width="1.6" height="5.4" rx=".8" fill="#fff"/><circle cx="8" cy="11.4" r="1" fill="#fff"/></svg>',
+  error:   '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#FF4D4F"/><path d="M5.4 5.4 10.6 10.6M10.6 5.4 5.4 10.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>'
+};
+function toast(type, msg){
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = '<span class="t-ico">'+TOAST_ICON[type]+'</span><span>'+esc(msg)+'</span>';
+  $('#toastWrap').appendChild(el);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 260); }, 3000);
+}
+
+/* ---------- 数据 ---------- */
+const store = {
+  data: RAW.map((r,i)=>({ id:i+1, no:r[0], th:r[1], rs:r[2], ref:r[3], fk:r[4], sk:r[5], op:r[6], st:r[7], t1:r[8], t2:r[9] })),
+  idSeq: RAW.length,
+  q: { no:'', ref:'', op:'', st:'', fk:'', sk:'', th:'', rs:'', t1:'', t2:'' },   // 查询条件
+  scanWh: '',                 // 扫描区已选仓库
+  page: 1, size: 100,
+  selectedId: null, flashId: null
+};
+const WHS = [...new Set(store.data.map(d=>d.sk).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
+const OPS = [...new Set(store.data.map(d=>d.op).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
+const STATUS = ['正常签收','异常签收'];
+const THKS = ['未设置','入库后无需重发','到仓后换单发货','入库后重发'];
+const RSS  = [...new Set(store.data.map(d=>d.rs).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
+const FKS  = [...new Set(store.data.map(d=>d.fk).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
+const SKS  = [...new Set(store.data.map(d=>d.sk).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
+
+/* ---------- 下拉组件（单选/多选/可搜索） ---------- */
+let activePanel = null, activeCal = null;
+function closePanels(){ if(activePanel){ activePanel.remove(); activePanel=null; } if(activeCal){ activeCal.remove(); activeCal=null; } }
+document.addEventListener('mousedown', e=>{
+  if(!e.target.closest('.dropdown-panel') && !e.target.closest('.calendar-panel') && !e.target.closest('.select') && !e.target.closest('.cal-ctl')) closePanels();
+});
+
+function createSelect(cfg){
+  // cfg: el, options[{label,value}], multiple, searchable, placeholder, onChange, width
+  const el = cfg.el;
+  let value = cfg.multiple ? [] : '';
+  let panel = null;
+
+  function render(){
+    if(cfg.multiple){
+      const vs = value;
+      let inner = '';
+      if(!vs.length) inner = '<span class="ph">'+(cfg.placeholder||'请选择')+'</span>';
+      else {
+        const show = vs.slice(0,2);
+        inner = show.map(v=>'<span class="tag" data-v="'+esc(v)+'">'+esc(v)+'<i data-del="'+esc(v)+'">✕</i></span>').join('')
+              + (vs.length>2 ? '<span class="tag more">+'+(vs.length-2)+'</span>' : '');
+      }
+      el.innerHTML = inner + '<span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+      el.querySelectorAll('.tag i').forEach(i=> i.addEventListener('click', e=>{ e.stopPropagation(); remove(i.dataset.del); }));
+    } else {
+      el.innerHTML = (value ? '<span class="val">'+esc(value)+'</span>' : '<span class="ph">'+(cfg.placeholder||'请选择')+'</span>')
+        + '<span class="clear '+(value?'has-v':'')+'" data-clear>✕</span>'
+        + '<span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+      const c = el.querySelector('[data-clear]');
+      if(c) c.addEventListener('mousedown', e=>{ e.stopPropagation(); setValue('', true); });
+    }
+  }
+  function remove(v){
+    value = value.filter(x=>x!==v);
+    render(); renderList(panel && panel.querySelector('input') ? panel.querySelector('input').value : '');
+    cfg.onChange && cfg.onChange(value);
+  }
+  function filteredList(kw){
+    return kw ? cfg.options.filter(o=>o.label.toLowerCase().includes(kw.toLowerCase())) : cfg.options;
+  }
+  function renderList(kw){
+    if(!panel) return;
+    const list = panel.querySelector('.dp-list');
+    const opts = filteredList(kw);
+    list.innerHTML = opts.length ? opts.map(o=>{
+      const sel = cfg.multiple ? value.includes(o.value) : value===o.value;
+      return '<div class="dp-opt'+(sel?' sel':'')+'" data-v="'+esc(o.value)+'">'
+        + (cfg.multiple ? '<span class="ck">'+(sel?'✓':'')+'</span>' : '') + esc(o.label) + '</div>';
+    }).join('') : '<div class="dp-empty">无匹配数据</div>';
+    list.querySelectorAll('.dp-opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        const v = opt.dataset.v;
+        if(cfg.multiple){
+          if(value.includes(v)) value = value.filter(x=>x!==v); else value.push(v);
+          render(); renderList(kw); cfg.onChange && cfg.onChange(value);
+        } else {
+          setValue(v, true); closePanels();
+        }
+      });
+    });
+  }
+  function open(){
+    if(activePanel === panel && panel){ closePanels(); return; }
+    closePanels();
+    panel = document.createElement('div');
+    panel.className = 'dropdown-panel';
+    const minW = Math.max(el.offsetWidth, 120);
+    panel.style.minWidth = minW+'px';
+    panel.innerHTML = '<div class="dp-list"></div>';
+    document.body.appendChild(panel);
+    activePanel = panel;
+    const r = el.getBoundingClientRect();
+    const h = panel.offsetHeight || 200;
+    let top = r.bottom + 4;
+    if(top + Math.min(h, 300) > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
+    panel.style.left = Math.min(r.left, window.innerWidth - minW - 8) + 'px';
+    panel.style.top = top + 'px';
+    renderList('');
+    const si = panel.querySelector('.dp-search input');
+    if(si){
+      si.addEventListener('input', ()=>renderList(si.value));
+      si.addEventListener('mousedown', e=>e.stopPropagation());
+      setTimeout(()=>si.focus(), 30);
+    }
+  }
+  function setValue(v, fire){
+    value = v; render();
+    if(fire) cfg.onChange && cfg.onChange(value);
+  }
+  el.addEventListener('click', e=>{ if(e.target.closest('[data-clear]')) return; open(); });
+  render();
+  el.setValue = setValue;     // API 同时挂载到元素，便于 $('#id').setValue() 调用
+  el.getValue = ()=>value;
+  return { setValue, getValue: ()=>value };
+}
+
+/* ---------- 日历组件 ---------- */
+let calY, calM; // 年、月(0-based)
+function openCalendar(triggerCtl, curVal, onPick, onClear){
+  closePanels();
+  const base = curVal ? new Date(curVal.slice(0,10)+'T00:00:00') : new Date();
+  calY = base.getFullYear(); calM = base.getMonth();
+  const p = document.createElement('div');
+  p.className = 'calendar-panel';
+  document.body.appendChild(p);
+  activeCal = p;
+  const selDay = curVal ? curVal.slice(0,10) : '';
+  function render(){
+    const first = new Date(calY, calM, 1);
+    const startWk = first.getDay();
+    const days = new Date(calY, calM+1, 0).getDate();
+    const prevDays = new Date(calY, calM, 0).getDate();
+    const today = fmtDT(new Date()).slice(0,10);
+    let cells = '';
+    for(let i=0;i<42;i++){
+      const dnum = i - startWk + 1;
+      let y=calY, m=calM, d=dnum, muted=false;
+      if(d<1){ d = prevDays+d; m=calM-1; muted=true; }
+      else if(d>days){ d = d-days; m=calM+1; muted=true; }
+      if(m<0){ m=11; y--; } if(m>11){ m=0; y++; }
+      const ds = y+'-'+pad(m+1)+'-'+pad(d);
+      cells += '<div class="cal-cell'+(muted?' muted':'')+(ds===today?' today':'')+(ds===selDay?' sel':'')+'" data-d="'+ds+'">'+d+'</div>';
+    }
+    p.innerHTML = '<div class="cal-head">'
+      + '<span class="cal-nav" data-nav="-1"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M6.5 1.5 3 5l3.5 3.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></span>'
+      + '<span class="cal-title">'+calY+'年'+(calM+1)+'月</span>'
+      + '<span class="cal-nav" data-nav="1"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M3.5 1.5 7 5 3.5 8.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></span></div>'
+      + '<div class="cal-grid">' + ['日','一','二','三','四','五','六'].map(w=>'<div class="cal-wk">'+w+'</div>').join('') + cells + '</div>'
+      + '<div class="cal-foot"><a data-act="clear">清空</a><a data-act="now">今天</a></div>';
+    p.querySelectorAll('[data-nav]').forEach(n=>n.addEventListener('click', ()=>{ calM += +n.dataset.nav; if(calM<0){calM=11;calY--;} if(calM>11){calM=0;calY++;} render(); }));
+    p.querySelectorAll('.cal-cell').forEach(c=>c.addEventListener('click', ()=>{ if(c.classList.contains('muted')) return; onPick(c.dataset.d); closePanels(); }));
+    p.querySelector('[data-act="clear"]').addEventListener('click', ()=>{ onClear && onClear(); closePanels(); });
+    p.querySelector('[data-act="now"]').addEventListener('click', ()=>{ onPick(fmtDT(new Date()).slice(0,10)); closePanels(); });
+    const r = triggerCtl.getBoundingClientRect();
+    let top = r.bottom + 4;
+    if(top + 300 > window.innerHeight - 8) top = Math.max(8, r.top - 292);
+    let left = Math.min(r.left, window.innerWidth - 244);
+    p.style.left = left + 'px'; p.style.top = top + 'px';
+  }
+  render();
+}
+
+/* ---------- 查询控件初始化 ---------- */
+const scanWhSel = createSelect({ el:$('#scanWhSel'), options:WHS.map(v=>({label:v,value:v})), searchable:true, placeholder:'选择仓库',
+  onChange:v=>{ store.scanWh=v; } });
+createSelect({ el:$('#fOpSel'), options:OPS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.op=v; } });
+createSelect({ el:$('#fStSel'), options:STATUS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.st=v; } });
+createSelect({ el:$('#fFkSel'), options:FKS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.fk=v; } });
+createSelect({ el:$('#fSkSel'), options:SKS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.sk=v; } });
+createSelect({ el:$('#fThSel'), options:THKS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.th=v; } });
+createSelect({ el:$('#fRsSel'), options:RSS.map(v=>({label:v,value:v})), placeholder:'请选择',
+  onChange:v=>{ store.q.rs=v; } });
+createSelect({ el:$('#pgSizeSel'), options:[{label:'20条/页',value:20},{label:'50条/页',value:50},{label:'100条/页',value:100}], placeholder:'',
+  onChange:v=>{ store.size=+v; store.page=1; renderTable(); } });
+$('#pgSizeSel').setValue(100);
+
+// 签收时间（范围）
+function bindCal(elId, key, ph){
+  const el = $(elId);
+  el.classList.add('cal-ctl');
+  el.addEventListener('click', ()=>{
+    openCalendar(el, store.q[key],
+      d=>{ store.q[key] = d + (key==='t1' ? ' 00:00:00' : ' 23:59:59');
+           el.innerHTML = '<span class="val">'+store.q[key]+'</span>'; },
+      ()=>{ store.q[key]=''; el.innerHTML = '<span class="ph">'+ph+'</span>'; });
+  });
+}
+bindCal('#fT1','t1','开始时间');
+bindCal('#fT2','t2','结束时间');
+
+$('#fNo').addEventListener('keydown', e=>{ if(e.key==='Enter') doQuery(); });
+$('#fRef').addEventListener('keydown', e=>{ if(e.key==='Enter') doQuery(); });
+$('#scanInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doSign(); });
+$('#btnQuery').addEventListener('click', doQuery);
+$('#btnReset').addEventListener('click', doReset);
+$('#btnExport').addEventListener('click', doExport);
+
+/* ---------- 查询 / 重置 ---------- */
+function doQuery(){
+  store.q.no  = $('#fNo').value.trim();
+  store.q.ref = $('#fRef').value.trim();
+  store.page = 1;
+  renderTable();
+}
+function doReset(){
+  $('#fNo').value=''; $('#fRef').value='';
+  store.q = { no:'', ref:'', op:'', st:'', fk:'', sk:'', th:'', rs:'', t1:'', t2:'' };
+  store.scanWh = '';
+  scanWhSel.setValue('');
+  $('#fOpSel').setValue(''); $('#fStSel').setValue(''); $('#fFkSel').setValue(''); $('#fSkSel').setValue(''); $('#fThSel').setValue(''); $('#fRsSel').setValue('');
+  $('#fT1').innerHTML = '<span class="ph">开始日期</span><span class="ph">开始时间</span>';
+  $('#fT2').innerHTML = '<span class="ph">结束日期</span><span class="ph">结束时间</span>';
+  store.page = 1;
+  renderTable();
+  toast('success','重置成功');
+}
+
+/* ---------- 过滤 ---------- */
+function getFiltered(){
+  const q = store.q;
+  return store.data.filter(d=>{
+    if(q.no  && !d.no.toLowerCase().includes(q.no.toLowerCase())) return false;
+    if(q.ref && !(d.ref||'').toLowerCase().includes(q.ref.toLowerCase())) return false;
+    if(q.op  && d.op !== q.op) return false;
+    if(q.st  && d.st !== q.st) return false;
+    if(q.fk  && d.fk !== q.fk) return false;
+    if(q.sk  && d.sk !== q.sk) return false;
+    if(q.th  && d.th !== q.th) return false;
+    if(q.rs  && d.rs !== q.rs) return false;
+    if(q.t1 && (!d.t1 || d.t1 < q.t1)) return false;
+    if(q.t2 && (!d.t1 || d.t1 > q.t2)) return false;
+    return true;
+  });
+}
+
+/* ---------- 表格渲染 ---------- */
+function copyText(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>toast('success','复制成功：'+t)).catch(()=>fallbackCopy(t));
+  } else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  const ta = document.createElement('textarea');
+  ta.value = t; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('success','复制成功：'+t); }catch(e){ toast('error','复制失败'); }
+  ta.remove();
+}
+const COPY_SVG = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="4.5" y="4.5" width="8" height="8" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M9.5 2.5h-7a1 1 0 0 0-1 1v7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+
+function renderTable(){
+  const rows = getFiltered();
+  const total = rows.length;
+  const tp = Math.max(1, Math.ceil(total/store.size));
+  if(store.page > tp) store.page = tp;
+  const start = (store.page-1)*store.size;
+  const pageRows = rows.slice(start, start+store.size);
+  $('#pgTotal').textContent = '共 ' + total.toLocaleString() + ' 条';
+
+  const tbody = $('#tbody');
+  if(!pageRows.length){
+    tbody.innerHTML = '<tr><td colspan="11" style="padding:0;cursor:default;"><div class="empty">'
+      + '<svg width="52" height="40" viewBox="0 0 64 48" fill="none"><rect x="14" y="10" width="36" height="28" rx="2" stroke="#d9d9d9" stroke-width="2"/><path d="M24 22h16M24 28h10" stroke="#d9d9d9" stroke-width="2" stroke-linecap="round"/><ellipse cx="32" cy="42" rx="18" ry="3" fill="#f0f0f0"/></svg>'
+      + '<div class="e-txt">暂无数据</div></div></td></tr>';
+  } else {
+    tbody.innerHTML = pageRows.map((d,i)=>{
+      const seq = start + i + 1;
+      const selCls = (d.id===store.selectedId ? ' selected':'') + (d.id===store.flashId ? ' flash':'');
+      return '<tr data-id="'+d.id+'" class="'+selCls.trim()+'">'
+        + '<td class="c">'+seq+'</td>'
+        + '<td><span class="cell-copy"><span class="txt">'+esc(d.no)+'</span><span class="copy-btn" data-copy="'+esc(d.no)+'" title="复制">'+COPY_SVG+'</span></span></td>'
+        + '<td>'+esc(d.th)+'</td>'
+        + '<td>'+esc(d.rs)+'</td>'
+        + '<td><span class="cell-copy"><span class="txt">'+esc(d.ref)+'</span>'+(d.ref?'<span class="copy-btn" data-copy="'+esc(d.ref)+'" title="复制">'+COPY_SVG+'</span>':'')+'</span></td>'
+        + '<td>'+esc(d.fk)+'</td>'
+        + '<td>'+esc(d.sk)+'</td>'
+        + '<td>'+esc(d.op)+'</td>'
+        + '<td class="'+(d.st==='异常签收'?'st-abnormal':'st-normal')+'">'+esc(d.st)+'</td>'
+        + '<td>'+esc(d.t1)+'</td>'
+        + '<td>'+esc(d.t2)+'</td>'
+        + '</tr>';
+    }).join('');
+  }
+  store.flashId = null;
+  renderPagination(tp);
+}
+
+/* ---------- 分页 ---------- */
+function renderPagination(tp){
+  const cur = store.page;
+  const list = [];
+  const push = v=>list.push(v);
+  if(tp <= 7){ for(let i=1;i<=tp;i++) push(i); }
+  else {
+    push(1);
+    if(cur > 3) push('...');
+    for(let i=Math.max(2,cur-1); i<=Math.min(tp-1,cur+1); i++) push(i);
+    if(cur < tp-2) push('...');
+    push(tp);
+  }
+  let html = '<span class="pg-item arrow'+(cur===1?' disabled':'')+'" data-pg="'+(cur-1)+'"><i>‹</i></span>';
+  html += list.map(p=> p==='...'
+    ? '<span class="pg-item dot">···</span>'
+    : '<span class="pg-item'+(p===cur?' active':'')+'" data-pg="'+p+'">'+p+'</span>').join('');
+  html += '<span class="pg-item arrow'+(cur===tp?' disabled':'')+'" data-pg="'+(cur+1)+'"><i>›</i></span>';
+  $('#pgList').innerHTML = html;
+  $('#pgList').querySelectorAll('.pg-item[data-pg]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const p = +el.dataset.pg;
+      if(p<1 || p>tp || p===store.page) return;
+      store.page = p; renderTable();
+    });
+  });
+}
+$('#pgJump').addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const rows = getFiltered();
+  const tp = Math.max(1, Math.ceil(rows.length/store.size));
+  let p = parseInt(e.target.value, 10);
+  if(isNaN(p)) return;
+  p = Math.min(Math.max(1,p), tp);
+  store.page = p; e.target.value=''; renderTable();
+  toast('info','已跳转至第 '+p+' 页');
+});
+
+// 行内复制
+$('#tbody').addEventListener('click', e=>{
+  const cb = e.target.closest('.copy-btn');
+  if(cb){ e.stopPropagation(); copyText(cb.dataset.copy); return; }
+});
+
+/* ---------- 扫描签收 ---------- */
+function genRef(){
+  let s = '3';
+  for(let i=0;i<9;i++) s += Math.floor(Math.random()*10);
+  return s;
+}
+function doSign(){
+  const wh = store.scanWh;
+  const ipt = $('#scanInput');
+  const no = ipt.value.trim();
+  if(!wh){ toast('warning','请先在「扫描/输入」左侧选择仓库'); return; }
+  if(!no){ toast('warning','请扫描或输入物流单号'); return; }
+  if(store.data.some(d=>d.no===no)){ toast('error','物流单号 '+no+' 已签收，请勿重复签收'); return; }
+  const now = fmtDT(new Date());
+  const rec = { id: ++store.idSeq, no: no, th: '未设置', rs: '', ref: genRef(), fk: '', sk: wh, op: 'XWD', st: '正常签收', t1: now, t2: now };
+  store.data.unshift(rec);
+  // 重置查询条件回到全量第一页，保证新签收数据可见
+  $('#fNo').value=''; $('#fRef').value='';
+  store.q = { no:'', ref:'', op:'', st:'', fk:'', sk:'', th:'', rs:'', t1:'', t2:'' };
+  $('#fOpSel').setValue(''); $('#fStSel').setValue(''); $('#fFkSel').setValue(''); $('#fSkSel').setValue(''); $('#fThSel').setValue(''); $('#fRsSel').setValue('');
+  $('#fT1').innerHTML = '<span class="ph">开始时间</span>';
+  $('#fT2').innerHTML = '<span class="ph">结束时间</span>';
+  store.page = 1;
+  store.selectedId = rec.id;
+  store.flashId = rec.id;
+  ipt.value='';
+  renderTable();
+  toast('success','签收成功：'+no+'（'+wh+'）');
+}
+
+/* ---------- 导出 ---------- */
+function doExport(){
+  const rows = getFiltered();
+  if(!rows.length){ toast('warning','当前查询结果为空，无可导出数据'); return; }
+  const head = ['物流单号','退货处理方式','退货原因','关联单号','发货仓','签收仓','签收员','签收状态','签收时间','关联时间'];
+  const escCsv = v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const csv = '\uFEFF' + head.map(escCsv).join(',') + '\n'
+    + rows.map(d=>[d.no,d.th,d.rs,d.ref,d.fk,d.sk,d.op,d.st,d.t1,d.t2].map(escCsv).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const t = fmtDT(new Date()).replace(/[-: ]/g,'');
+  a.download = '退包签收_' + t + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 800);
+  toast('success','导出成功，共导出 '+rows.length+' 条数据');
+}
+
+/* ---------- 初始渲染 ---------- */
+renderTable();
+</script>
+</body>
+</html>

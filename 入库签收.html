@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="nL3bl8M0vAdUgi8TDQxtGX">
+<head data-page-node-id="O5o6l4XXA7HasO4JTUAbLf">
+<meta charset="UTF-8" data-page-node-id="pYWbwfFGxr1Pq2K0maALA5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="d2pF15OZqUDmxw3eKSWnVp">
+<title>ERP - 仓储 - 入库 - 入库签收</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;
+    font-size:14px; color:#333; background:#F5F5F5; min-width:1280px; overflow-x:auto; padding-top:38px;
+  }
+  body::after { content:""; position:fixed; inset:38px 0 0; pointer-events:none; z-index:90; opacity:.035; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='150' viewBox='0 0 220 150'%3E%3Ctext x='18' y='76' fill='%235d6b7a' font-family='Arial,sans-serif' font-size='14' transform='rotate(-22 18 76)'%3E001-7AA2%3C/text%3E%3C/svg%3E"); }
+  ::-webkit-scrollbar { width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb { background:#d0d0d0; border-radius:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  button { font-family:inherit; }
+
+  /* 顶部导航 / 左侧菜单：样式与结构由 layout.js 统一注入（见页面底部 script 引用） */
+
+  /* ============ 温馨提示 ============ */
+  .notice { min-height:79px; background:#E8F1FF; border:1px solid #9fc2ff; border-radius:6px; padding:14px 18px; display:flex; gap:10px; margin-bottom:6px; position:relative; }
+  .notice .n-icon { flex:none; margin-top:2px; }
+  .notice .n-title { font-size:14px; font-weight:600; color:#1f2f3d; margin-bottom:5px; }
+  .notice .n-text { font-size:14px; color:#4a5a6a; line-height:1.7; }
+  .notice .n-close { position:absolute; right:10px; top:8px; width:22px; height:22px; display:flex; align-items:center; justify-content:center; color:#8aa; cursor:pointer; border-radius:4px; font-size:14px; }
+  .notice .n-close:hover { background:rgba(0,0,0,.06); color:#333; }
+
+  /* ============ 卡片 ============ */
+  .card { background:#fff; border-radius:2px; border:1px solid #f0f0f0; margin-bottom:6px; }
+  .filter-card { padding:8px 6px 28px; }
+
+  /* ============ 查询区 ============ */
+  .filter-grid { display:grid; grid-template-columns:2fr repeat(6,minmax(0,1fr)); gap:12px 8px; }
+  .fitem .flabel { font-size:14px; color:#666; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ctl { height:26px; border:1px solid #d9d9d9; border-radius:4px; background:#fff; font-size:14px; display:flex; align-items:center; width:100%; }
+  .ctl:hover { border-color:#3D68FF; }
+  .ctl.focus { border-color:#3D68FF; box-shadow:0 0 0 2px rgba(61,104,255,.08); }
+  input.ipt { height:100%; border:none; outline:none; flex:1; min-width:0; font-size:14px; padding:0 8px; background:transparent; color:#333; }
+  input.ipt::placeholder { color:#bbb; }
+  .txt-ctl { display:flex; align-items:center; }
+  .select { cursor:pointer; user-select:none; position:relative; padding:0 24px 0 8px; justify-content:flex-start; }
+  .select .ph { color:#bbb; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .select .val { color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .select .caret { position:absolute; right:8px; top:50%; transform:translateY(-50%); color:#999; pointer-events:none; display:flex; }
+  .select .clear { position:absolute; right:6px; top:50%; transform:translateY(-50%); color:#999; display:none; width:16px; height:16px; align-items:center; justify-content:center; border-radius:50%; background:#f0f0f0; font-size:14px; }
+  .select .clear:hover { color:#666; }
+  .select:hover .clear.has-v { display:flex; }
+  .select:hover .clear.has-v ~ .caret { display:none; }
+  .select.multi { padding:0 24px 0 4px; gap:3px; overflow:hidden; }
+  .tag { background:#F5F7FF; border:1px solid #C9D6FF; color:#3D68FF; height:19px; padding:0 5px; border-radius:3px; display:inline-flex; align-items:center; gap:3px; font-size:14px; flex:none; max-width:90px; }
+  .tag i { font-style:normal; cursor:pointer; font-size:14px; color:#7d92d9; }
+  .tag i:hover { color:#3D68FF; }
+  .tag.more { background:#f5f5f5; border-color:#e0e0e0; color:#666; }
+  .scan-group { display:flex; gap:0; }
+  .scan-group .select { width:106px; flex:none; border-right:none; border-radius:4px 0 0 4px; padding:0 20px 0 8px; color:#333; }
+  .scan-group .scan-ipt { flex:1; border-radius:0 4px 4px 0; min-width:0; }
+  .range { height:26px; display:flex; align-items:center; border:1px solid #d9d9d9; border-radius:3px; background:#fff; }
+  .range:hover { border-color:#3D68FF; }
+  .range .range-part { height:100%; flex:1; min-width:0; cursor:pointer; padding:0 4px; color:#333; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:4px; }
+  .range .range-part .ph { color:#bbb; }
+  .range .range-part .val { grid-column:1 / -1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .range .sep { color:#333; flex:none; }
+  .filter-foot { display:flex; align-items:flex-end; margin-top:18px; }
+  .filter-foot .ftime { width:430px; flex:none; }
+  .filter-foot .fbtns { margin-left:auto; display:flex; gap:8px; }
+
+  /* ============ 按钮 ============ */
+  .btn { height:26px; padding:0 12px; border-radius:4px; font-size:14px; cursor:pointer; border:1px solid #d9d9d9; background:#fff; color:#333; display:inline-flex; align-items:center; justify-content:center; gap:5px; user-select:none; }
+  .btn:hover { border-color:#3D68FF; color:#3D68FF; }
+  .btn.primary { background:#3D68FF; border-color:#3D68FF; color:#fff; }
+  .btn.primary:hover { background:#2F56E6; border-color:#2F56E6; }
+  .btn:active { transform:translateY(.5px); }
+  .btn.sm { padding:0 12px; }
+
+  /* ============ 表格 ============ */
+  .table-card { padding:12px 6px 38px; }
+  .table-toolbar { display:flex; justify-content:flex-end; margin-bottom:6px; }
+  .table-toolbar .btn { padding:0 6px; }
+  .table-wrap { overflow:visible; border:1px solid #bfbfbf; border-radius:0; }
+  table.tbl { width:100%; min-width:1240px; border-collapse:separate; border-spacing:0; table-layout:fixed; }
+  .tbl thead th { height:32px; background:#EFEFEF; color:#222; font-weight:600; text-align:left; padding:0 7px; font-size:14px; border-right:1px solid #bfbfbf; border-bottom:1px solid #bfbfbf; white-space:nowrap; position:sticky; top:38px; z-index:5; }
+  .tbl tbody td { height:31px; padding:0 7px; color:#333; border-right:1px solid #c9c9c9; border-bottom:1px solid #c9c9c9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tbl tr > :last-child { border-right:0; }
+  .tbl tbody tr { cursor:pointer; }
+  .tbl tbody tr:hover td { background:#FFFEE2; }
+  .tbl tbody tr.selected td { background:#FFFEE2; }
+  .tbl tbody tr.selected.flash td { animation:selflash 1.4s ease; }
+  @keyframes selflash { 0%{background:#FFE9A8;} 100%{background:#FFFEE2;} }
+  .tbl th.c, .tbl td.c { text-align:center; }
+  .cell-copy { display:flex; align-items:center; gap:5px; min-width:0; }
+  .cell-copy .txt { overflow:hidden; text-overflow:ellipsis; }
+  .copy-btn { flex:none; width:15px; height:18px; display:inline-flex; align-items:center; justify-content:center; color:#3D68FF; border-radius:3px; cursor:pointer; }
+  .copy-btn:hover { color:#3D68FF; background:#EDF1FF; }
+  .st-normal { color:#333; }
+  .st-abnormal { color:#D46B08; }
+  .st-abnormal::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#FA8C16; margin-right:6px; vertical-align:middle; }
+
+  .empty { padding:46px 0 54px; text-align:center; color:#999; }
+  .empty svg { margin-bottom:12px; }
+  .empty .e-txt { font-size:14px; color:#888; }
+
+  /* ============ 分页 ============ */
+  .pg { height:32px; position:fixed; left:140px; right:0; bottom:0; z-index:95; display:flex; align-items:center; justify-content:flex-end; padding:3px 22px 3px 7px; margin:0; border-top:1px solid #e8e8e8; background:#fff; font-size:14px; color:#666; }
+  .pg-total { margin-right:8px; }
+  .pg-list { display:flex; gap:4px; align-items:center; }
+  .pg-item { min-width:22px; height:24px; padding:0 5px; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:4px; background:#fff; cursor:pointer; color:#333; }
+  .pg-item:hover { border-color:#3D68FF; color:#3D68FF; }
+  .pg-item.active { background:#fff; border:1px solid #3D68FF; color:#3D68FF; cursor:default; }
+  .pg-item.dot { border:none; background:none; cursor:default; color:#999; }
+  .pg-item.dot:hover { color:#999; }
+  .pg-item.arrow i { font-style:normal; font-size:14px; }
+  .pg-item.disabled { color:#ccc; cursor:not-allowed; border-color:#e5e5e5; }
+  .pg-item.disabled:hover { color:#ccc; border-color:#e5e5e5; }
+  .pg-size { width:88px; margin-left:10px; flex:none; }
+  .pg-jump { margin-left:10px; display:flex; align-items:center; gap:6px; }
+  .pg-jump input { width:40px; height:26px; border:1px solid #d9d9d9; border-radius:4px; outline:none; text-align:center; font-size:14px; }
+  .pg-jump input:focus { border-color:#3D68FF; }
+
+  /* ============ 下拉面板 ============ */
+  .dropdown-panel { position:fixed; z-index:2000; background:#fff; border:1px solid #e5e5e5; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.09); min-width:120px; animation:dpin .12s ease; }
+  @keyframes dpin { from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;} }
+  .dp-search { padding:7px 8px; border-bottom:1px solid #f0f0f0; }
+  .dp-search input { width:100%; height:24px; border:1px solid #d9d9d9; border-radius:4px; outline:none; padding:0 7px; font-size:14px; }
+  .dp-search input:focus { border-color:#3D68FF; }
+  .dp-list { max-height:264px; overflow-y:auto; padding:4px; }
+  .dp-opt { display:flex; align-items:center; gap:7px; height:28px; padding:0 8px; border-radius:3px; cursor:pointer; color:#333; white-space:nowrap; }
+  .dp-opt:hover { background:#F5F7FF; }
+  .dp-opt.sel { color:#3D68FF; background:#EDF1FF; font-weight:500; }
+  .dp-empty { padding:18px 0; text-align:center; color:#999; }
+  .ck { width:13px; height:13px; border:1px solid #c8c8c8; border-radius:2px; flex:none; display:inline-flex; align-items:center; justify-content:center; background:#fff; }
+  .dp-opt.sel .ck { background:#3D68FF; border-color:#3D68FF; color:#fff; font-size:14px; }
+
+  /* ============ 日历面板 ============ */
+  .calendar-panel { position:fixed; z-index:2000; background:#fff; border:1px solid #e5e5e5; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.09); width:232px; padding:10px; animation:dpin .12s ease; }
+  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .cal-head .cal-title { font-weight:600; font-size:14px; color:#333; }
+  .cal-nav { width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#666; border-radius:3px; }
+  .cal-nav:hover { background:#f0f2f5; color:#3D68FF; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+  .cal-wk { height:24px; display:flex; align-items:center; justify-content:center; color:#999; font-size:14px; }
+  .cal-cell { height:24px; display:flex; align-items:center; justify-content:center; border-radius:3px; cursor:pointer; color:#333; font-size:14px; }
+  .cal-cell:hover { background:#EDF1FF; }
+  .cal-cell.muted { color:#c8c8c8; }
+  .cal-cell.today { color:#3D68FF; font-weight:600; }
+  .cal-cell.sel { background:#3D68FF; color:#fff; }
+  .cal-foot { display:flex; justify-content:space-between; margin-top:8px; padding-top:8px; border-top:1px solid #f0f0f0; }
+  .cal-foot a { color:#3D68FF; cursor:pointer; font-size:14px; }
+  .cal-foot a:hover { text-decoration:underline; }
+
+  /* ============ 全局提示 ============ */
+  .toast-wrap { position:fixed; top:18px; left:50%; transform:translateX(-50%); z-index:3000; display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
+  .toast { background:#fff; border:1px solid #ececec; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:8px 14px; display:flex; align-items:center; gap:8px; font-size:14px; color:#333; animation:tin .22s ease; pointer-events:auto; max-width:480px; }
+  .toast.out { animation:tout .25s ease forwards; }
+  @keyframes tin { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:none;} }
+  @keyframes tout { to{opacity:0; transform:translateY(-8px);} }
+  .t-ico { width:16px; height:16px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; color:#fff; font-size:14px; font-weight:700; }
+  .toast.info .t-ico { background:#3D68FF; }
+  .toast.success .t-ico { background:#52C41A; }
+  .toast.warning .t-ico { background:#FA8C16; }
+  .toast.error .t-ico { background:#FF4D4F; }
+
+  /* ============ 入库签收专用 ============ */
+  .scan-card { padding:10px 12px 12px; }
+  .scan-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .scan-row .lab { font-size:14px; color:#333; white-space:nowrap; }
+  .scan-row .ctl { width:200px; height:32px; }
+  .scan-row .ctl.w120 { width:130px; }
+  .scan-row .btn { height:32px; }
+  .ck-label { display:inline-flex; align-items:center; gap:4px; font-size:14px; color:#333; cursor:pointer; white-space:nowrap; user-select:none; }
+  .ck-label input { accent-color:#3D68FF; }
+  .doc-line { margin-top:10px; font-size:14px; color:#333; display:none; }
+  .doc-line b { color:#3D68FF; font-weight:600; }
+  .sku-tbl { width:100%; min-width:1240px; border-collapse:separate; border-spacing:0; table-layout:fixed; }
+  .sku-tbl thead th { height:44px; background:#EFEFEF; color:#222; font-weight:600; text-align:left; padding:6px 7px; font-size:14px; border-right:1px solid #bfbfbf; border-bottom:1px solid #bfbfbf; white-space:normal; line-height:1.5; vertical-align:middle; position:sticky; top:38px; z-index:5; }
+  .sku-tbl tbody td { padding:6px 7px; color:#333; border-right:1px solid #c9c9c9; border-bottom:1px solid #c9c9c9; vertical-align:top; font-size:14px; }
+  .sku-tbl tr > :last-child { border-right:0; }
+  .sku-tbl tbody tr:hover td { background:#FFFEE2; }
+  .sku-tbl tbody tr.checked td { background:#FFFEE2; }
+  .thumb { width:48px; height:48px; border:1px solid #e5e5e5; border-radius:3px; background:#fafafa; display:flex; align-items:center; justify-content:center; color:#bbb; font-size:14px; }
+  .sku-link { color:#3D68FF; cursor:pointer; }
+  .sku-name { color:#333; margin-top:2px; }
+  .sub-line { color:#999; font-size:14px; margin-top:2px; }
+  .qty-ipt { width:64px; height:24px; border:1px solid #d9d9d9; border-radius:3px; padding:0 6px; font-size:14px; outline:none; }
+  .qty-ipt:focus { border-color:#3D68FF; }
+  .wh-ipt { width:44px; height:24px; border:1px solid #d9d9d9; border-radius:3px; padding:0 4px; font-size:14px; outline:none; text-align:center; }
+  .wh-ipt:focus { border-color:#3D68FF; }
+  .selbar { display:flex; align-items:center; gap:10px; padding:8px 2px 0; font-size:14px; color:#333; flex-wrap:wrap; }
+  .cfg-row { display:flex; align-items:center; gap:14px; padding:8px 2px 0; font-size:14px; color:#333; flex-wrap:wrap; }
+  .cfg-row .seg { display:inline-flex; border:1px solid #d9d9d9; border-radius:4px; overflow:hidden; }
+  .cfg-row .seg span { padding:3px 12px; cursor:pointer; background:#fff; }
+  .cfg-row .seg span.on { background:#3D68FF; color:#fff; }
+  .cfg-row .lab-info { color:#666; }
+  .remark-row { padding:8px 2px 0; }
+  .remark-row .ctl { width:100%; height:30px; }
+  .link-op { color:#3D68FF; cursor:pointer; white-space:nowrap; }
+  .link-op:hover { text-decoration:underline; }
+  /* 蓝色文字按钮（打印设置/签收设置） */
+  .link-btn { color:#3D68FF; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-size:14px; user-select:none; }
+  .link-btn:hover { text-decoration:underline; }
+  .help-q { display:inline-flex; width:14px; height:14px; border:1px solid #c8c8c8; border-radius:50%; color:#999; font-size:14px; align-items:center; justify-content:center; cursor:help; }
+  /* ============ 不良品登记弹窗 ============ */
+  .modal-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2500; display:none; align-items:center; justify-content:center; }
+  .modal-box { width:820px; max-width:94vw; background:#fff; border-radius:6px; box-shadow:0 8px 30px rgba(0,0,0,.18); padding:14px 16px 16px; }
+  .modal-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .modal-title { font-size:14px; font-weight:600; color:#333; }
+  .modal-tip { font-size:14px; color:#FF4D4F; }
+  .modal-close { margin-left:auto; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#999; border-radius:4px; font-size:14px; }
+  .modal-close:hover { background:#f0f0f0; color:#333; }
+  .defect-tbl { width:100%; border-collapse:separate; border-spacing:0; table-layout:fixed; border:1px solid #e5e5e5; }
+  .defect-tbl th { background:#FAFAFA; color:#333; font-weight:600; font-size:14px; text-align:left; padding:7px 8px; border-right:1px solid #f0f0f0; border-bottom:1px solid #e5e5e5; line-height:1.5; }
+  .defect-tbl td { padding:8px; font-size:14px; color:#333; border-right:1px solid #f0f0f0; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+  .defect-tbl tr > :last-child { border-right:0; }
+  .defect-tbl tbody tr:last-child td { border-bottom:0; }
+  .defect-tbl .req { color:#FF4D4F; margin-right:2px; }
+  .defect-sel { width:100%; height:26px; border:1px solid #d9d9d9; border-radius:4px; font-size:14px; color:#333; background:#fff; outline:none; padding:0 4px; }
+  .defect-sel:focus { border-color:#3D68FF; }
+  .upload-box { width:46px; height:46px; border:1px dashed #d9d9d9; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#bbb; font-size:18px; cursor:pointer; }
+  .upload-box:hover { border-color:#3D68FF; color:#3D68FF; }
+  .modal-foot { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+  /* 批量登记不良品弹窗 */
+  .modal-box.wide { width:1060px; }
+  .batch-search { width:360px; height:28px; border:1px solid #d9d9d9; border-radius:4px; padding:0 10px; font-size:14px; outline:none; margin-bottom:10px; color:#333; }
+  .batch-search:focus { border-color:#3D68FF; }
+  .batch-search::placeholder { color:#bbb; }
+  .del-sku { display:inline-flex; cursor:pointer; color:#c0c4cc; }
+  .del-sku:hover { color:#FF4D4F; }
+  .sign-card { padding:10px 12px 14px; }
+</style>
+<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
+</head>
+<body data-page-node-id="WwFGOMFkfPZVke9iNF0xEu">
+
+<div class="layout" data-page-node-id="DMsuHggY0kB7doSS553XeZ">
+
+  <!-- 主内容 -->
+  <main class="main">
+    <!-- 扫描/输入卡片 -->
+    <div class="card scan-card">
+      <div class="scan-row">
+        <span class="lab">扫描/输入</span>
+        <div class="ctl txt-ctl"><input class="ipt" id="scanInput" placeholder="物流单号/采购单号"></div>
+        <span class="lab">任务码</span>
+        <div class="ctl txt-ctl w120"><input class="ipt" id="taskInput" placeholder="请扫描任务码"></div>
+        <label class="ck-label"><input type="checkbox" id="autoBindCk" checked>扫码获取包裹信息后立即绑定上架任务码</label>
+        <button class="btn primary" id="btnSign">完成签收</button>
+        <button class="btn" id="btnPrint">打印</button>
+        <label class="ck-label"><input type="checkbox" id="printPoCk">同时打印采购单号</label>
+        <button class="btn" id="btnPrintPo">打印采购单号</button>
+        <span class="link-btn" id="btnPrintCfg"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 6V2.5h8V6M4 12.5H2.5v-5h11v5H12" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M4 10.5h8v4H4v-4Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>打印设置</span>
+        <div class="ctl txt-ctl" style="width:180px"><input class="ipt" id="skuQuick" placeholder="输入/扫码SKU编号快速选中"></div>
+        <button class="btn" id="btnReset">重置</button>
+        <span class="link-btn" id="btnSignCfg">签收设置</span>
+      </div>
+      <div class="doc-line" id="docLine"></div>
+    </div>
+
+    <!-- SKU 明细卡片 -->
+    <div class="card sign-card">
+      <div class="table-wrap" style="border-width:1px;">
+        <table class="sku-tbl">
+          <colgroup>
+            <col style="width:34px"><col style="width:64px"><col style="width:150px"><col style="width:110px">
+            <col style="width:130px"><col style="width:150px"><col style="width:90px"><col style="width:210px"><col style="width:80px">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="c"><input type="checkbox" id="ckAll" style="accent-color:#3D68FF;cursor:pointer;"></th>
+              <th>缩略图</th>
+              <th>商品SKU/商品名称<br>加工信息</th>
+              <th>拓展属性<br>item ID</th>
+              <th>仓库/仓位<br>质检标准</th>
+              <th>本次签收数量/已签收数量<br>已入库/总入库量</th>
+              <th>打印数量<br>库存数</th>
+              <th>标准重量/实际重量(g)<br>仓库加工费/商品尺寸(cm)</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty" id="emptyBox">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="10" y="16" width="44" height="34" rx="3" stroke="#d9d9d9" stroke-width="2"/><path d="M10 24h44" stroke="#d9d9d9" stroke-width="2"/><path d="M26 34h12" stroke="#e5e5e5" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="e-txt">暂无数据</div>
+        </div>
+      </div>
+
+      <!-- 选中统计 / 质检贴标加工配置 / 签收备注（扫描成功后显示） -->
+      <div id="signArea" style="display:none;">
+        <div class="selbar">
+          <span id="selInfo">选中 0 条（本次签收SKU种类：0&nbsp;&nbsp;本次签收SKU数量：0&nbsp;&nbsp;采购单SKU总数：0）</span>
+          <button class="btn primary sm" id="btnDefect">查看/登记不良品</button>
+        </div>
+        <div class="cfg-row">
+          <span>质检/贴标/加工配置：</span>
+          <label class="ck-label"><input type="checkbox" id="cfgZj">转质检</label>
+          <label class="ck-label"><input type="checkbox" id="cfgTb">转贴标</label>
+          <label class="ck-label"><input type="checkbox" id="cfgJg">转加工</label>
+          <span>签收员完成贴标：</span>
+          <span class="seg" id="segLabel"><span class="on" data-v="是">是</span><span data-v="否">否</span></span>
+          <span>贴标信息：</span>
+          <span class="seg" id="segMark"><span class="on" data-v="正常">正常</span><span data-v="异常">异常</span></span>
+          <span class="lab-info">未贴标：<input class="wh-ipt" id="markWtb" placeholder="请输入" style="width:56px;text-align:left;"></span>
+          <span class="lab-info">错标：<input class="wh-ipt" id="markCb" placeholder="请输入" style="width:56px;text-align:left;"></span>
+          <span class="lab-info">仓库贴标：<input class="wh-ipt" id="markCk" placeholder="请输入" style="width:64px;text-align:left;"></span>
+          <span style="color:#FA8C16;">异常贴标必须填写数量</span>
+        </div>
+        <div class="remark-row">
+          <div class="ctl txt-ctl"><input class="ipt" id="signRemark" placeholder="请输入签收备注"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 不良品登记弹窗 -->
+<div class="modal-mask" id="defectMask">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-title">登记不良品</span>
+      <span class="modal-tip">（签收数量为0的SKU，不良品信息也需【完成签收】后生效）</span>
+      <span class="modal-close" id="defectClose">✕</span>
+    </div>
+    <table class="defect-tbl">
+      <colgroup>
+        <col style="width:64px"><col style="width:110px"><col style="width:110px"><col style="width:70px">
+        <col style="width:90px"><col style="width:110px"><col style="width:110px"><col style="width:70px"><col style="width:60px">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>缩略图</th><th>SKU<br>中文名称</th><th>拓展属性</th><th>仓库<br>仓位</th>
+          <th>总入库数<br>本次签收数量</th><th><span class="req">*</span>不良原因</th><th><span class="req">*</span>不良数量</th><th>附件</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="defectTbody"></tbody>
+    </table>
+    <div class="modal-foot">
+      <button class="btn" id="defectCancel">取 消</button>
+      <button class="btn primary" id="defectOk">确 定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 批量登记不良品弹窗 -->
+<div class="modal-mask" id="batchDefectMask">
+  <div class="modal-box wide">
+    <div class="modal-head">
+      <span class="modal-title">批量登记不良品</span>
+      <span class="modal-tip">（签收数量为0的SKU，不良品信息也需【完成签收】后生效，不需要登记不良品的SKU请点击列表左侧删除图标）</span>
+      <span class="modal-close" id="batchDefectClose">✕</span>
+    </div>
+    <input class="batch-search" id="batchSearch" placeholder="输入SKU编号搜索/添加需要登记不良品的SKU">
+    <table class="defect-tbl">
+      <colgroup>
+        <col style="width:36px"><col style="width:64px"><col style="width:110px"><col style="width:110px"><col style="width:70px">
+        <col style="width:90px"><col style="width:110px"><col style="width:110px"><col style="width:70px"><col style="width:60px">
+      </colgroup>
+      <thead>
+        <tr>
+          <th></th><th>缩略图</th><th>SKU<br>中文名称</th><th>拓展属性</th><th>仓库<br>仓位</th>
+          <th>总入库数<br>本次签收数量</th><th><span class="req">*</span>不良原因</th><th><span class="req">*</span>不良数量</th><th>附件</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="batchTbody"></tbody>
+    </table>
+    <div class="modal-foot">
+      <button class="btn" id="batchDefectCancel">取 消</button>
+      <button class="btn primary" id="batchDefectOk">确 定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 签收设置弹窗 -->
+<div class="modal-mask" id="signCfgMask">
+  <div class="modal-box" style="width:420px;">
+    <div class="modal-head">
+      <span class="modal-title">签收设置</span>
+      <span class="modal-close" id="signCfgClose">✕</span>
+    </div>
+    <div style="padding:4px 2px 0;">
+      <label class="ck-label"><input type="checkbox" id="autoFillMark" checked>仓库贴标数自动填充
+        <span class="help-q" title="签收量达到阈值时，自动填充仓库贴标数量">?</span>
+      </label>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;color:#333;">
+        <span>签收量大于等于</span>
+        <input class="qty-ipt" id="autoFillNum" type="number" min="1" value="1" style="width:64px;">
+        <span>自动填充仓库贴标</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="signCfgCancel">取 消</button>
+      <button class="btn primary" id="signCfgOk">确 定</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ====== 入库签收演示数据：采购单/调拨单 -> SKU 明细 ====== */
+const DOCS_DB = {
+  "3142737141": { type:"采购单", created:"2026-09-08 14:43:07", wh:"验证仓",
+    items:[
+      { sku:"sku034", name:"sku034", process:"含中文", ext:"--", itemId:"--", wh:"验证仓", loc:"-", qc:"--", qty:500, signed:0, inbound:0, printQty:500, stock:"--", stdW:"0.0000", fee:"0", sizeL:"", sizeW:"", sizeH:"" },
+      { sku:"sku035", name:"sku035", process:"--", ext:"红色/L", itemId:"IT1002", wh:"验证仓", loc:"A-01", qc:"全检", qty:200, signed:50, inbound:100, printQty:200, stock:860, stdW:"0.3500", fee:"0", sizeL:"10", sizeW:"8", sizeH:"3" },
+      { sku:"sku036", name:"sku036", process:"--", ext:"蓝色/M", itemId:"IT1003", wh:"验证仓", loc:"A-02", qc:"抽检", qty:120, signed:0, inbound:0, printQty:120, stock:45, stdW:"0.8200", fee:"0", sizeL:"", sizeW:"", sizeH:"" }
+    ]},
+  "3224753592": { type:"采购单", created:"2026-09-08 16:57:08", wh:"马甲一",
+    items:[
+      { sku:"sku101", name:"纯棉T恤", process:"--", ext:"白色/XL", itemId:"IT2001", wh:"马甲一", loc:"B-03", qc:"--", qty:300, signed:0, inbound:0, printQty:300, stock:120, stdW:"0.2200", fee:"0", sizeL:"", sizeW:"", sizeH:"" },
+      { sku:"sku102", name:"运动短裤", process:"印花", ext:"黑色/M", itemId:"IT2002", wh:"马甲一", loc:"B-05", qc:"抽检", qty:80, signed:20, inbound:60, printQty:80, stock:300, stdW:"0.1800", fee:"1.5", sizeL:"30", sizeW:"20", sizeH:"2" }
+    ]},
+  "DB2026080315213743": { type:"调拨单", created:"2026-08-03 15:21:37", wh:"虚拟仓", batch:"DB2026080315213743",
+    items:[
+      { sku:"sku201", name:"调拨商品A", process:"--", ext:"--", itemId:"IT3001", wh:"虚拟仓", loc:"C-01", qc:"--", qty:60, signed:0, inbound:0, printQty:60, stock:15, stdW:"1.2000", fee:"0", sizeL:"", sizeW:"", sizeH:"" }
+    ]}
+};
+
+/* ---------- 工具 ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+function fmtDT(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); }
+const TOAST_ICON = {
+  info:    '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#3D68FF"/><rect x="7.2" y="6.8" width="1.6" height="5" rx=".8" fill="#fff"/><circle cx="8" cy="4.6" r="1" fill="#fff"/></svg>',
+  success: '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#52C41A"/><path d="M4.6 8.4 7 10.6l4.4-5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  warning: '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#FA8C16"/><rect x="7.2" y="3.8" width="1.6" height="5.4" rx=".8" fill="#fff"/><circle cx="8" cy="11.4" r="1" fill="#fff"/></svg>',
+  error:   '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#FF4D4F"/><path d="M5.4 5.4 10.6 10.6M10.6 5.4 5.4 10.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>'
+};
+function toast(type, msg){
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = '<span class="t-ico">'+TOAST_ICON[type]+'</span><span>'+esc(msg)+'</span>';
+  $('#toastWrap').appendChild(el);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 260); }, 3000);
+}
+
+/* ---------- 页面状态 ---------- */
+const st = {
+  doc: null,          // 当前匹配的单据
+  rows: [],           // 当前 SKU 行（含勾选、本次签收数量）
+  defects: [],        // 不良品登记
+  labelDone: '是',    // 签收员完成贴标
+  mark: '正常'        // 贴标信息
+};
+
+/* ---------- 扫描/输入：匹配单据并加载 SKU ---------- */
+function doScan(){
+  const v = $('#scanInput').value.trim();
+  if(!v){ toast('warning','请先扫描/输入物流单号、采购单号或调拨批次号'); return; }
+  // 任意单号均可签收：库内无记录时按采购单生成演示明细
+  const doc = DOCS_DB[v] || { type:'采购单', created:fmtDT(new Date()), wh:'验证仓', items:DOCS_DB['3142737141'].items };
+  st.doc = doc;
+  st.defects = [];
+  st.rows = doc.items.map((it,i)=>({
+    ...it, idx:i+1, checked:false,
+    signQty: Math.max(it.qty - it.inbound - 0, 0)   // 默认：采购/调拨数量 - 已入库
+  }));
+  // 单据信息行
+  const label = doc.type==='调拨单' ? '调拨入库：'+doc.batch : '采购订单： '+v;
+  $('#docLine').innerHTML = '<b>'+esc(label)+'</b>&nbsp;&nbsp;创建时间：'+esc(doc.created)
+    + (doc.type==='调拨单' ? '&nbsp;&nbsp;<span style="color:#FA8C16;">调拨入库：采购量取调出数量，已过滤总入库量为 0 的商品</span>' : '');
+  $('#docLine').style.display = 'block';
+  $('#signArea').style.display = 'block';
+  renderRows();
+}
+$('#scanInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doScan(); });
+
+/* ---------- 任务码：回车绑定，绑定后输入框置灰禁用 ---------- */
+const taskIpt = $('#taskInput');
+taskIpt.addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const v = taskIpt.value.trim();
+  if(!v){ toast('warning','请先扫描/输入任务码'); return; }
+  taskIpt.disabled = true;                    // 置灰
+  taskIpt.style.background = '#f5f5f5';
+  taskIpt.style.color = '#999';
+  taskIpt.style.cursor = 'not-allowed';
+  taskIpt.closest('.ctl').style.background = '#f5f5f5';
+  toast('success','任务码绑定成功');
+});
+function resetTaskIpt(){
+  taskIpt.disabled = false;
+  taskIpt.value = '';
+  taskIpt.style.background = '';
+  taskIpt.style.color = '';
+  taskIpt.style.cursor = '';
+  taskIpt.closest('.ctl').style.background = '';
+}
+
+/* ---------- 渲染 SKU 明细行 ---------- */
+function renderRows(){
+  const tb = $('#tbody');
+  $('#emptyBox').style.display = st.rows.length ? 'none' : '';
+  tb.innerHTML = st.rows.map((r,i)=>{
+    const canSign = r.qty - r.inbound;   // 可签收数
+    return '<tr data-i="'+i+'" class="'+(r.checked?'checked':'')+'">'
+      + '<td class="c"><input type="checkbox" class="row-ck" data-i="'+i+'" '+(r.checked?'checked':'')+' style="accent-color:#3D68FF;cursor:pointer;"></td>'
+      + '<td><div class="thumb">暂无图片</div></td>'
+      + '<td><span class="sku-link">'+esc(r.sku)+'</span><div class="sku-name">'+esc(r.name)+'</div><div class="sub-line">'+esc(r.process)+'</div></td>'
+      + '<td>'+esc(r.ext)+'<div class="sub-line">'+esc(r.itemId)+'</div></td>'
+      + '<td>'+esc(r.wh)+'/'+esc(r.loc)+'<div class="sub-line">'+esc(r.qc)+'</div></td>'
+      + '<td><input class="qty-ipt sign-qty" data-i="'+i+'" type="number" min="0" max="'+canSign+'" value="'+r.signQty+'"> / '+r.signed
+      +   '<div class="sub-line">'+r.inbound+'/'+r.qty+'</div></td>'
+      + '<td>'+r.printQty+'<div class="sub-line">'+esc(String(r.stock))+'</div></td>'
+      + '<td>'+esc(r.stdW)+' / <input class="wh-ipt" placeholder="请输入" data-w="'+i+'">'
+      +   '<div class="sub-line" style="margin-top:4px;">'+esc(r.fee)+' / <input class="wh-ipt" placeholder="长" data-l="'+i+'"> <input class="wh-ipt" placeholder="宽" data-wd="'+i+'"> <input class="wh-ipt" placeholder="高" data-h="'+i+'"></div></td>'
+      + '<td><span class="link-op" data-defect="'+i+'">不良品登记</span></td>'
+      + '</tr>';
+  }).join('');
+  updateSelInfo();
+  // 行内事件
+  tb.querySelectorAll('.row-ck').forEach(ck=>ck.addEventListener('change', ()=>{
+    const r = st.rows[+ck.dataset.i]; r.checked = ck.checked;
+    ck.closest('tr').classList.toggle('checked', ck.checked);
+    updateSelInfo(); syncCkAll();
+  }));
+  tb.querySelectorAll('.sign-qty').forEach(ipt=>ipt.addEventListener('change', ()=>{
+    const r = st.rows[+ipt.dataset.i];
+    const max = r.qty - r.inbound;
+    let v = parseInt(ipt.value||'0',10);
+    if(isNaN(v)||v<0) v=0;
+    if(v>max){ v=max; toast('warning','本次签收数量不可超过可签收数（'+max+'）'); }
+    ipt.value = v; r.signQty = v; updateSelInfo();
+  }));
+  tb.querySelectorAll('[data-defect]').forEach(a=>a.addEventListener('click', ()=>{
+    openDefectModal(+a.dataset.defect);
+  }));
+}
+
+/* ---------- 不良品登记弹窗 ---------- */
+const DEFECT_REASONS = ['破损','污渍','错发','少发','质量问题','其他'];
+let defectSkuIdx = null;   // 当前登记的 SKU 行索引
+let defectDrafts = [];     // 弹窗内编辑中的登记行
+
+function openDefectModal(i){
+  defectSkuIdx = i;
+  // 已登记过的带出，否则给一条空行
+  const r = st.rows[i];
+  const exist = st.defects.filter(d=>d.sku===r.sku);
+  defectDrafts = exist.length ? exist.map(d=>({ reason:d.reason, qty:d.qty })) : [{ reason:'', qty:'' }];
+  renderDefectRows();
+  $('#defectMask').style.display = 'flex';
+}
+function closeDefectModal(){
+  $('#defectMask').style.display = 'none';
+  defectSkuIdx = null; defectDrafts = [];
+}
+function renderDefectRows(){
+  const r = st.rows[defectSkuIdx];
+  const n = defectDrafts.length;
+  $('#defectTbody').innerHTML = defectDrafts.map((d,k)=>{
+    // 首行带合并单元格：缩略图/SKU/拓展属性/仓库仓位/总入库数 跨全部登记行
+    const head = k===0
+      ? '<td rowspan="'+n+'"><div class="thumb">暂无图片</div></td>'
+      + '<td rowspan="'+n+'"><span class="sku-link">'+esc(r.sku)+'</span><div class="sku-name">'+esc(r.name)+'</div></td>'
+      + '<td rowspan="'+n+'">'+esc(r.ext)+'</td>'
+      + '<td rowspan="'+n+'">'+esc(r.wh)+'<div class="sub-line">'+esc(r.loc)+'</div></td>'
+      + '<td rowspan="'+n+'">'+r.qty+'<div class="sub-line">'+r.signQty+'</div></td>'
+      : '';
+    return '<tr>' + head
+    + '<td><select class="defect-sel" data-k="'+k+'" data-f="reason"><option value="">请选择</option>'
+    +   DEFECT_REASONS.map(x=>'<option value="'+x+'"'+(d.reason===x?' selected':'')+'>'+x+'</option>').join('')+'</select></td>'
+    + '<td><input class="qty-ipt" style="width:100%;" type="number" min="1" placeholder="请输入" value="'+esc(d.qty)+'" data-k="'+k+'" data-f="qty"></td>'
+    + '<td><div class="upload-box" title="上传附件">+</div></td>'
+    + '<td><span class="link-op" data-add="'+k+'">添加</span>'
+    +   '<br><span class="link-op" style="color:#FF4D4F;" data-del="'+k+'">删除</span>'
+    + '</td>'
+    + '</tr>';
+  }).join('');
+  $('#defectTbody').querySelectorAll('[data-f]').forEach(el=>el.addEventListener('change', ()=>{
+    defectDrafts[+el.dataset.k][el.dataset.f] = el.value;
+  }));
+  // 添加：在该 SKU 下继续新增一条登记行
+  $('#defectTbody').querySelectorAll('[data-add]').forEach(el=>el.addEventListener('click', ()=>{
+    defectDrafts.splice(+el.dataset.add + 1, 0, { reason:'', qty:'' });
+    renderDefectRows();
+  }));
+  // 删除：移除本行；只剩一行时清空内容保留行
+  $('#defectTbody').querySelectorAll('[data-del]').forEach(el=>el.addEventListener('click', ()=>{
+    const k = +el.dataset.del;
+    if(defectDrafts.length>1) defectDrafts.splice(k, 1);
+    else defectDrafts[0] = { reason:'', qty:'' };
+    renderDefectRows();
+  }));
+  $('#defectTbody').querySelectorAll('.upload-box').forEach(el=>el.addEventListener('click', ()=>{
+    toast('info','原型演示：上传附件');
+  }));
+}
+$('#defectClose').addEventListener('click', closeDefectModal);
+$('#defectCancel').addEventListener('click', closeDefectModal);
+$('#defectOk').addEventListener('click', ()=>{
+  // 校验：原因与数量必填
+  for(const d of defectDrafts){
+    if(!d.reason){ toast('warning','请选择不良原因'); return; }
+    if(!d.qty || +d.qty<=0){ toast('warning','请输入不良数量'); return; }
+  }
+  const r = st.rows[defectSkuIdx];
+  // 该 SKU 旧登记替换为本次提交
+  st.defects = st.defects.filter(d=>d.sku!==r.sku);
+  defectDrafts.forEach(d=> st.defects.push({ sku:r.sku, reason:d.reason, qty:+d.qty }));
+  closeDefectModal();
+  toast('success','已登记不良品：'+r.sku);
+  updateSelInfo();
+});
+
+/* ---------- 选中统计 ---------- */
+function selectedRows(){ return st.rows.filter(r=>r.checked); }
+function updateSelInfo(){
+  const sel = selectedRows();
+  const kinds = sel.filter(r=>r.signQty>0).length;
+  const qty = sel.reduce((s,r)=>s+(+r.signQty||0),0);
+  const totalSku = st.rows.length;
+  $('#selInfo').textContent = '选中 '+sel.length+' 条（本次签收SKU种类：'+kinds+'  本次签收SKU数量：'+qty+'  采购单SKU总数：'+totalSku+'）';
+  applyAutoFillMark();
+}
+function syncCkAll(){
+  const all = st.rows.length>0 && st.rows.every(r=>r.checked);
+  $('#ckAll').checked = all;
+}
+
+/* ---------- 全选/反选 ---------- */
+$('#ckAll').addEventListener('change', ()=>{
+  const v = $('#ckAll').checked;
+  st.rows.forEach(r=>r.checked=v);
+  renderRows();
+  $('#ckAll').checked = v;
+});
+
+/* ---------- 商品快捷选中：SKU 编号/名称精确搜索，命中自动勾选置顶 ---------- */
+function quickPick(){
+  const kw = $('#skuQuick').value.trim();
+  if(!kw) return;
+  if(!st.rows.length){ toast('warning','请先扫描/输入单号加载 SKU'); return; }
+  const i = st.rows.findIndex(r=>r.sku===kw || r.name===kw);
+  if(i<0){ toast('warning','未找到匹配商品：'+kw+'（支持商品名称、商品编号精确搜索）'); return; }
+  st.rows[i].checked = true;
+  const [hit] = st.rows.splice(i,1);   // 置顶
+  st.rows.unshift(hit);
+  renderRows();
+  $('#skuQuick').value = '';
+  toast('success','已选中并置顶：'+hit.sku);
+}
+$('#skuQuick').addEventListener('keydown', e=>{ if(e.key==='Enter') quickPick(); });
+
+/* ---------- 段选按钮（是/否、正常/异常） ---------- */
+function bindSeg(id, key){
+  $(id).querySelectorAll('span').forEach(sp=>sp.addEventListener('click', ()=>{
+    $(id).querySelectorAll('span').forEach(x=>x.classList.remove('on'));
+    sp.classList.add('on'); st[key] = sp.dataset.v;
+  }));
+}
+bindSeg('#segLabel','labelDone');
+bindSeg('#segMark','mark');
+
+/* ---------- 重置：清空勾选、签收种类数量、扫描区 ---------- */
+function doReset(){
+  st.doc = null; st.rows = []; st.defects = [];
+  $('#scanInput').value=''; $('#skuQuick').value='';
+  resetTaskIpt();
+  $('#signRemark').value=''; $('#markWtb').value=''; $('#markCb').value=''; $('#markCk').value='';
+  $('#cfgZj').checked=false; $('#cfgTb').checked=false; $('#cfgJg').checked=false;
+  $('#docLine').style.display='none'; $('#signArea').style.display='none';
+  $('#tbody').innerHTML=''; $('#emptyBox').style.display='';
+  $('#ckAll').checked=false;
+}
+$('#btnReset').addEventListener('click', ()=>{ doReset(); toast('info','已重置'); });
+
+/* ---------- 完成签收 ---------- */
+$('#btnSign').addEventListener('click', ()=>{
+  if(!st.rows.length){ toast('warning','请先扫描/输入单号加载待签收 SKU'); return; }
+  const sel = selectedRows();
+  if(!sel.length){ toast('warning','请先勾选要签收的商品'); return; }
+  const totalQty = sel.reduce((s,r)=>s+(+r.signQty||0),0);
+  // 非零签收需任务码已绑定（输入任务码后回车）
+  if(totalQty>0 && !taskIpt.disabled){
+    toast('warning','非零签收必须绑定有效的上架任务码，请扫描任务码后回车绑定'); return;
+  }
+  // 部分签收校验：存在未全量签收的行
+  const partial = sel.some(r=>r.signQty < (r.qty - r.inbound));
+  if(partial && !$('#signRemark').value.trim() && !st.defects.length){
+    toast('error','部分签收需填写签收备注或登记不良品'); return;
+  }
+  toast('success','完成签收：'+sel.length+' 种 / 共 '+totalQty+' 件'
+    + ($('#printPoCk').checked ? '（已同时打印采购单号）' : ''));
+  doReset();
+});
+
+/* ---------- 打印类 & 设置类（原型提示） ---------- */
+$('#btnPrint').addEventListener('click', ()=>{
+  const sel = selectedRows();
+  if(!sel.length){ toast('warning','请先勾选要打印的商品'); return; }
+  toast('info','按当前勾选列表顺序打印 '+sel.length+' 个商品标签'
+    + ($('#printPoCk').checked ? '，并同时打印采购单标签' : ''));
+});
+$('#btnPrintPo').addEventListener('click', ()=>{
+  if(!st.doc){ toast('warning','请先扫描/输入单号'); return; }
+  toast('info','打印采购单号标签');
+});
+$('#btnPrintCfg').addEventListener('click', ()=> toast('info','原型演示：打印设置'));
+
+/* ---------- 签收设置弹窗 ---------- */
+const signCfg = { autoFill: true, threshold: 1 };   // 仓库贴标数自动填充配置
+$('#btnSignCfg').addEventListener('click', ()=>{
+  $('#autoFillMark').checked = signCfg.autoFill;
+  $('#autoFillNum').value = signCfg.threshold;
+  $('#signCfgMask').style.display = 'flex';
+});
+function closeSignCfg(){ $('#signCfgMask').style.display = 'none'; }
+$('#signCfgClose').addEventListener('click', closeSignCfg);
+$('#signCfgCancel').addEventListener('click', closeSignCfg);
+$('#signCfgOk').addEventListener('click', ()=>{
+  signCfg.autoFill = $('#autoFillMark').checked;
+  signCfg.threshold = Math.max(parseInt($('#autoFillNum').value||'1',10), 1);
+  closeSignCfg();
+  toast('success','签收设置已保存');
+  applyAutoFillMark();
+});
+// 自动填充仓库贴标数：勾选行中签收量达到阈值的数量合计
+function applyAutoFillMark(){
+  if(!signCfg.autoFill) return;
+  const n = st.rows.filter(r=>r.checked && (+r.signQty||0) >= signCfg.threshold)
+                   .reduce((s,r)=>s+(+r.signQty||0), 0);
+  if(n > 0) $('#markCk').value = n;
+}
+/* ---------- 查看/登记不良品（批量登记弹窗） ---------- */
+const TRASH_SVG = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M6 4V2.5h4V4M3.5 4l.7 9.5h7.6L12.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 7v4M9.5 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+let batchSkus = [];      // 弹窗内的 SKU 行索引
+let batchDrafts = {};    // 行索引 -> 登记行数组
+
+$('#btnDefect').addEventListener('click', ()=>{
+  const sel = st.rows.map((r,i)=>r.checked?i:-1).filter(i=>i>=0);
+  if(!sel.length){ toast('warning','请勾选商品'); return; }
+  batchSkus = sel;
+  batchDrafts = {};
+  batchSkus.forEach(i=>{
+    const r = st.rows[i];
+    const exist = st.defects.filter(d=>d.sku===r.sku);
+    batchDrafts[i] = exist.length ? exist.map(d=>({ reason:d.reason, qty:d.qty })) : [{ reason:'', qty:'' }];
+  });
+  $('#batchSearch').value = '';
+  renderBatchRows();
+  $('#batchDefectMask').style.display = 'flex';
+});
+function closeBatchModal(){
+  $('#batchDefectMask').style.display = 'none';
+  batchSkus = []; batchDrafts = {};
+}
+function renderBatchRows(){
+  $('#batchTbody').innerHTML = batchSkus.map(i=>{
+    const r = st.rows[i];
+    const drafts = batchDrafts[i];
+    const n = drafts.length;
+    return drafts.map((d,k)=>{
+      const head = k===0
+        ? '<td rowspan="'+n+'" class="c"><span class="del-sku" data-rmsku="'+i+'" title="移除该SKU">'+TRASH_SVG+'</span></td>'
+        + '<td rowspan="'+n+'"><div class="thumb">暂无图片</div></td>'
+        + '<td rowspan="'+n+'"><span class="sku-link">'+esc(r.sku)+'</span><div class="sku-name">'+esc(r.name)+'</div></td>'
+        + '<td rowspan="'+n+'">'+esc(r.ext)+'</td>'
+        + '<td rowspan="'+n+'">'+esc(r.wh)+'<div class="sub-line">'+esc(r.loc)+'</div></td>'
+        + '<td rowspan="'+n+'">'+r.qty+'<div class="sub-line">'+r.signQty+'</div></td>'
+        : '';
+      return '<tr>' + head
+      + '<td><select class="defect-sel" data-sku="'+i+'" data-k="'+k+'" data-f="reason"><option value="">请选择</option>'
+      +   DEFECT_REASONS.map(x=>'<option value="'+x+'"'+(d.reason===x?' selected':'')+'>'+x+'</option>').join('')+'</select></td>'
+      + '<td><input class="qty-ipt" style="width:100%;" type="number" min="1" placeholder="请输入" value="'+esc(d.qty)+'" data-sku="'+i+'" data-k="'+k+'" data-f="qty"></td>'
+      + '<td><div class="upload-box" title="上传附件">+</div></td>'
+      + '<td><span class="link-op" data-badd="'+i+'" data-k="'+k+'">添加</span>'
+      +   '<br><span class="link-op" style="color:#FF4D4F;" data-bdel="'+i+'" data-k="'+k+'">删除</span>'
+      + '</td>'
+      + '</tr>';
+    }).join('');
+  }).join('') || '<tr><td colspan="10" style="text-align:center;color:#999;padding:22px;">请在上方输入SKU编号搜索/添加需要登记不良品的SKU</td></tr>';
+  // 编辑绑定
+  $('#batchTbody').querySelectorAll('[data-f]').forEach(el=>el.addEventListener('change', ()=>{
+    batchDrafts[+el.dataset.sku][+el.dataset.k][el.dataset.f] = el.value;
+  }));
+  // 添加：该 SKU 下新增登记行
+  $('#batchTbody').querySelectorAll('[data-badd]').forEach(el=>el.addEventListener('click', ()=>{
+    batchDrafts[+el.dataset.badd].splice(+el.dataset.k + 1, 0, { reason:'', qty:'' });
+    renderBatchRows();
+  }));
+  // 删除登记行：删到最后一行时清空内容保留行
+  $('#batchTbody').querySelectorAll('[data-bdel]').forEach(el=>el.addEventListener('click', ()=>{
+    const arr = batchDrafts[+el.dataset.bdel];
+    if(arr.length>1) arr.splice(+el.dataset.k, 1);
+    else arr[0] = { reason:'', qty:'' };
+    renderBatchRows();
+  }));
+  // 移除整个 SKU
+  $('#batchTbody').querySelectorAll('[data-rmsku]').forEach(el=>el.addEventListener('click', ()=>{
+    const i = +el.dataset.rmsku;
+    batchSkus = batchSkus.filter(x=>x!==i);
+    delete batchDrafts[i];
+    renderBatchRows();
+  }));
+  $('#batchTbody').querySelectorAll('.upload-box').forEach(el=>el.addEventListener('click', ()=>{
+    toast('info','原型演示：上传附件');
+  }));
+}
+// 搜索/添加 SKU（商品名称、商品编号精确搜索）
+$('#batchSearch').addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const kw = e.target.value.trim();
+  if(!kw) return;
+  const i = st.rows.findIndex(r=>r.sku===kw || r.name===kw);
+  if(i<0){ toast('warning','未找到匹配商品：'+kw); return; }
+  if(batchSkus.includes(i)){ toast('warning','该SKU已在登记列表中'); return; }
+  st.rows[i].checked = true;   // 同步勾选
+  batchSkus.push(i);
+  const exist = st.defects.filter(d=>d.sku===st.rows[i].sku);
+  batchDrafts[i] = exist.length ? exist.map(d=>({ reason:d.reason, qty:d.qty })) : [{ reason:'', qty:'' }];
+  e.target.value = '';
+  renderRows();   // 主表同步勾选态
+  renderBatchRows();
+});
+$('#batchDefectClose').addEventListener('click', closeBatchModal);
+$('#batchDefectCancel').addEventListener('click', closeBatchModal);
+$('#batchDefectOk').addEventListener('click', ()=>{
+  if(!batchSkus.length){ toast('warning','请先添加需要登记不良品的SKU'); return; }
+  for(const i of batchSkus){
+    for(const d of batchDrafts[i]){
+      if(!d.reason){ toast('warning','请选择不良原因'); return; }
+      if(!d.qty || +d.qty<=0){ toast('warning','请输入不良数量'); return; }
+    }
+  }
+  batchSkus.forEach(i=>{
+    const r = st.rows[i];
+    st.defects = st.defects.filter(d=>d.sku!==r.sku);
+    batchDrafts[i].forEach(d=> st.defects.push({ sku:r.sku, reason:d.reason, qty:+d.qty }));
+  });
+  const n = batchSkus.length;
+  closeBatchModal();
+  toast('success','已批量登记不良品：'+n+' 个SKU');
+  updateSelInfo();
+});
+</script>
+
+</body>
+</html>
