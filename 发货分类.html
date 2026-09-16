@@ -4,7 +4,7 @@
 <meta charset="UTF-8" data-page-node-id="jcFBJRCc0G1rsej0s6E7ii">
 <meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="bETNMPGrEL7dnUfxOtKKkb">
 <title>ERP - 发货分类</title>
-<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
+<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="公共组件库.js?_t='+encodeURIComponent(t)+'"><\/script><script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{padding-top:38px;min-width:1420px;background:#f5f5f5;color:#303133;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
@@ -159,7 +159,7 @@ var visible=readJSON(COLUMN_KEY,COLUMNS.map(function(c){return c.key}));
 visible=visible.filter(function(k){return COLUMNS.some(function(c){return c.key===k})});
 var columnWidths=readJSON(WIDTH_KEY,{});COLUMNS.forEach(function(c){var n=Number(columnWidths[c.key]);columnWidths[c.key]=Number.isFinite(n)?Math.max(c.min,Math.min(c.max,n)):c.width});
 var pageSize=parseInt(localStorage.getItem(SIZE_KEY),10);if([10,20,30,50,100,200,500].indexOf(pageSize)<0)pageSize=100;
-var page=1,query='',selectedId=null,draftHandlers=[],newDraftHandlers=[];
+var page=1,query='',selectedId=null,draftHandlers=[],newDraftHandlers=[],showDisabledHandlers=false,showDisabledNewHandlers=false;
 var $=function(s,root){return(root||document).querySelector(s)};
 var workspace=$('.workspace'),savedListWidth=Number(readJSON(LIST_WIDTH_KEY,0));if(Number.isFinite(savedListWidth)&&savedListWidth>0)workspace.style.setProperty('--list-width',savedListWidth+'px');
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -182,8 +182,8 @@ function renderTable(){
     return '<tr data-id="'+r.id+'" class="'+(r.id===selectedId?'selected':'')+'">'+cols.map(function(c){return '<td title="'+(c.key==='handlers'?esc((r.handlers||[]).join('、')):'')+'">'+values[c.key]+'</td>'}).join('')+'</tr>'
   }).join(''):'<tr><td class="empty" colspan="'+Math.max(1,cols.length)+'">暂无数据</td></tr>';
   $('#totalText').textContent='共 '+list.length.toLocaleString('zh-CN')+' 条';$('#prevBtn').disabled=page<=1;$('#nextBtn').disabled=page>=pages;
-  var items=[];if(pages<=7){for(var n=1;n<=pages;n++)items.push(n)}else if(page<=4){items=[1,2,3,4,5,'…',pages]}else if(page>=pages-3){items=[1,'…',pages-4,pages-3,pages-2,pages-1,pages]}else{items=[1,'…',page-1,page,page+1,'…',pages]}
-  $('#pageButtons').innerHTML=items.map(function(item){return item==='…'?'<span class="page-ellipsis">…</span>':'<button class="page-btn '+(item===page?'active':'')+'" data-page="'+item+'">'+item+'</button>'}).join('');$('#pageSize').value=String(pageSize);$('#jumpInput').max=String(pages)
+  var items=ERPComponents.pageItems(page,pages,'category');
+  $('#pageButtons').innerHTML=items.map(function(item){return item.type==='ellipsis'?'<span class="page-ellipsis">…</span>':'<button class="page-btn '+(item.active?'active':'')+'" data-page="'+item.page+'">'+item.page+'</button>'}).join('');$('#pageSize').value=String(pageSize);$('#jumpInput').max=String(pages)
 }
 function renderTags(){
   $('#handlerTags').innerHTML=draftHandlers.map(function(p){return '<span class="person-tag">'+esc(p)+'<button type="button" data-remove="'+esc(p)+'" aria-label="移除'+esc(p)+'">×</button></span>'}).join('');
@@ -191,7 +191,7 @@ function renderTags(){
 }
 function renderPeople(){
   var q=$('#handlerSearch').value.trim().toLowerCase(),list=PEOPLE.filter(function(p){return !q||p.toLowerCase().indexOf(q)>-1});
-  $('#personMenu').innerHTML=list.map(function(p){return '<button class="person-option '+(draftHandlers.indexOf(p)>-1?'chosen':'')+'" data-person="'+esc(p)+'" type="button">'+esc(p)+'</button>'}).join('')||'<div style="padding:8px;color:#909399">暂无匹配人员</div>'
+  $('#personMenu').innerHTML=(list.map(function(p){return '<button class="person-option '+(draftHandlers.indexOf(p)>-1?'chosen':'')+'" data-person="'+esc(p)+'" type="button">'+esc(p)+'</button>'}).join('')||'<div style="padding:8px;color:#909399">暂无匹配人员</div>')+ERPComponents.disabledToggleHtml('人员',showDisabledHandlers)
 }
 function showDetail(){$('#detailEmpty').classList.add('hidden');$('#detailContent').classList.remove('hidden')}
 function hideDetail(){selectedId=null;$('#detailContent').classList.add('hidden');$('#detailEmpty').classList.remove('hidden');renderTable()}
@@ -207,7 +207,7 @@ function saveRecord(){
   r.name=name;r.desc=$('#categoryDesc').value.trim();r.enabled=$('#enabledSwitch').checked;r.mode=$('#handlerMode').value;r.handlers=draftHandlers.slice();saveJSON(RECORD_KEY,records);query='';$('#searchInput').value='';page=1;renderTable();$('#deleteBtn').disabled=false;toast('保存成功')
 }
 function renderNewTags(){$('#newHandlerTags').innerHTML=newDraftHandlers.map(function(p){return '<span class="person-tag">'+esc(p)+'<button type="button" data-new-remove="'+esc(p)+'" aria-label="移除'+esc(p)+'">×</button></span>'}).join('');$('#newHandlerSearch').placeholder=newDraftHandlers.length?'':'请选择'}
-function renderNewPeople(){var q=$('#newHandlerSearch').value.trim().toLowerCase(),list=PEOPLE.filter(function(p){return !q||p.toLowerCase().indexOf(q)>-1});$('#newPersonMenu').innerHTML=list.map(function(p){return '<button class="person-option '+(newDraftHandlers.indexOf(p)>-1?'chosen':'')+'" data-new-person="'+esc(p)+'" type="button">'+esc(p)+'</button>'}).join('')||'<div style="padding:8px;color:#909399">暂无匹配人员</div>'}
+function renderNewPeople(){var q=$('#newHandlerSearch').value.trim().toLowerCase(),list=PEOPLE.filter(function(p){return !q||p.toLowerCase().indexOf(q)>-1});$('#newPersonMenu').innerHTML=(list.map(function(p){return '<button class="person-option '+(newDraftHandlers.indexOf(p)>-1?'chosen':'')+'" data-new-person="'+esc(p)+'" type="button">'+esc(p)+'</button>'}).join('')||'<div style="padding:8px;color:#909399">暂无匹配人员</div>')+ERPComponents.disabledToggleHtml('人员',showDisabledNewHandlers)}
 function clearNewError(){$('#newName').classList.remove('invalid');$('#newNameError').classList.remove('show')}
 function closeCreate(){$('#createMask').classList.remove('show');$('#newPersonMenu').classList.add('hidden')}
 function openCreate(){$('#newName').value='';$('#newDesc').value='';$('#newEnabled').checked=true;$('#newHandlerMode').value='正选';$('#newHandlerSearch').value='';newDraftHandlers=[];renderNewTags();clearNewError();$('#createMask').classList.add('show');setTimeout(function(){$('#newName').focus()},0)}
@@ -240,10 +240,12 @@ document.addEventListener('click',function(){$('#settingsMenu').classList.add('h
 $('#handlerPicker').addEventListener('click',function(e){e.stopPropagation();if(!e.target.dataset.remove){renderPeople();$('#personMenu').classList.remove('hidden')}});
 $('#handlerSearch').addEventListener('input',function(){renderPeople();$('#personMenu').classList.remove('hidden')});
 $('#personMenu').addEventListener('click',function(e){var p=e.target.dataset.person;if(!p)return;var i=draftHandlers.indexOf(p);i>-1?draftHandlers.splice(i,1):draftHandlers.push(p);renderTags();renderPeople();$('#handlerSearch').value=''});
+$('#personMenu').addEventListener('change',function(e){if(e.target.matches('[data-common-show-disabled]')){showDisabledHandlers=e.target.checked;renderPeople()}});
 $('#handlerTags').addEventListener('click',function(e){var p=e.target.dataset.remove;if(!p)return;e.stopPropagation();draftHandlers=draftHandlers.filter(function(x){return x!==p});renderTags()});
 $('#newHandlerPicker').addEventListener('click',function(e){e.stopPropagation();if(!e.target.dataset.newRemove){renderNewPeople();$('#newPersonMenu').classList.remove('hidden')}});
 $('#newHandlerSearch').addEventListener('input',function(){renderNewPeople();$('#newPersonMenu').classList.remove('hidden')});
 $('#newPersonMenu').addEventListener('click',function(e){var p=e.target.dataset.newPerson;if(!p)return;var i=newDraftHandlers.indexOf(p);i>-1?newDraftHandlers.splice(i,1):newDraftHandlers.push(p);renderNewTags();renderNewPeople();$('#newHandlerSearch').value=''});
+$('#newPersonMenu').addEventListener('change',function(e){if(e.target.matches('[data-common-show-disabled]')){showDisabledNewHandlers=e.target.checked;renderNewPeople()}});
 $('#newHandlerTags').addEventListener('click',function(e){var p=e.target.dataset.newRemove;if(!p)return;e.stopPropagation();newDraftHandlers=newDraftHandlers.filter(function(x){return x!==p});renderNewTags()});
 $('#newName').addEventListener('input',clearNewError);$('#closeCreate').addEventListener('click',closeCreate);$('#cancelCreate').addEventListener('click',closeCreate);$('#confirmCreate').addEventListener('click',createRecord);$('#createMask').addEventListener('click',function(e){if(e.target===this)closeCreate()});
 $('#deleteBtn').addEventListener('click',function(){if(selectedId)$('#deleteMask').classList.add('show')});$('#cancelDelete').addEventListener('click',function(){$('#deleteMask').classList.remove('show')});

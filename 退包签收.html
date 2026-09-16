@@ -66,6 +66,8 @@
   .filter-foot { display:flex; align-items:flex-end; margin-top:18px; gap:12px; }
   .filter-foot .ftime { width:430px; flex:none; }
   .filter-foot .fbtns { margin-left:auto; display:flex; gap:8px; }
+  .ftime { position:relative; }
+  .ftime .erp-date-picker { top:58px; }
 
   /* ============ 按钮 ============ */
   .btn { height:26px; padding:0 12px; border-radius:4px; font-size:14px; cursor:pointer; border:1px solid #d9d9d9; background:#fff; color:#333; display:inline-flex; align-items:center; justify-content:center; gap:5px; user-select:none; }
@@ -133,23 +135,6 @@
   .ck { width:13px; height:13px; border:1px solid #c8c8c8; border-radius:2px; flex:none; display:inline-flex; align-items:center; justify-content:center; background:#fff; }
   .dp-opt.sel .ck { background:#3D68FF; border-color:#3D68FF; color:#fff; font-size:14px; }
 
-  /* ============ 日历面板 ============ */
-  .calendar-panel { position:fixed; z-index:2000; background:#fff; border:1px solid #e5e5e5; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.09); width:232px; padding:10px; animation:dpin .12s ease; }
-  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .cal-head .cal-title { font-weight:600; font-size:14px; color:#333; }
-  .cal-nav { width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#666; border-radius:3px; }
-  .cal-nav:hover { background:#f0f2f5; color:#3D68FF; }
-  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
-  .cal-wk { height:24px; display:flex; align-items:center; justify-content:center; color:#999; font-size:14px; }
-  .cal-cell { height:24px; display:flex; align-items:center; justify-content:center; border-radius:3px; cursor:pointer; color:#333; font-size:14px; }
-  .cal-cell:hover { background:#EDF1FF; }
-  .cal-cell.muted { color:#c8c8c8; }
-  .cal-cell.today { color:#3D68FF; font-weight:600; }
-  .cal-cell.sel { background:#3D68FF; color:#fff; }
-  .cal-foot { display:flex; justify-content:space-between; margin-top:8px; padding-top:8px; border-top:1px solid #f0f0f0; }
-  .cal-foot a { color:#3D68FF; cursor:pointer; font-size:14px; }
-  .cal-foot a:hover { text-decoration:underline; }
-
   /* ============ 全局提示 ============ */
   .toast-wrap { position:fixed; top:18px; left:50%; transform:translateX(-50%); z-index:3000; display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
   .toast { background:#fff; border:1px solid #ececec; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:8px 14px; display:flex; align-items:center; gap:8px; font-size:14px; color:#333; animation:tin .22s ease; pointer-events:auto; max-width:480px; }
@@ -162,7 +147,7 @@
   .toast.warning .t-ico { background:#FA8C16; }
   .toast.error .t-ico { background:#FF4D4F; }
 </style>
-<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
+<script>(function(){var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}document.write('<script src="公共组件库.js?_t='+encodeURIComponent(t)+'"><\/script><script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>')})()</script>
 </head>
 <body data-page-node-id="WwFGOMFkfPZVke9iNF0xEu">
 
@@ -229,11 +214,7 @@
         </div>
         <div class="fitem ftime" data-page-node-id="9cfQwXHJMvTn44WjnpWtDX">
           <div class="flabel" data-page-node-id="yug7xhs2vhYaaNDVqd00Zv">签收时间</div>
-          <div class="range" data-page-node-id="8cYi738yencBw3jXBxpLHh">
-            <div class="range-part" id="fT1" data-page-node-id="BQGWjsIifQoDFAaZTgGGsN"><span class="ph" data-page-node-id="z5P2afiRnVynTgE0QjI146">开始日期</span><span class="ph">开始时间</span></div>
-            <span class="sep" data-page-node-id="SAJCDLsCNNRuRvlIWrtek3">~</span>
-            <div class="range-part" id="fT2" data-page-node-id="NtZ4ZEio7bA4tA0yYAus6Q"><span class="ph">结束日期</span><span class="ph" data-page-node-id="UuRzg3QZCxJJE4dEK01eUv">结束时间</span></div>
-          </div>
+          <div class="range date-range" id="dateRange"><span id="startDateText">开始日期　开始时间</span><span class="dash">~</span><span id="endDateText">结束日期　结束时间</span></div><input type="hidden" id="startTime"><input type="hidden" id="endTime"><div class="date-picker hidden" id="datePicker"><div class="date-shortcuts" id="dateShortcuts"><button data-days="0">今天</button><button data-days="1">昨天</button><button data-days="2">前天</button><button data-range="3">近3天</button><button data-range="7">近7天</button><button data-range="15">近15天</button><button data-range="30">近30天</button><button data-range="90">近90天</button><button data-not-today>非今天</button></div><div class="calendar"><div class="cal-head"><button class="cal-nav" id="prevYear">≪</button><button class="cal-nav" id="prevMonth">‹</button><span class="cal-title" id="calTitle"></span><button class="cal-nav" id="nextMonth">›</button><button class="cal-nav" id="nextYear">≫</button></div><div class="cal-grid" id="calGrid"></div></div></div>
         </div>
         <div class="fbtns" data-page-node-id="0GEkdE1bsdXE8OLASynpoo">
           <button class="btn" id="btnReset" data-page-node-id="KjXUR2hHWZxB6r0VBoV4Eh">重 置</button>
@@ -320,13 +301,15 @@ const FKS  = [...new Set(store.data.map(d=>d.fk).filter(Boolean))].sort((a,b)=>a
 const SKS  = [...new Set(store.data.map(d=>d.sk).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh'));
 
 /* ---------- 下拉组件（单选/多选/可搜索） ---------- */
-let activePanel = null, activeCal = null;
-function closePanels(){ if(activePanel){ activePanel.remove(); activePanel=null; } if(activeCal){ activeCal.remove(); activeCal=null; } }
+let activePanel = null;
+function closePanels(){ if(activePanel){ activePanel.remove(); activePanel=null; } }
 document.addEventListener('mousedown', e=>{
-  if(!e.target.closest('.dropdown-panel') && !e.target.closest('.calendar-panel') && !e.target.closest('.select') && !e.target.closest('.cal-ctl')) closePanels();
+  if(!e.target.closest('.dropdown-panel') && !e.target.closest('.erp-date-picker') && !e.target.closest('.erp-date-range') && !e.target.closest('.select')){ closePanels(); $('#datePicker').classList.add('hidden'); }
 });
 
 function createSelect(cfg){
+  return ERPComponents.createFloatingSelect(Object.assign({},cfg,{closePanels:closePanels,getActivePanel:()=>activePanel,setActivePanel:panel=>{activePanel=panel;}}));
+  /* 旧实现保留为不可达代码，组件行为统一由公共组件库接管。
   // cfg: el, options[{label,value}], multiple, searchable, placeholder, onChange, width
   const el = cfg.el;
   let value = cfg.multiple ? [] : '';
@@ -414,86 +397,31 @@ function createSelect(cfg){
   el.setValue = setValue;     // API 同时挂载到元素，便于 $('#id').setValue() 调用
   el.getValue = ()=>value;
   return { setValue, getValue: ()=>value };
+  */
 }
 
-/* ---------- 日历组件 ---------- */
-let calY, calM; // 年、月(0-based)
-function openCalendar(triggerCtl, curVal, onPick, onClear){
-  closePanels();
-  const base = curVal ? new Date(curVal.slice(0,10)+'T00:00:00') : new Date();
-  calY = base.getFullYear(); calM = base.getMonth();
-  const p = document.createElement('div');
-  p.className = 'calendar-panel';
-  document.body.appendChild(p);
-  activeCal = p;
-  const selDay = curVal ? curVal.slice(0,10) : '';
-  function render(){
-    const first = new Date(calY, calM, 1);
-    const startWk = first.getDay();
-    const days = new Date(calY, calM+1, 0).getDate();
-    const prevDays = new Date(calY, calM, 0).getDate();
-    const today = fmtDT(new Date()).slice(0,10);
-    let cells = '';
-    for(let i=0;i<42;i++){
-      const dnum = i - startWk + 1;
-      let y=calY, m=calM, d=dnum, muted=false;
-      if(d<1){ d = prevDays+d; m=calM-1; muted=true; }
-      else if(d>days){ d = d-days; m=calM+1; muted=true; }
-      if(m<0){ m=11; y--; } if(m>11){ m=0; y++; }
-      const ds = y+'-'+pad(m+1)+'-'+pad(d);
-      cells += '<div class="cal-cell'+(muted?' muted':'')+(ds===today?' today':'')+(ds===selDay?' sel':'')+'" data-d="'+ds+'">'+d+'</div>';
-    }
-    p.innerHTML = '<div class="cal-head">'
-      + '<span class="cal-nav" data-nav="-1"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M6.5 1.5 3 5l3.5 3.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></span>'
-      + '<span class="cal-title">'+calY+'年'+(calM+1)+'月</span>'
-      + '<span class="cal-nav" data-nav="1"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M3.5 1.5 7 5 3.5 8.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></span></div>'
-      + '<div class="cal-grid">' + ['日','一','二','三','四','五','六'].map(w=>'<div class="cal-wk">'+w+'</div>').join('') + cells + '</div>'
-      + '<div class="cal-foot"><a data-act="clear">清空</a><a data-act="now">今天</a></div>';
-    p.querySelectorAll('[data-nav]').forEach(n=>n.addEventListener('click', ()=>{ calM += +n.dataset.nav; if(calM<0){calM=11;calY--;} if(calM>11){calM=0;calY++;} render(); }));
-    p.querySelectorAll('.cal-cell').forEach(c=>c.addEventListener('click', ()=>{ if(c.classList.contains('muted')) return; onPick(c.dataset.d); closePanels(); }));
-    p.querySelector('[data-act="clear"]').addEventListener('click', ()=>{ onClear && onClear(); closePanels(); });
-    p.querySelector('[data-act="now"]').addEventListener('click', ()=>{ onPick(fmtDT(new Date()).slice(0,10)); closePanels(); });
-    const r = triggerCtl.getBoundingClientRect();
-    let top = r.bottom + 4;
-    if(top + 300 > window.innerHeight - 8) top = Math.max(8, r.top - 292);
-    let left = Math.min(r.left, window.innerWidth - 244);
-    p.style.left = left + 'px'; p.style.top = top + 'px';
-  }
-  render();
-}
 
 /* ---------- 查询控件初始化 ---------- */
-const scanWhSel = createSelect({ el:$('#scanWhSel'), options:WHS.map(v=>({label:v,value:v})), searchable:true, placeholder:'选择仓库',
+const scanWhSel = createSelect({ el:$('#scanWhSel'), options:WHS.map(v=>({label:v,value:v})), fieldName:'仓库', searchable:true, placeholder:'选择仓库',
   onChange:v=>{ store.scanWh=v; } });
-createSelect({ el:$('#fOpSel'), options:OPS.map(v=>({label:v,value:v})), placeholder:'请选择',
+createSelect({ el:$('#fOpSel'), options:OPS.map(v=>({label:v,value:v})), fieldName:'人员', placeholder:'请选择',
   onChange:v=>{ store.q.op=v; } });
 createSelect({ el:$('#fStSel'), options:STATUS.map(v=>({label:v,value:v})), placeholder:'请选择',
   onChange:v=>{ store.q.st=v; } });
-createSelect({ el:$('#fFkSel'), options:FKS.map(v=>({label:v,value:v})), placeholder:'请选择',
+createSelect({ el:$('#fFkSel'), options:FKS.map(v=>({label:v,value:v})), fieldName:'发货仓', disabledLabel:'显示停用仓库', placeholder:'请选择',
   onChange:v=>{ store.q.fk=v; } });
-createSelect({ el:$('#fSkSel'), options:SKS.map(v=>({label:v,value:v})), placeholder:'请选择',
+createSelect({ el:$('#fSkSel'), options:SKS.map(v=>({label:v,value:v})), fieldName:'签收仓', disabledLabel:'显示停用仓库', placeholder:'请选择',
   onChange:v=>{ store.q.sk=v; } });
 createSelect({ el:$('#fThSel'), options:THKS.map(v=>({label:v,value:v})), placeholder:'请选择',
   onChange:v=>{ store.q.th=v; } });
-createSelect({ el:$('#fRsSel'), options:RSS.map(v=>({label:v,value:v})), placeholder:'请选择',
+createSelect({ el:$('#fRsSel'), options:RSS.map(v=>({label:v,value:v})), fieldName:'退货原因', placeholder:'请选择',
   onChange:v=>{ store.q.rs=v; } });
 createSelect({ el:$('#pgSizeSel'), options:[{label:'20条/页',value:20},{label:'50条/页',value:50},{label:'100条/页',value:100}], placeholder:'',
   onChange:v=>{ store.size=+v; store.page=1; renderTable(); } });
 $('#pgSizeSel').setValue(100);
 
 // 签收时间（范围）
-function bindCal(elId, key, ph){
-  const el = $(elId);
-  el.classList.add('cal-ctl');
-  el.addEventListener('click', ()=>{
-    openCalendar(el, store.q[key],
-      d=>{ store.q[key] = d + (key==='t1' ? ' 00:00:00' : ' 23:59:59');
-           el.innerHTML = '<span class="val">'+store.q[key]+'</span>'; },
-      ()=>{ store.q[key]=''; el.innerHTML = '<span class="ph">'+ph+'</span>'; });
-  });
-}
-bindCal('#fT1','t1','开始时间');
-bindCal('#fT2','t2','结束时间');
+const mainDateCtl=ERPComponents.createDateRangePicker({trigger:'#dateRange',panel:'#datePicker',shortcuts:'#dateShortcuts',grid:'#calGrid',title:'#calTitle',startText:'#startDateText',endText:'#endDateText',startInput:'#startTime',endInput:'#endTime',prevMonth:'#prevMonth',nextMonth:'#nextMonth',prevYear:'#prevYear',nextYear:'#nextYear',state:{view:new Date(),start:null,end:null},startPlaceholder:'开始日期　开始时间',endPlaceholder:'结束日期　结束时间',closeOthers:closePanels,onChange:(start,end,state)=>{store.q.t1=state.start?ERPComponents.dateText(state.start)+' 00:00:00':'';store.q.t2=state.end?ERPComponents.dateText(state.end)+' 23:59:59':'';}});
 
 $('#fNo').addEventListener('keydown', e=>{ if(e.key==='Enter') doQuery(); });
 $('#fRef').addEventListener('keydown', e=>{ if(e.key==='Enter') doQuery(); });
@@ -515,8 +443,7 @@ function doReset(){
   store.scanWh = '';
   scanWhSel.setValue('');
   $('#fOpSel').setValue(''); $('#fStSel').setValue(''); $('#fFkSel').setValue(''); $('#fSkSel').setValue(''); $('#fThSel').setValue(''); $('#fRsSel').setValue('');
-  $('#fT1').innerHTML = '<span class="ph">开始日期</span><span class="ph">开始时间</span>';
-  $('#fT2').innerHTML = '<span class="ph">结束日期</span><span class="ph">结束时间</span>';
+  mainDateCtl.reset();
   store.page = 1;
   renderTable();
   toast('success','重置成功');
@@ -594,20 +521,11 @@ function renderTable(){
 /* ---------- 分页 ---------- */
 function renderPagination(tp){
   const cur = store.page;
-  const list = [];
-  const push = v=>list.push(v);
-  if(tp <= 7){ for(let i=1;i<=tp;i++) push(i); }
-  else {
-    push(1);
-    if(cur > 3) push('...');
-    for(let i=Math.max(2,cur-1); i<=Math.min(tp-1,cur+1); i++) push(i);
-    if(cur < tp-2) push('...');
-    push(tp);
-  }
+  const list = ERPComponents.pageItems(cur,tp,'neighbor');
   let html = '<span class="pg-item arrow'+(cur===1?' disabled':'')+'" data-pg="'+(cur-1)+'"><i>‹</i></span>';
-  html += list.map(p=> p==='...'
+  html += list.map(item=> item.type==='ellipsis'
     ? '<span class="pg-item dot">···</span>'
-    : '<span class="pg-item'+(p===cur?' active':'')+'" data-pg="'+p+'">'+p+'</span>').join('');
+    : '<span class="pg-item'+(item.active?' active':'')+'" data-pg="'+item.page+'">'+item.page+'</span>').join('');
   html += '<span class="pg-item arrow'+(cur===tp?' disabled':'')+'" data-pg="'+(cur+1)+'"><i>›</i></span>';
   $('#pgList').innerHTML = html;
   $('#pgList').querySelectorAll('.pg-item[data-pg]').forEach(el=>{
@@ -655,8 +573,7 @@ function doSign(){
   $('#fNo').value=''; $('#fRef').value='';
   store.q = { no:'', ref:'', op:'', st:'', fk:'', sk:'', th:'', rs:'', t1:'', t2:'' };
   $('#fOpSel').setValue(''); $('#fStSel').setValue(''); $('#fFkSel').setValue(''); $('#fSkSel').setValue(''); $('#fThSel').setValue(''); $('#fRsSel').setValue('');
-  $('#fT1').innerHTML = '<span class="ph">开始时间</span>';
-  $('#fT2').innerHTML = '<span class="ph">结束时间</span>';
+  mainDateCtl.reset();
   store.page = 1;
   store.selectedId = rec.id;
   store.flashId = rec.id;
