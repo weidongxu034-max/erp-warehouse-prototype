@@ -26,6 +26,15 @@
   .main.erp-content-host { position:relative; height:calc(100vh - 38px); padding:0 !important; overflow:hidden; background:#F5F5F5; }
   .erp-content-frame { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .18s ease; background:#F5F5F5; }
   .erp-content-frame.ready { opacity:1; }
+  body.erp-hosting-content .pager,
+  body.erp-hosting-content .pg,
+  body.erp-hosting-content .cc-pager,
+  body.erp-hosting-content .ap-pager,
+  body.erp-hosting-content .selection-bar,
+  body.erp-hosting-content .table-footer,
+  body.erp-hosting-content .pagination-bar,
+  body.erp-hosting-content .ap-form-footer,
+  body.erp-hosting-content .savebar { display:none !important; }
   html.erp-embedded body { padding-top:0 !important; }
   html.erp-embedded body::after { inset:0 !important; }
   html.erp-embedded .layout { min-height:100vh !important; }
@@ -127,6 +136,11 @@
 
   /* 页面跳转映射：左侧子菜单 -> 对应 html 文件（新增页面在此补充） */
   var PAGE_LINKS = {
+    '仓库订单': '仓库订单.html',
+    '仓库列表': '仓库列表.html',
+    '仓库审批设置': '仓库审批设置.html',
+    '篮子列表': '篮子列表.html',
+    '任务码': '任务码.html',
     '入库签收': '入库签收.html',
     '入库上架': '入库上架.html',
     '入库单': '入库单.html',
@@ -138,13 +152,23 @@
     '发货分类': '发货分类.html',
     '库内上架日志': '库内上架日志.html',
     '盘点日志': '盘点日志.html',
-    '历史盘点日志': '历史盘点日志.html'
+    '历史盘点日志': '历史盘点日志.html',
+    '入库日志': '入库日志.html',
+    '历史入库日志': '历史入库日志.html',
+    '订单出库日志': '订单出库日志.html',
+    '历史订单出库日志': '历史订单出库日志.html',
+    '商品出库日志': '商品出库日志.html',
+    '历史商品出库日志': '历史商品出库日志.html',
+    '修改仓位日志': '修改仓位日志.html',
+    '历史修改仓位日志': '历史仓位修改日志.html'
   };
 
   /* ---------- 当前页判断（按文件名自动高亮对应菜单） ---------- */
   var file = decodeURIComponent(location.pathname.split('/').pop() || '');
   var current = '';
   Object.keys(PAGE_LINKS).forEach(function (k) { if (PAGE_LINKS[k] === file) current = k; });
+  if (['仓库新增.html', '仓库详情.html', '货架新增.html', '货架详情.html', '货架编辑.html'].indexOf(file) >= 0) current = '仓库列表';
+  if (['仓库审批新增.html', '仓库审批编辑.html'].indexOf(file) >= 0) current = '仓库审批设置';
   var contentFrame = null;
   var frameTimer = null;
 
@@ -153,6 +177,7 @@
   function switchContent(link, label, aside) {
     var main = document.querySelector('.layout > .main');
     if (!main) return;
+    document.body.classList.add('erp-hosting-content');
     aside.querySelectorAll('.sub-item.active').forEach(function (item) { item.classList.remove('active'); });
     var targetItem = Array.from(aside.querySelectorAll('.sub-item')).find(function (item) { return item.textContent.trim() === label; });
     if (targetItem) targetItem.classList.add('active');
@@ -240,7 +265,8 @@
           if (willOpen) group.classList.add('open');
           return;
         }
-        if (el.classList.contains('active')) return;
+        /* 仓库详情/货架详情在列表 iframe 内打开时，重按菜单回到列表。 */
+        if (el.classList.contains('active') && el.textContent.trim() !== '仓库列表') return;
         var link = PAGE_LINKS[el.textContent.trim()];
         if (link) {
           switchContent(link, el.textContent.trim(), aside);

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ERP - 仓储 - 日志 - 历史修改仓位日志</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding-top:38px;background:#f5f5f5;color:#303133;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}button,input,select,textarea{font:inherit;color:inherit}button,a,input[type=checkbox]{cursor:pointer}button{white-space:nowrap}input,textarea,select{outline:none}button:focus-visible,a:focus-visible{outline:2px solid #3d68ff;outline-offset:2px}input:focus,textarea:focus,select:focus{border-color:#3d68ff!important}.hidden{display:none!important}.main{padding:8px 10px 54px!important;min-width:0}.card{background:#fff;border-radius:4px;margin-bottom:8px;padding:12px 8px}
+.frow{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}.frow.frow-top{align-items:flex-start}.frow+.frow{margin-top:14px}.field{width:170px;flex:none}.field.kw{width:250px}.field.person{width:150px}.field.time-field{width:450px}.field.grow{flex:1;min-width:260px}.field label{display:block;margin-bottom:7px;color:#606266;font-size:13px}.field .floating-select{width:100%;min-height:32px}
+.text-input,.native-select{width:100%;height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:4px;background:#fff}.text-input::placeholder,textarea::placeholder{color:#c0c4cc}
+.control{width:100%;height:32px;border:1px solid #dcdfe6;border-radius:5px;background:#fff}.control:focus-within{border-color:#3d68ff}.combo{display:flex;overflow:hidden}.combo select{flex:none;width:92px;padding:0 8px;border:0;border-right:1px solid #e5e7eb;background:#fff}.combo input{flex:1;min-width:0;padding:0 9px;border:0}.combo .time-picker{flex:1;min-width:0}.combo .time-picker .picker-range{width:100%;border:0;border-radius:0}
+.filter-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.link-btn{height:32px;padding:0 6px;border:0;background:none;color:#3d68ff}.btn{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:5px;background:#fff}.btn:hover{border-color:#3d68ff;color:#3d68ff}.btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.danger{border-color:#f56c6c;color:#f56c6c}
+.toolbar{display:flex;align-items:center;margin-bottom:8px}.export-wrap{position:relative}.export-menu{position:absolute;top:100%;left:0;z-index:60;min-width:136px;padding:5px 0;border:1px solid #e4e7ed;border-radius:4px;background:#fff;box-shadow:0 6px 18px #0002;display:none}.export-wrap:hover .export-menu,.export-wrap:focus-within .export-menu,.export-wrap.open .export-menu{display:block}.export-menu button{display:block;width:100%;height:34px;padding:0 14px;border:0;background:#fff;text-align:left}.export-menu button:hover{background:#f2f5ff;color:#3d68ff}
+.table-scroll{overflow:visible;max-height:none;min-height:0;border:1px solid #c0c0c0}.log-table{width:100%;min-width:1240px;border-collapse:separate;border-spacing:0;table-layout:fixed}.log-table th{position:sticky;top:0;z-index:10;padding:8px;background:#e9e9e9;text-align:left;font-size:13px;border-bottom:1px solid #bdbdbd;border-right:1px solid #bdbdbd}.log-table th span{display:block;margin-top:4px}.log-table td{height:96px;padding:8px;vertical-align:middle;border-bottom:1px solid #c9c9c9;border-right:1px solid #c9c9c9;font-size:13px}.log-table tr>:last-child{border-right:0}.log-table tbody tr:last-child td{border-bottom:0}.log-table tbody tr:hover td,.log-table tbody tr.selected td{background:#fffde6}.center{text-align:center!important}input[type=checkbox]{width:16px;height:16px;vertical-align:middle;accent-color:#3d68ff}
+.thumb{width:64px;height:64px;display:flex;align-items:center;justify-content:center;border:1px solid #eee;background:#f7f7f7;border-radius:2px;font-size:37px}.cell-lines{display:flex;flex-direction:column;gap:5px;min-width:0}.sku-line{display:flex;align-items:center;gap:5px;min-width:0}.sku-link{color:#3d68ff;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sku-link:hover{text-decoration:underline}.copy{position:relative;flex:none;width:15px;height:16px;padding:0;border:0;background:transparent;color:#3d68ff}.copy:before,.copy:after{content:"";position:absolute;width:7px;height:9px;border:1px solid currentColor;border-radius:1px;background:#fff}.copy:before{left:5px;top:1px}.copy:after{left:2px;top:4px}
+.sort-btn{display:inline-flex;align-items:center;gap:4px;border:0;padding:0;background:none;text-align:left;font-weight:600}.sort-arrows{color:#a6aabb;font-size:10px;line-height:8px;display:inline-flex;flex-direction:column}.sort-arrows .active{color:#3d68ff}.empty-cell{height:180px!important;text-align:center;color:#909399}
+.row-selector{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.time-combo{overflow:visible}
+.location-filter-grid{display:grid;grid-template-columns:1.1fr 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;gap:14px;align-items:end}.location-filter-grid+.location-filter-grid{margin-top:16px}.location-filter-grid .field{width:auto}.location-filter-grid .method-field{grid-column:1/4}.location-filter-grid .time-field{grid-column:4/6;width:auto}.location-filter-actions{display:flex;justify-content:flex-end;gap:8px}.relabel-tag{display:inline-block;margin-left:8px;padding:1px 7px;border:1px solid #f5b96d;border-radius:4px;color:#e6a23c;font-size:12px}@media(max-width:1200px){.location-filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.location-filter-grid .method-field,.location-filter-grid .time-field{grid-column:auto}.location-filter-actions{grid-column:3}}
+.pager{position:fixed;left:170px;right:0;bottom:0;z-index:95;height:42px;background:#fff;border-top:1px solid #dcdfe6;display:flex;align-items:center;padding:4px 18px;gap:8px;font-size:13px}.layout:has(.sider.collapsed) .pager{left:44px}.selection-count{margin-right:auto;color:#606266}.page-numbers{display:flex;gap:3px;align-items:center}.page-btn{height:28px;min-width:28px;padding:0 6px;border:1px solid transparent;border-radius:5px;background:#fff}.page-btn.active{border-color:#3d68ff;color:#3d68ff}.page-btn:disabled{color:#c0c4cc;cursor:not-allowed}.pager select{height:29px;border:1px solid #dcdfe6;border-radius:4px;background:#fff}.jump-input{width:48px;height:29px;border:1px solid #dcdfe6;border-radius:4px;padding:0 5px;text-align:center}
+.search-select{position:relative}.select-button{width:100%;height:32px;padding:0 28px 0 10px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.select-button.placeholder{color:#c0c4cc}.select-arrow{position:absolute;right:10px;top:6px;color:#aaa;pointer-events:none}.select-panel{position:absolute;left:0;right:0;top:36px;z-index:70;padding:6px;border:1px solid #e4e7ed;border-radius:4px;background:#fff;box-shadow:0 5px 18px #0002}.select-panel input{margin-bottom:5px;height:30px}.select-options{max-height:210px;overflow:auto}.select-options button{display:block;width:100%;height:31px;padding:0 8px;border:0;background:#fff;text-align:left}.select-options button:hover,.select-options button.active{background:#f1f5ff;color:#3d68ff}.select-empty{padding:12px;text-align:center;color:#aaa}
+.picker-range{height:32px;display:flex;align-items:center;padding:0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#bbb;cursor:pointer}.picker-range .date-value{color:#333}.picker-range .dash{margin:0 8px;color:#999}.time-picker{position:relative}.date-picker{position:absolute;left:0;top:35px;z-index:120;display:flex;width:510px;border:1px solid #e3e6ec;border-radius:5px;background:#fff;box-shadow:0 8px 24px #0002}.date-shortcuts{width:115px;padding:6px 0;border-right:1px solid #eee}.date-shortcuts button{display:block;width:100%;height:32px;padding:0 14px;border:0;background:#fff;text-align:left}.date-shortcuts button:hover{background:#f3f6ff;color:#3d68ff}.calendar{flex:1}.cal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #eee}.cal-nav{border:0;background:none;color:#999}.cal-title{font-weight:600}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:7px 10px 10px}.cal-grid span,.cal-grid button{height:34px;display:flex;align-items:center;justify-content:center;border:0;background:#fff}.cal-grid .weekday{height:27px}.cal-day{border-radius:4px!important}.cal-day:hover{background:#edf2ff!important;color:#3d68ff}.cal-day.muted{color:#bbb}.cal-day.in-range{background:#f0f4ff}.cal-day.selected{border:1px solid #3d68ff!important;color:#3d68ff}
+.mask{position:fixed;inset:0;z-index:2500;display:none;align-items:center;justify-content:center;background:#0006}.mask.show{display:flex}.modal{width:530px;max-width:calc(100vw - 32px);max-height:86vh;overflow:auto;border-radius:6px;background:#fff;box-shadow:0 12px 40px #0003}.modal-head{height:53px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid #ebeef5;font-size:16px;font-weight:600}.modal-close{margin-left:auto;border:0;background:none;padding:0 4px;color:#909399;font-size:25px}.modal-body{padding:18px 20px}.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #ebeef5}.muted{color:#909399;font-size:13px}
+.modal.history-modal{width:calc(100vw - 32px);max-width:1600px}.history-filters{display:grid;grid-template-columns:120px 385px 120px 120px minmax(380px,1fr) auto;align-items:end;gap:10px}.history-filters .field{width:auto}.history-name-control{display:flex}.history-name-control .history-select{width:104px;flex:none;border-radius:5px 0 0 5px}.history-name-control input{flex:1;min-width:0;border-left:0;border-radius:0 5px 5px 0}.history-select{position:relative;height:32px;display:flex;align-items:center;padding:0 28px 0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;cursor:pointer}.history-select .placeholder{color:#bbb}.history-select .arrow{position:absolute;right:10px;color:#999;font-style:normal}.history-select-panel{position:absolute;left:0;right:0;top:35px;z-index:530;min-width:115px;padding:5px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002}.history-select-panel button{display:block;width:100%;height:34px;padding:0 10px;border:0;border-radius:3px;background:#fff;text-align:left}.history-select-panel button:hover,.history-select-panel button.active{background:#f2f3f5}.history-time{position:relative}.history-time .date-picker{width:510px}.history-filter-actions{display:flex;gap:8px}.history-note{height:50px;display:flex;align-items:center;margin-top:10px;padding:0 15px;border:1px solid #ffe58f;border-radius:4px;background:#fffbe6;color:#8c6d1f}.history-note i{width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;margin-right:10px;border-radius:50%;background:#faad14;color:#fff;font-style:normal}.history-toolbar{margin:10px 0}.history-scroll{overflow:auto;max-height:44vh}.history-table{width:100%;min-width:1120px;border-collapse:collapse;font-size:13px}.history-table th,.history-table td{padding:10px 9px;height:44px;border:1px solid #d5d7dc;text-align:left}.history-table th{background:#eee}.history-table .center{text-align:center}.status-pill{display:inline-block;padding:4px 10px;border-radius:4px;color:#fff;background:#12c98a}.status-pill.processing{background:#409eff}.status-pill.partial{background:#e6a23c}.status-pill.failed{background:#f56c6c}.download-link{border:0;background:none;color:#3d68ff;padding:0}.danger-link{border:0;background:none;color:#f56c6c}.history-pager{height:40px;display:flex;align-items:center;justify-content:flex-end;gap:8px}.history-pager .page-btn.active{border-color:#3d68ff}
+.progress-track{height:12px;margin:18px 0 10px;border-radius:8px;background:#edf0f5;overflow:hidden}.progress-fill{height:100%;width:0;background:#3d68ff;transition:width .2s}.progress-label{text-align:center;color:#606266}
+.toast-wrap{position:fixed;top:55px;left:50%;transform:translateX(-50%);z-index:4000}.toast{padding:10px 18px;margin-bottom:8px;border:1px solid #d8edcd;border-radius:5px;background:#f0f9eb;color:#529b2e;box-shadow:0 4px 14px #0001}.toast.warning{background:#fdf6ec;border-color:#fae4c2;color:#b98225}.toast.error{background:#fef0f0;border-color:#fbc4c4;color:#c45656}.toast.info{background:#edf4ff;border-color:#cadbff;color:#3d68ff}
+.notification{position:fixed;right:18px;top:54px;z-index:3500;width:370px;max-width:calc(100vw - 36px);padding:14px 36px 14px 18px;border:1px solid #ebeef5;border-radius:6px;background:#fff;box-shadow:0 5px 24px #0002}.notification strong{display:block;margin-bottom:5px;color:#67c23a}.notification button{position:absolute;right:10px;top:7px;border:0;background:none;color:#909399;font-size:21px}
+@media(max-width:1300px){.history-filters{grid-template-columns:120px 300px 120px 120px minmax(330px,1fr) auto}}
+body{overflow:hidden}.layout{height:calc(100vh - 38px);min-height:0}.main{height:calc(100vh - 38px);padding:0 10px 54px!important;overflow:auto}.filter-card{margin-top:8px}html.erp-embedded .layout,html.erp-embedded .main{height:100vh}
+</style>
+<script>
+(function(){
+  var u=new URL(location.href),t=u.searchParams.get('_fresh')||u.searchParams.get('_t');
+  if(!t){u.searchParams.set('_fresh',Date.now());location.replace(u.href);return}
+  if(u.searchParams.has('_fresh')){u.searchParams.delete('_fresh');try{history.replaceState(null,'',u.href)}catch(e){}}
+  document.write('<script src="公共组件库.js?_t='+encodeURIComponent(t)+'"><\/script>');
+  document.write('<script src="菜单.js?_t='+encodeURIComponent(t)+'"><\/script>');
+})();
+</script>
+</head>
+<body>
+<div class="layout" id="logLayout">
+<main class="main">
+<div id="logContent">
+<section class="card filter-card">
+  <form id="queryForm">
+    <div class="location-filter-grid">
+      <div class="field"><label id="warehouseLabel">仓库</label><div class="search-select" id="warehouseSelect"><button type="button" class="select-button placeholder" id="warehouseButton" aria-labelledby="warehouseLabel warehouseButton" aria-haspopup="listbox" aria-expanded="false">请选择</button><span class="select-arrow">⌄</span><div class="select-panel hidden" id="warehousePanel"><input class="text-input" id="warehouseSearch" placeholder="搜索仓库" aria-label="搜索仓库"><div class="select-options" id="warehouseOptions" role="listbox" aria-label="仓库选项"></div></div></div></div>
+      <div class="field"><label for="skuText">商品SKU</label><input class="text-input" id="skuText" placeholder="双击可批量查询" autocomplete="off"></div>
+      <div class="field"><label for="oldLocationText">旧仓位</label><input class="text-input" id="oldLocationText" placeholder="双击可批量查询" autocomplete="off"></div>
+      <div class="field"><label for="newLocationText">新仓位</label><input class="text-input" id="newLocationText" placeholder="双击可批量查询" autocomplete="off"></div>
+      <div class="field"><label>处理人</label><div class="floating-select" id="operatorSelect"></div></div>
+      <div class="field"><label>换标</label><div data-tiles="relabel"></div></div>
+    </div>
+    <div class="location-filter-grid">
+      <div class="field method-field"><label>修改方式</label><div data-tiles="method"></div></div>
+      <div class="field time-field"><label>处理时间</label><div class="time-picker"><div class="picker-range" id="mainDateRange"><span id="mainStartText">开始日期　　开始时间</span><span class="dash">~</span><span id="mainEndText">结束日期　　结束时间</span></div><div class="date-picker hidden" id="mainDatePicker"><div class="date-shortcuts" id="mainDateShortcuts"><button type="button" data-days="0">今天</button><button type="button" data-days="1">昨天</button><button type="button" data-days="2">前天</button><button type="button" data-range="3">近3天</button><button type="button" data-range="7">近7天</button><button type="button" data-range="15">近15天</button><button type="button" data-range="30">近30天</button><button type="button" data-range="90">近90天</button><button type="button" data-not-today>非今天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" id="mainPrevYear">≪</button><button type="button" class="cal-nav" id="mainPrevMonth">‹</button><span class="cal-title" id="mainCalTitle"></span><button type="button" class="cal-nav" id="mainNextMonth">›</button><button type="button" class="cal-nav" id="mainNextYear">≫</button></div><div class="cal-grid" id="mainCalGrid"></div></div></div></div></div>
+      <div class="location-filter-actions"><button class="btn" type="button" id="resetQuery">重 置</button><button class="btn primary" type="submit">查 询</button></div>
+    </div>
+  </form>
+</section>
+<section class="card">
+  <div class="toolbar"><div class="export-wrap" id="exportWrap"><button class="btn" id="exportToggle" aria-haspopup="menu">导出相关 ⌄</button><div class="export-menu" role="menu"><button id="exportBtn" role="menuitem">导出</button><button id="historyBtn" role="menuitem">历史导出任务</button></div></div></div>
+  <div class="table-scroll" id="tableScroll"><table class="log-table"><colgroup><col style="width:44px"><col style="width:84px"><col style="width:250px"><col style="width:250px"><col style="width:250px"><col style="width:130px"><col style="width:195px"></colgroup><thead><tr>
+    <th class="center"><input type="checkbox" id="checkAll" aria-label="全选当前页"></th><th>缩略图</th><th>商品SKU<span>商品名称</span></th><th>拓展属性</th><th>仓库<span>修改方式</span></th><th>新仓位<span>旧仓位</span></th><th><button class="sort-btn" id="sortTime" aria-label="处理时间，当前降序" aria-pressed="true">处理人<i class="sort-arrows"><b id="sortAsc">▴</b><b id="sortDesc" class="active">▾</b></i></button><span>处理时间</span></th>
+  </tr></thead><tbody id="logBody"></tbody></table></div>
+</section>
+<div class="pager"><span class="selection-count" id="selectionCount">已选中 0 条</span><span id="totalCount">共 0 条</span><button class="page-btn" id="prevPage" aria-label="上一页">‹</button><div class="page-numbers" id="pageNumbers"></div><button class="page-btn" id="nextPage" aria-label="下一页">›</button><select id="pageSize" aria-label="每页条数"><option value="10">10 条/页</option><option value="20">20 条/页</option><option value="30">30 条/页</option><option value="50">50 条/页</option><option value="100" selected>100 条/页</option><option value="200">200 条/页</option><option value="500">500 条/页</option></select><span>跳至</span><input type="number" class="jump-input" id="jumpPage" min="1" aria-label="跳转页码"><span>页</span></div>
+</div>
+</main>
+</div>
+<div class="mask" id="historyMask" role="dialog" aria-modal="true" aria-labelledby="historyTitle"><div class="modal history-modal"><div class="modal-head"><span id="historyTitle">历史导出任务</span><button class="modal-close" data-close aria-label="关闭">×</button></div><div class="modal-body">
+  <div class="history-filters"><div class="field"><label>状态</label><div class="history-select" id="historyStatus"><span class="placeholder">请选择</span><i class="arrow">⌕</i></div></div><div class="field"><label>任务名称</label><div class="history-name-control"><div class="history-select" id="historyNameMode"><span>开头是</span><i class="arrow">⌄</i></div><input class="text-input" id="historyName" placeholder="请输入"></div></div><div class="field"><label>文件类型</label><div class="history-select" id="historyFileType"><span class="placeholder">请选择</span><i class="arrow">⌕</i></div></div><div class="field"><label>导出类型</label><div class="history-select" id="historyExportType"><span class="placeholder">请选择</span><i class="arrow">⌕</i></div></div><div class="field history-time"><label>时间范围</label><div class="picker-range" id="historyDateRange"><span id="historyStartText">开始日期　　开始时间</span><span class="dash">~</span><span id="historyEndText">结束日期　　结束时间</span></div><div class="date-picker hidden" id="historyDatePicker"><div class="date-shortcuts" id="historyDateShortcuts"><button type="button" data-days="0">今天</button><button type="button" data-days="1">昨天</button><button type="button" data-days="2">前天</button><button type="button" data-range="3">近3天</button><button type="button" data-range="7">近7天</button><button type="button" data-range="15">近15天</button><button type="button" data-range="30">近30天</button><button type="button" data-range="90">近90天</button><button type="button" data-not-today>非今天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" id="historyPrevYear">≪</button><button type="button" class="cal-nav" id="historyPrevMonth">‹</button><span class="cal-title" id="historyCalTitle"></span><button type="button" class="cal-nav" id="historyNextMonth">›</button><button type="button" class="cal-nav" id="historyNextYear">≫</button></div><div class="cal-grid" id="historyCalGrid"></div></div></div></div><div class="history-filter-actions"><button class="btn" id="historyReset">重置</button><button class="btn primary" id="historyQuery">查询</button></div></div>
+  <div class="history-note"><i>!</i>导出任务创建时间距今超过半年的系统自动删除</div><div class="history-toolbar"><button class="btn danger" id="historyBatchDelete">批量删除</button></div>
+  <div class="history-scroll"><table class="history-table"><colgroup><col style="width:60px"><col><col style="width:100px"><col style="width:110px"><col style="width:120px"><col style="width:175px"><col style="width:175px"><col style="width:110px"><col style="width:110px"></colgroup><thead><tr><th class="center"><input type="checkbox" id="historyCheckAll" aria-label="全选导出任务"></th><th>任务名称</th><th>文件类型</th><th>导出类型</th><th>操作人</th><th>操作时间</th><th>完成时间</th><th class="center">状态</th><th class="center">操作</th></tr></thead><tbody id="historyBody"></tbody></table></div><div class="history-pager"><span id="historyTotal">共 0 条</span><button class="page-btn" disabled>‹</button><button class="page-btn active">1</button><button class="page-btn" disabled>›</button><select class="native-select" style="width:92px"><option>10 条/页</option></select></div>
+</div></div></div>
+<div class="mask" id="progressMask" role="dialog" aria-modal="true" aria-labelledby="progressTitle"><div class="modal"><div class="modal-head" id="progressTitle">正在导出修改仓位日志</div><div class="modal-body"><div class="muted" id="exportRecordCount"></div><div class="progress-track" role="progressbar" aria-label="导出进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="exportProgress"><div class="progress-fill" id="progressFill"></div></div><div class="progress-label" id="progressLabel">0%</div></div></div></div>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<div class="notification hidden" id="exportNotification" role="status"><strong>导出完成</strong><div>修改仓位日志导出完成，请前往历史导出任务中查看导出结果</div><button id="closeNotification" aria-label="关闭导出完成提示">×</button></div>
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)},$$=function(s){return Array.from(document.querySelectorAll(s))};
+var esc=ERPComponents.escapeHtml;
+var account={id:'XWD'};
+var warehouses=[{name:'HF的私人仓库5别选',enabled:true},{name:'振华仓1',enabled:true},{name:'马甲七',enabled:true},{name:'验证仓',enabled:true},{name:'云县中仓',enabled:true},{name:'虚拟仓',enabled:true},{name:'XWD仓',enabled:true},{name:'仓库001',enabled:true},{name:'甜品仓',enabled:true},{name:'HQ',enabled:true},{name:'ck01',enabled:true},{name:'停用仓库A',enabled:false}];
+var people=[{name:'XWD',enabled:true},{name:'林小明',enabled:true},{name:'张三',enabled:true},{name:'YCS',enabled:true},{name:'黄小可',enabled:true},{name:'ABC',enabled:false}];
+var categories=[{name:'分类2',enabled:true},{name:'A类',enabled:true},{name:'常规分类',enabled:true},{name:'服饰鞋包',enabled:true},{name:'电子产品',enabled:true},{name:'停用分类',enabled:false}];
+var products=[
+{sku:'DZYSKU001',name:'DZY1',thumb:'🥐'},
+{sku:'20251126_UPFFQUU_t03_1',name:'df-请勿修改-Auto-女士卫衣秋冬款1126oaJFW',thumb:'🧥'},
+{sku:'df-111112',name:'复制组合商品定制品-多属性',thumb:'🐞'},
+{sku:'SKU-XWD-006',name:'纯棉圆领T恤',thumb:'👕'},
+{sku:'JG20260506-AVBDJ',name:'Auto李宁跑步机0506ysDNi',thumb:'🍊'},
+{sku:'YCS202506110001',name:'bug复现-wzg',thumb:'🧸'},
+{sku:'西瓜002',name:'西瓜002',thumb:'🍉'},
+{sku:'AUTO_20260524223456_62e65i_',name:'Auto-商品-20260524223456',thumb:'⚠️'},
+{sku:'SKU-XWD-009',name:'旅行收纳包',thumb:'🎒'},
+{sku:'SKU-XWD-012',name:'无线耳机',thumb:'🎧'},
+{sku:'zenguq77',name:'官网0321',thumb:'📦'},
+{sku:'tang-h1',name:'大衣',thumb:'🧥'}
+];
+var OUTBOUND_TYPES=['销售出库','调拨出库','盘亏出库','手工出库'];
+var ORDER_TYPES=['单品','单品单量','单品多量','多品'];
+var SHIP_TYPES=['称重出库','单品发货','多品发货','爆款发货','多品协作发货','调拨发货','盘亏出库','标记发货','损耗出库','内销出库','转移库存','样品带出','收货多入','采购退货','快速发货','入库直发'];
+var LOCATIONS=['1017153-01-01','1017153-02-01','1017153-01-02','1017154-01-01','A01-01-01','C01-01-01','ycs02-01-10','M01-01-01','--'];
+function pad(n){return String(n).padStart(2,'0')}
+function formatTime(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
+function stamp(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds())}
+function timeValue(text){return text&&text!=='--'?new Date(String(text).replace(' ','T')).getTime():null}
+function read(key,fallback){try{var raw=localStorage.getItem(key);return raw===null?fallback:JSON.parse(raw)}catch(e){return fallback}}
+function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(e){return false}}
+function toast(message,type){var el=document.createElement('div');el.className='toast '+(type||'');el.textContent=message;$('#toastWrap').appendChild(el);setTimeout(function(){el.remove()},3200)}
+window.toast=function(type,message){toast(message,type)};
+var seed=20260918;
+function rnd(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}
+function pick(arr){return arr[Math.floor(rnd()*arr.length)]}
+function pickPerson(){return pick(people.filter(function(p){return p.enabled})).name}
+/* ---------- 演示数据：内置 9,455 条修改仓位日志 ---------- */
+var ROWS=[];
+var baseMs=new Date(2026,8,18,13,54,40).getTime();
+ROWS.push({id:'OL-1',batch:'MS2026091817918047',sku:'DZYSKU001',name:'DZY1',thumb:'🥐',outboundType:'销售出库',orderType:'单品',shipType:'标记发货',category:'--',warehouse:'马甲七',location:'--',qty:2,outQty:0,deduct:'否',custom:true,picker:'--',shipper:'--',outTime:'2026-09-18 13:54:40',timeMs:baseMs,taskOperator:'--',taskTime:'--',taskMs:null});
+ROWS.push({id:'OL-2',batch:'SP2026091868021910',sku:'20251126_UPFFQUU_t03_1',name:'df-请勿修改-Auto-女士卫衣秋冬款1126oaJFW',thumb:'🧥',outboundType:'销售出库',orderType:'单品',shipType:'单品发货',category:'--',warehouse:'振华仓1',location:'1017153-01-01',qty:1,outQty:1,deduct:'是',custom:false,picker:'林小明',shipper:'张三',outTime:'2026-09-18 12:02:06',timeMs:new Date(2026,8,18,12,2,6).getTime(),taskOperator:'XWD',taskTime:'2026-09-18 11:41:18',taskMs:new Date(2026,8,18,11,41,18).getTime()});
+ROWS.push({id:'OL-3',batch:'SP2026091837914021',sku:'df-111112',name:'复制组合商品定制品-多属性',thumb:'🐞',outboundType:'销售出库',orderType:'单品',shipType:'单品发货',category:'分类2',warehouse:'振华仓1',location:'1017153-02-01',qty:1,outQty:1,deduct:'是',custom:true,picker:'林小明',shipper:'XWD',outTime:'2026-09-18 11:35:08',timeMs:new Date(2026,8,18,11,35,8).getTime(),taskOperator:'XWD',taskTime:'2026-09-18 11:34:06',taskMs:new Date(2026,8,18,11,34,6).getTime()});
+var cursor=baseMs;
+for(var i=3;i<16365;i++){
+  cursor-=(40+rnd()*120)*1000;
+  var d=new Date(cursor);
+  var r1=rnd();
+  var outbound=r1<0.86?'销售出库':r1<0.93?'调拨出库':r1<0.97?'盘亏出库':'手工出库';
+  var prefix=outbound==='销售出库'?'SP':outbound==='调拨出库'?'DB':outbound==='盘亏出库'?'PK':'MS';
+  var p=pick(products);
+  var shipType=pick(SHIP_TYPES);
+  var marked=shipType==='标记发货';
+  var qty=1+Math.floor(rnd()*5);
+  var hasTask=!marked&&rnd()<0.85;
+  var taskMs=hasTask?cursor-(60+rnd()*1800)*1000:null;
+  ROWS.push({
+    id:'OL-'+(i+1),
+    batch:prefix+stamp(d).slice(0,8)+String(100000000+Math.floor(rnd()*899999999)),
+    sku:p.sku,name:p.name,thumb:p.thumb,
+    outboundType:outbound,orderType:pick(ORDER_TYPES),shipType:shipType,
+    category:rnd()<0.55?'--':pick(categories.filter(function(c){return c.enabled})).name,
+    warehouse:pick(warehouses.filter(function(w){return w.enabled})).name,
+    location:pick(LOCATIONS),
+    qty:qty,outQty:marked?0:qty,
+    deduct:marked?(rnd()<0.7?'否':'是'):(rnd()<0.9?'是':'否'),
+    custom:rnd()<0.25,
+    picker:marked?'--':(rnd()<0.8?pickPerson():'--'),
+    shipper:marked?'--':(rnd()<0.8?pickPerson():'--'),
+    outTime:formatTime(d),timeMs:cursor,
+    taskOperator:hasTask?pickPerson():'--',
+    taskTime:hasTask?formatTime(new Date(taskMs)):'--',
+    taskMs:taskMs
+  });
+}
+/* ---------- 状态 ---------- */
+var METHODS=['入库上架','退包上架','手动修改仓位','任务修改仓位','调拨入库','手工入库','商品SKU','盘点'];
+ROWS=ROWS.slice(0,9455).map(function(r,index){var oldLocation=r.location==='--'?pick(LOCATIONS.filter(function(v){return v!=='--'})):r.location;var newLocation=index%6===0?'--':pick(LOCATIONS.filter(function(v){return v!=='--'&&v!==oldLocation}));return {id:'LL-'+(index+1),sku:r.sku,name:r.name,thumb:r.thumb,attr:index%4===0?'颜色：蓝色 / 尺码：M':'',warehouse:r.warehouse,method:pick(METHODS),newLocation:newLocation,oldLocation:oldLocation,operator:r.picker==='--'?pickPerson():r.picker,processTime:r.outTime,timeMs:r.timeMs,relabel:index%5===2||index%5===3}});
+[
+  {sku:'OG20260917-XFTZK',name:'AutoiPhone15ProMax0917UuCFL',thumb:'📱',warehouse:'HF的私人仓库5别选',method:'手工入库',newLocation:'A20-05-28',oldLocation:'--',operator:'HF',processTime:'2026-09-17 15:01:22',relabel:false},
+  {sku:'YP20260917-UJEDH',name:'Auto刀具全套不打折0917vFbRM',thumb:'🗄️',warehouse:'HF的私人仓库5别选',method:'手工入库',newLocation:'C30-01-03',oldLocation:'--',operator:'HF',processTime:'2026-09-17 14:50:53',relabel:false},
+  {sku:'VG20260917-CKHTN',name:'Auto裙子0917AZWAP',thumb:'🖤',warehouse:'HF的私人仓库5别选',method:'任务修改仓位',newLocation:'D04-01-04',oldLocation:'C05-06-04',operator:'黄小可',processTime:'2026-09-17 14:13:17',relabel:true},
+  {sku:'ZS20260917-HAPMU',name:'Auto大塞尼矿泉水300ml0917VtzWg',thumb:'🪪',warehouse:'HF的私人仓库5别选',method:'任务修改仓位',newLocation:'D04-01-04',oldLocation:'C06-07-17',operator:'黄小可',processTime:'2026-09-17 14:13:09',relabel:true},
+  {sku:'RU20260917-XOQDN',name:'Auto迪奥洁面乳0917rGbeJ',thumb:'🥫',warehouse:'HF的私人仓库5别选',method:'任务修改仓位',newLocation:'D04-01-04',oldLocation:'C21-02-12',operator:'黄小可',processTime:'2026-09-17 14:12:58',relabel:true},
+  {sku:'NJ20260917-SJUDQ',name:'Auto卡通图案地毯0917EHqvs',thumb:'🧢',warehouse:'HF的私人仓库5别选',method:'任务修改仓位',newLocation:'D04-01-04',oldLocation:'A02-04-10',operator:'黄小可',processTime:'2026-09-17 14:12:50',relabel:true}
+].forEach(function(sample,index){Object.assign(ROWS[index],sample,{timeMs:timeValue(sample.processTime)})});
+function defaultFilters(){return {warehouse:'',sku:'',oldLocation:'',newLocation:'',operator:'',relabel:'全部',method:'全部'}}
+var state={page:1,pageSize:100,ascending:false,selected:new Set(),historySelected:new Set(),batches:{sku:[],oldLocation:[],newLocation:[]},filters:defaultFilters(),query:null};
+var filteredRows=[],exportBusy=false,returnFocus=null;
+/* ---------- 筛选控件（全部复用公共组件库） ---------- */
+var warehouseCtl=ERPComponents.createSearchDropdown({root:'#warehouseSelect',button:'#warehouseButton',panel:'#warehousePanel',search:'#warehouseSearch',list:'#warehouseOptions',fieldName:'仓库',value:'',placeholder:'请选择',allLabel:'全部仓库',emptyLabel:'暂无数据',items:warehouses,getValue:function(w){return w.name},getLabel:function(w){return w.name+(w.enabled?'':'（停用）')},onChange:function(value){state.filters.warehouse=value;applyQuery()}});
+ERPComponents.createFloatingSelect({el:$('#operatorSelect'),options:people.map(function(p){return {value:p.name,label:p.name,enabled:p.enabled}}),searchable:false,placeholder:'请选择',fieldName:'人员',disabledLabel:'显示停用人员',onChange:function(v){state.filters.operator=v}});
+var tileControls={};
+[{key:'method',options:['全部'].concat(METHODS)},{key:'relabel',options:['全部','是','否']}].forEach(function(cfg){
+  tileControls[cfg.key]=ERPComponents.createTileGroup({root:$('[data-tiles="'+cfg.key+'"]'),options:cfg.options,value:'全部',onChange:function(v){state.filters[cfg.key]=v;applyQuery()}});
+});
+function closeDatePickers(except){['mainDatePicker','historyDatePicker'].forEach(function(id){if(id!==except)$('#'+id).classList.add('hidden')})}
+function setupDatePicker(options){options.closeOthers=function(openPanel){closeDatePickers(openPanel?openPanel.id:'');$$('.history-select-panel').forEach(function(panel){panel.classList.add('hidden')})};return ERPComponents.createDateRangePicker(options)}
+var mainDateCtl=setupDatePicker({trigger:'#mainDateRange',panel:'#mainDatePicker',shortcuts:'#mainDateShortcuts',grid:'#mainCalGrid',title:'#mainCalTitle',startText:'#mainStartText',endText:'#mainEndText',prevMonth:'#mainPrevMonth',nextMonth:'#mainNextMonth',prevYear:'#mainPrevYear',nextYear:'#mainNextYear'});
+function bindBatch(source,key,label){return ERPComponents.createBatchSearch({source:source,title:'批量搜索',fields:[label],onConfirm:function(values){state.batches[key]=values;$(source).value=values.length?'已输入 '+values.length+' 个'+label:'';applyQuery()}})}
+bindBatch('#skuText','sku','商品SKU');bindBatch('#oldLocationText','oldLocation','旧仓位');bindBatch('#newLocationText','newLocation','新仓位');
+/* ---------- 查询 / 渲染 ---------- */
+function applyQuery(){
+  var start=mainDateCtl.getStart(),end=mainDateCtl.getEnd();
+  if(start&&end&&start>end){toast('开始时间不能晚于结束时间','warning');return}
+  var f=state.filters;
+  f.sku=state.batches.sku.length?'':$('#skuText').value.trim().toLowerCase();f.oldLocation=state.batches.oldLocation.length?'':$('#oldLocationText').value.trim().toLowerCase();f.newLocation=state.batches.newLocation.length?'':$('#newLocationText').value.trim().toLowerCase();
+  state.query={warehouse:f.warehouse,sku:f.sku,oldLocation:f.oldLocation,newLocation:f.newLocation,operator:f.operator,relabel:f.relabel,method:f.method,start:start,end:end,batches:{sku:state.batches.sku.map(function(v){return v.toLowerCase()}),oldLocation:state.batches.oldLocation.map(function(v){return v.toLowerCase()}),newLocation:state.batches.newLocation.map(function(v){return v.toLowerCase()})}};
+  state.page=1;state.selected.clear();computeRows();renderList();
+}
+function computeRows(){
+  var q=state.query;
+  filteredRows=ROWS.filter(function(r){
+    if(q.warehouse&&r.warehouse!==q.warehouse)return false;
+    if(q.operator&&r.operator!==q.operator)return false;if(q.method!=='全部'&&r.method!==q.method)return false;if(q.relabel!=='全部'&&(q.relabel==='是')!==r.relabel)return false;
+    if((q.start||q.end)&&(q.start&&r.timeMs<q.start||q.end&&r.timeMs>q.end))return false;
+    if(q.batches.sku.length?q.batches.sku.indexOf(r.sku.toLowerCase())<0:q.sku&&r.sku.toLowerCase().indexOf(q.sku)<0)return false;
+    if(q.batches.oldLocation.length?q.batches.oldLocation.indexOf(r.oldLocation.toLowerCase())<0:q.oldLocation&&r.oldLocation.toLowerCase().indexOf(q.oldLocation)<0)return false;
+    if(q.batches.newLocation.length?q.batches.newLocation.indexOf(r.newLocation.toLowerCase())<0:q.newLocation&&r.newLocation.toLowerCase().indexOf(q.newLocation)<0)return false;
+    return true;
+  }).sort(function(a,b){var diff=a.timeMs-b.timeMs||a.id.localeCompare(b.id);return state.ascending?diff:-diff});
+}
+function resetQuery(){
+  state.filters=defaultFilters();state.batches={sku:[],oldLocation:[],newLocation:[]};
+  $('#skuText').value='';$('#oldLocationText').value='';$('#newLocationText').value='';
+  warehouseCtl.set('',true);$('#warehouseSearch').value='';
+  $('#operatorSelect').setValue('',true);
+  Object.keys(tileControls).forEach(function(k){tileControls[k].setValue('全部',true)});
+  mainDateCtl.reset();applyQuery();
+}
+function pageCount(){return Math.max(1,Math.ceil(filteredRows.length/state.pageSize))}
+function currentPageRows(){return filteredRows.slice((state.page-1)*state.pageSize,state.page*state.pageSize)}
+function renderList(){
+  state.page=Math.min(state.page,pageCount());var rows=currentPageRows(),offset=(state.page-1)*state.pageSize;
+  $('#logBody').innerHTML=rows.length?rows.map(function(r,index){return '<tr class="'+(state.selected.has(r.id)?'selected':'')+'"><td class="center"><div class="row-selector"><span>'+(offset+index+1)+'</span><input type="checkbox" class="row-check" data-id="'+r.id+'" aria-label="选择第'+(offset+index+1)+'条日志" '+(state.selected.has(r.id)?'checked':'')+'></div></td><td><div class="thumb" role="img" aria-label="'+esc(r.name)+'">'+esc(r.thumb)+'</div></td><td><div class="cell-lines"><div class="sku-line"><a class="sku-link" data-detail="'+esc(r.sku)+'">'+esc(r.sku)+'</a><button class="copy" data-copy="'+esc(r.sku)+'" aria-label="复制SKU"></button>'+(r.relabel?'<span class="relabel-tag">换标</span>':'')+'</div><span>'+esc(r.name)+'</span></div></td><td>'+esc(r.attr||'')+'</td><td><div class="cell-lines"><span>'+esc(r.warehouse)+'</span><span>'+esc(r.method)+'</span></div></td><td><div class="cell-lines"><span>'+esc(r.newLocation)+'</span><span>'+esc(r.oldLocation)+'</span></div></td><td><div class="cell-lines"><span>'+esc(r.operator)+'</span><span>'+esc(r.processTime)+'</span></div></td></tr>'}).join(''):'<tr><td colspan="7" class="empty-cell">暂无数据</td></tr>';
+  $('#totalCount').textContent='共 '+filteredRows.length.toLocaleString()+' 条';
+  updateSelection();renderPager();
+}
+function updateSelection(){
+  var rows=currentPageRows(),count=rows.filter(function(r){return state.selected.has(r.id)}).length;
+  $('#checkAll').checked=rows.length>0&&count===rows.length;$('#checkAll').indeterminate=count>0&&count<rows.length;$('#checkAll').disabled=!rows.length;
+  $('#selectionCount').textContent='已选中 '+state.selected.size+' 条';
+}
+var pagerCtl=ERPComponents.createPagination({numbers:'#pageNumbers',previous:'#prevPage',next:'#nextPage',jump:'#jumpPage',onChange:goPage,onPrevious:function(){goPage(state.page-1)},onNext:function(){goPage(state.page+1)}});
+function renderPager(){pagerCtl.render({page:state.page,pageCount:pageCount()})}
+function goPage(page){if(!Number.isInteger(page)||page<1||page>pageCount()){toast('请输入有效页码','warning');return}state.page=page;renderList()}
+async function copyText(text){
+  try{if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(text);else{var input=document.createElement('textarea');input.value=text;input.style.position='fixed';input.style.left='-9999px';document.body.appendChild(input);input.select();var ok=document.execCommand('copy');input.remove();if(!ok)throw Error('copy failed')}toast('已复制：'+text)}
+  catch(e){toast('复制失败，请手动复制','warning')}
+}
+/* ---------- 导出（CSV） ---------- */
+var EXPORT_HEADS=['商品SKU','商品名称','拓展属性','仓库','修改方式','新仓位','旧仓位','处理人','处理时间','换标'];
+function exportRow(r){return [r.sku,r.name,r.attr,r.warehouse,r.method,r.newLocation,r.oldLocation,r.operator,r.processTime,r.relabel?'是':'否']}
+function downloadCsv(filename,headers,rows){var content='﻿'+[headers].concat(rows).map(function(row){return row.map(function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'}).join(',')}).join('\r\n');var blob=new Blob([content],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000)}
+var taskKey='wms-location-change-log-exports-'+account.id,tasks=read(taskKey,null);
+if(!Array.isArray(tasks)){
+  var now0=new Date(),older=new Date(now0.getTime()-3600000),oldest=new Date(now0.getTime()-7200000);
+  tasks=[{id:'DEMO-SUCCESS',accountId:account.id,name:'修改仓位日志-'+stamp(older)+'.csv',fileType:'普通文件',exportType:'实时导出',user:account.id,started:formatTime(older),completed:formatTime(new Date(older.getTime()+4000)),status:'成功',rows:ROWS.slice(0,6).map(exportRow)},{id:'DEMO-PROCESS',accountId:account.id,name:'修改仓位日志-'+stamp(now0)+'.csv',fileType:'普通文件',exportType:'实时导出',user:account.id,started:formatTime(now0),completed:'',status:'处理中',rows:[]},{id:'DEMO-FAILED',accountId:account.id,name:'修改仓位日志-'+stamp(oldest)+'.csv',fileType:'普通文件',exportType:'实时导出',user:account.id,started:formatTime(oldest),completed:formatTime(new Date(oldest.getTime()+2000)),status:'失败',rows:[]}];
+}
+tasks=tasks.map(function(t){t.fileType=t.fileType||'普通文件';t.exportType=t.exportType||'实时导出';t.user=t.user||account.id;if(t.status==='导出成功')t.status='成功';if(t.status==='导出失败')t.status='失败';return t});
+function pruneTasks(){var cutoff=new Date();cutoff.setMonth(cutoff.getMonth()-6);tasks=tasks.filter(function(t){return t.accountId===account.id&&timeValue(t.started)>=cutoff.getTime()});write(taskKey,tasks)}
+function openModal(id){returnFocus=document.activeElement;$('#'+id).classList.add('show')}
+function closeModal(mask){mask.classList.remove('show');if(returnFocus&&returnFocus.isConnected)returnFocus.focus()}
+function setProgress(value){$('#progressFill').style.width=value+'%';$('#progressLabel').textContent=value+'%';$('#exportProgress').setAttribute('aria-valuenow',value)}
+function pause(ms){return new Promise(function(resolve){setTimeout(resolve,ms)})}
+async function createExport(){
+  if(exportBusy)return;
+  var rows=state.selected.size?filteredRows.filter(function(r){return state.selected.has(r.id)}):filteredRows;
+  if(!rows.length){toast('暂无可导出数据','warning');return}
+  var capped=rows.length>5000;
+  var now=new Date(),task={id:'TASK-'+Date.now(),accountId:account.id,name:'修改仓位日志-'+stamp(now)+'.csv',fileType:'普通文件',exportType:'实时导出',user:account.id,started:formatTime(now),completed:'',status:'处理中',rows:rows.slice(0,5000).map(exportRow)};
+  exportBusy=true;$('#exportBtn').disabled=true;$('#exportWrap').classList.remove('open');tasks.unshift(task);pruneTasks();setProgress(0);$('#exportRecordCount').textContent='正在导出 '+rows.length.toLocaleString()+' 条记录'+(capped?'（演示环境最多导出前 5000 条）':'');openModal('progressMask');
+  try{
+    for(var p=20;p<=80;p+=20){await pause(180);setProgress(p)}
+    await pause(180);downloadCsv(task.name,EXPORT_HEADS,task.rows);task.status='成功';task.completed=formatTime(new Date());write(taskKey,tasks);setProgress(100);await pause(250);closeModal($('#progressMask'));toast('导出成功：修改仓位日志导出成功');$('#exportNotification').classList.remove('hidden');
+  }catch(e){task.status='失败';task.completed=formatTime(new Date());write(taskKey,tasks);closeModal($('#progressMask'));toast('导出失败，请重试','error')}
+  finally{exportBusy=false;$('#exportBtn').disabled=false;if($('#historyMask').classList.contains('show'))renderHistory()}
+}
+/* ---------- 历史导出任务 ---------- */
+function setupHistorySelect(id,options,initial){return ERPComponents.createStaticDropdown({control:id,items:options,value:initial,closeOthers:function(panel){$$('.history-select-panel').forEach(function(other){if(other!==panel)other.classList.add('hidden')});closeDatePickers()}})}
+var historyStatusCtl=setupHistorySelect('#historyStatus',['处理中','成功','部分成功','失败'],''),historyNameModeCtl=setupHistorySelect('#historyNameMode',['等于','包含','开头是','结尾是'],'开头是'),historyFileTypeCtl=setupHistorySelect('#historyFileType',['共享文件','普通文件'],''),historyExportTypeCtl=setupHistorySelect('#historyExportType',['实时导出','定时导出'],'');
+var historyDateCtl=setupDatePicker({trigger:'#historyDateRange',panel:'#historyDatePicker',shortcuts:'#historyDateShortcuts',grid:'#historyCalGrid',title:'#historyCalTitle',startText:'#historyStartText',endText:'#historyEndText',prevMonth:'#historyPrevMonth',nextMonth:'#historyNextMonth',prevYear:'#historyPrevYear',nextYear:'#historyNextYear'}),historyFiltered=[];
+var historyTaskCtl=ERPComponents.createHistoryExportTasks({timeValue:timeValue,timeField:'started'});
+function historyStatusClass(status){return status==='成功'?'':status==='处理中'?'processing':status==='部分成功'?'partial':'failed'}
+function renderHistory(){
+  pruneTasks();var start=historyDateCtl.getStart(),end=historyDateCtl.getEnd(),status=$('#historyStatus').dataset.value,name=$('#historyName').value.trim(),mode=$('#historyNameMode').dataset.value,fileType=$('#historyFileType').dataset.value,exportType=$('#historyExportType').dataset.value;
+  if(start&&end&&start>end){toast('开始时间不能晚于结束时间','warning');return}
+  historyFiltered=historyTaskCtl.filter(tasks,{start:start,end:end,status:status,name:name,nameMode:mode,fileType:fileType,exportType:exportType});
+  $('#historyBody').innerHTML=historyFiltered.length?historyFiltered.map(function(t){return '<tr><td class="center"><input class="history-check" type="checkbox" data-task="'+esc(t.id)+'" '+(state.historySelected.has(t.id)?'checked':'')+'></td><td>'+esc(t.name)+'</td><td>'+esc(t.fileType)+'</td><td>'+esc(t.exportType)+'</td><td>'+esc(t.user)+'</td><td>'+esc(t.started)+'</td><td>'+esc(t.completed||'—')+'</td><td class="center"><span class="status-pill '+historyStatusClass(t.status)+'">'+esc(t.status)+'</span></td><td class="center">'+(t.status==='成功'||t.status==='部分成功'?'<button class="download-link" data-download="'+esc(t.id)+'">下载</button>　':'')+'<button class="danger-link" data-delete-task="'+esc(t.id)+'">删除</button></td></tr>'}).join(''):'<tr><td colspan="9" class="empty-cell">暂无导出任务</td></tr>';
+  $('#historyTotal').textContent='共 '+historyFiltered.length+' 条';$('#historyCheckAll').checked=historyFiltered.length>0&&historyFiltered.every(function(t){return state.historySelected.has(t.id)})
+}
+function resetHistory(){historyStatusCtl.set('');historyNameModeCtl.set('开头是');historyFileTypeCtl.set('');historyExportTypeCtl.set('');$('#historyName').value='';historyDateCtl.reset();state.historySelected.clear();renderHistory()}
+/* ---------- 事件绑定 ---------- */
+$('#queryForm').addEventListener('submit',function(e){e.preventDefault();applyQuery()});
+$('#resetQuery').addEventListener('click',resetQuery);
+['sku','oldLocation','newLocation'].forEach(function(key){var id=key==='sku'?'#skuText':key==='oldLocation'?'#oldLocationText':'#newLocationText';$(id).addEventListener('input',function(){state.batches[key]=[]})});
+$('#sortTime').addEventListener('click',function(){state.ascending=!state.ascending;state.page=1;$('#sortAsc').classList.toggle('active',state.ascending);$('#sortDesc').classList.toggle('active',!state.ascending);this.setAttribute('aria-label','处理时间，当前'+(state.ascending?'升序':'降序'));computeRows();renderList()});
+$('#checkAll').addEventListener('change',function(){var checked=this.checked;currentPageRows().forEach(function(r){if(checked)state.selected.add(r.id);else state.selected.delete(r.id)});renderList()});
+$('#logBody').addEventListener('change',function(e){if(!e.target.classList.contains('row-check'))return;var id=e.target.dataset.id;if(e.target.checked)state.selected.add(id);else state.selected.delete(id);e.target.closest('tr').classList.toggle('selected',e.target.checked);updateSelection()});
+$('#logBody').addEventListener('click',function(e){var btn=e.target.closest('[data-copy]');if(btn){e.preventDefault();e.stopPropagation();copyText(btn.dataset.copy);return}var link=e.target.closest('[data-detail]');if(link){e.preventDefault();toast('原型演示：详情页将在后续原型中补充','info')}});
+$('#pageSize').addEventListener('change',function(){state.pageSize=Number(this.value);state.page=1;renderList()});
+$('#exportToggle').addEventListener('click',function(){$('#exportWrap').classList.toggle('open')});
+$('#exportBtn').addEventListener('click',createExport);
+$('#historyBtn').addEventListener('click',function(){$('#exportWrap').classList.remove('open');renderHistory();openModal('historyMask')});
+$('#historyQuery').addEventListener('click',renderHistory);
+$('#historyReset').addEventListener('click',resetHistory);
+$('#historyCheckAll').addEventListener('change',function(){historyFiltered.forEach(function(t){if($('#historyCheckAll').checked)state.historySelected.add(t.id);else state.historySelected.delete(t.id)});renderHistory()});
+$('#historyBody').addEventListener('change',function(e){if(e.target.classList.contains('history-check')){if(e.target.checked)state.historySelected.add(e.target.dataset.task);else state.historySelected.delete(e.target.dataset.task)}});
+$('#historyBody').addEventListener('click',function(e){var b=e.target.closest('[data-download]'),del=e.target.closest('[data-delete-task]');if(b){var task=tasks.find(function(t){return t.id===b.dataset.download&&t.accountId===account.id&&(t.status==='成功'||t.status==='部分成功')});if(task){try{downloadCsv(task.name,EXPORT_HEADS,task.rows);toast('文件已下载')}catch(err){toast('下载失败，请重试','error')}}}else if(del){tasks=tasks.filter(function(t){return t.id!==del.dataset.deleteTask});state.historySelected.delete(del.dataset.deleteTask);write(taskKey,tasks);renderHistory();toast('导出任务已删除')}});
+$('#historyBatchDelete').addEventListener('click',function(){if(!state.historySelected.size){toast('请先选择导出任务','warning');return}tasks=tasks.filter(function(t){return !state.historySelected.has(t.id)});state.historySelected.clear();write(taskKey,tasks);renderHistory();toast('已批量删除导出任务')});
+$('#closeNotification').addEventListener('click',function(){$('#exportNotification').classList.add('hidden')});
+document.querySelectorAll('[data-close]').forEach(function(button){button.addEventListener('click',function(){closeModal(button.closest('.mask'))})});
+document.querySelectorAll('.mask').forEach(function(mask){mask.addEventListener('click',function(e){if(e.target===mask&&mask.id!=='progressMask')closeModal(mask)})});
+document.addEventListener('click',function(e){if(!e.target.closest('#warehouseSelect'))warehouseCtl.close();if(!e.target.closest('#exportWrap'))$('#exportWrap').classList.remove('open');closeDatePickers();$$('.history-select-panel').forEach(function(p){p.classList.add('hidden')})});
+document.addEventListener('keydown',function(e){if(e.key!=='Escape'||exportBusy)return;document.querySelectorAll('.mask.show').forEach(closeModal);warehouseCtl.close()});
+ERPComponents.createColumnCustomizer({pager:'.pager',table:'.log-table',storageKey:'erp-columns-location-change-log',columns:[{key:'thumb',index:2,label:'缩略图'},{key:'product',index:3,label:'商品SKU / 商品名称'},{key:'attr',index:4,label:'拓展属性'},{key:'warehouse',index:5,label:'仓库 / 修改方式'},{key:'location',index:6,label:'新仓位 / 旧仓位'},{key:'operator',index:7,label:'处理人 / 处理时间'}]});
+pruneTasks();applyQuery();
+})();
+</script>
+</body>
+</html>

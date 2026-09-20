@@ -148,7 +148,7 @@ var records=[
   {sku:'SKU-WIND-02',name:'样品二',attr:'默认',unit:'个',loc:'B-09',inQty:0,pending:40,time:'--',batch:'IB20260910018',goodsBatch:'--',cost:'9.00',avg:'9.00',weight:'150',remark:'待入库'}]}
 ];
 var demoWarehouses=['云县中心仓','618清仓大甩卖','仓库003','XWD仓','验证仓'];
-var warehouseCtl=ERPComponents.createSearchDropdown({root:'#warehouseSelect',button:'#warehouseButton',panel:'#warehousePanel',list:'#warehouseOptions',fieldName:'仓库',value:'',placeholder:'请选择',items:demoWarehouses.map(function(name){return {name:name,enabled:true}}),getValue:function(item){return item.name},getLabel:function(item){return item.name},onChange:function(value){$('#warehouse').value=value}});
+var warehouseCtl=ERPComponents.createSearchDropdown({variant:'warehouse',root:'#warehouseSelect',button:'#warehouseButton',panel:'#warehousePanel',list:'#warehouseOptions',fieldName:'仓库',value:'',placeholder:'请选择',items:demoWarehouses.map(function(name){return {name:name,enabled:true}}),getValue:function(item){return item.name},getLabel:function(item){return item.name},onChange:function(value){$('#warehouse').value=value}});
 var demoSuppliers=['广州示例供应商','云南云品商贸','华东供应链','King供应链','测试供应商'];
 var demoStatuses=['待提交','审核中（李明）','已拒绝','未入库','部分入库','已入库','已完成','已作废'];
 for(var demoIndex=1;demoIndex<=20;demoIndex++){

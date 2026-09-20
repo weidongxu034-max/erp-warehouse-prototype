@@ -2,6 +2,7 @@
   'use strict';
 
   var doc = global.document;
+  var activeFloatingPanel = null;
 
   function ensureStyles() {
     if (!doc || !doc.createElement || !doc.head || doc.getElementById('erp-common-component-styles')) return;
@@ -12,6 +13,10 @@
       '.date-picker.hidden,.erp-date-picker.hidden{display:none!important}.erp-date-picker{position:absolute;left:0;top:35px;z-index:540;display:flex;width:410px;border:1px solid #e3e6ec;border-radius:5px;background:#fff;box-shadow:0 8px 24px #0002}.erp-date-picker .date-shortcuts{width:115px;padding:6px 0;border-right:1px solid #eee}.erp-date-picker .date-shortcuts button{display:block;width:100%;height:32px;padding:0 14px;border:0;background:#fff;text-align:left;cursor:pointer}.erp-date-picker .date-shortcuts button:hover{background:#f3f6ff;color:#3d68ff}.erp-date-picker .calendar{flex:1}.erp-date-picker .cal-head{height:42px;display:flex;align-items:center;justify-content:space-between;margin:0;padding:0 12px;border-bottom:1px solid #eee}.erp-date-picker .cal-nav{width:auto;height:auto;border:0;background:none;color:#999;cursor:pointer}.erp-date-picker .cal-title{font-weight:600}.erp-date-picker .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;padding:7px 10px 10px}.erp-date-picker .cal-grid span,.erp-date-picker .cal-grid button{height:34px;display:flex;align-items:center;justify-content:center;border:0;background:#fff}.erp-date-picker .cal-grid .weekday{height:27px}.erp-date-picker .cal-day{cursor:pointer;border-radius:4px!important}.erp-date-picker .cal-day:hover{background:#edf2ff!important;color:#3d68ff}.erp-date-picker .cal-day.muted{color:#bbb}.erp-date-picker .cal-day.in-range{background:#f0f4ff}.erp-date-picker .cal-day.selected{border:1px solid #3d68ff!important;color:#3d68ff}';
     style.textContent += '.erp-batch-search-mask{position:fixed;inset:0;z-index:5000;display:none;align-items:center;justify-content:center;background:#0006}.erp-batch-search-mask.show{display:flex}.erp-batch-search-modal{width:520px;max-width:calc(100vw - 32px);border-radius:6px;background:#fff;box-shadow:0 15px 40px #0003;overflow:hidden;color:#303133}.erp-batch-search-head{height:51px;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid #eee;font-size:15px;font-weight:600}.erp-batch-search-close{margin-left:auto;padding:0;border:0;background:none;color:#888;font-size:18px;cursor:pointer}.erp-batch-search-body{padding:20px 18px 36px}.erp-batch-search-types{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:28px}.erp-batch-search-types label{display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer}.erp-batch-search-types input{width:14px;height:14px;margin:0;accent-color:#3d68ff}.erp-batch-search-field label{display:block;margin-bottom:7px}.erp-batch-search-textarea{display:block;width:100%;height:88px;padding:9px;border:1px solid #dcdfe6;border-radius:5px;resize:vertical;outline:0;font:inherit;color:#303133}.erp-batch-search-textarea:focus{border-color:#3d68ff}.erp-batch-search-textarea::placeholder{color:#909399}.erp-batch-search-foot{height:57px;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 18px;border-top:1px solid #eee}.erp-batch-search-btn{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.erp-batch-search-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}';
     style.textContent += '.erp-column-trigger{flex:none;height:28px;min-width:44px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer}.erp-column-trigger:hover{border-color:#3d68ff;color:#3d68ff}.erp-column-mask{position:fixed;inset:0;z-index:4900;display:none;background:#0006}.erp-column-mask.show{display:block}.erp-column-drawer{position:absolute;top:0;right:0;bottom:0;width:240px;display:flex;flex-direction:column;background:#fff;box-shadow:-4px 0 20px #0002;color:#303133}.erp-column-head{height:56px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #eee;font-size:16px;font-weight:600}.erp-column-close{margin-right:12px;padding:0;border:0;background:none;color:#909399;font-size:24px;cursor:pointer}.erp-column-list{flex:1;overflow:auto;padding:5px 4px}.erp-column-item{min-height:42px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-bottom:1px solid #eee;background:#fff;transition:opacity .12s,box-shadow .12s}.erp-column-item.dragging{opacity:.45;box-shadow:0 3px 12px #0002}.erp-column-handle{flex:none;color:#909399;letter-spacing:-2px;cursor:grab;user-select:none}.erp-column-handle:active{cursor:grabbing}.erp-column-item label{display:flex;align-items:center;gap:7px;cursor:pointer}.erp-column-item input{width:16px;height:16px;margin:0;accent-color:#3d68ff}.erp-column-foot{height:48px;display:flex;align-items:center;padding:0 16px;border-top:1px solid #eee}.erp-column-reset{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#303133;cursor:pointer}.erp-column-reset:hover{border-color:#3d68ff;color:#3d68ff}';
+    style.textContent += '.erp-oplog-mask{position:fixed;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;padding:12px;background:#0006}.erp-oplog-mask.show{display:flex}.erp-oplog-dialog{width:min(1000px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;border-radius:8px;background:#fff;box-shadow:0 16px 46px #0004;color:#303133}.erp-oplog-head{height:56px;display:flex;align-items:center;padding:0 24px;font-size:16px;font-weight:600}.erp-oplog-close{margin-left:auto;border:0;background:none;color:#909399;font-size:25px;cursor:pointer}.erp-oplog-body{padding:0 24px 20px}.erp-oplog-filters{display:grid;grid-template-columns:220px 220px 290px 1fr;gap:24px;align-items:end;margin-bottom:22px}.erp-oplog-field{position:relative}.erp-oplog-field label{display:block;margin-bottom:8px;color:#303133;font-size:13px}.erp-oplog-select{height:32px;position:relative;border:1px solid #dcdfe6;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-select:focus-within{border-color:#3d68ff}.erp-oplog-select .floating-select{height:30px;min-height:30px;border:0;border-radius:5px}.erp-oplog-date-wrap{position:relative}.erp-oplog-date{height:32px;width:100%;padding:0 30px 0 10px;justify-content:flex-start;white-space:nowrap;overflow:hidden}.erp-oplog-date .dash{margin:0 13px}.erp-oplog-date-icon{position:absolute;right:10px;top:7px;color:#909399;font-style:normal;pointer-events:none}.erp-oplog-date-picker{z-index:5300!important}.erp-oplog-actions{display:flex;justify-content:flex-end;gap:10px;grid-column:1 / -1;margin-top:0}.erp-oplog-btn{height:32px;padding:0 17px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.erp-oplog-btn:hover{border-color:#3d68ff;color:#3d68ff}.erp-oplog-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.erp-oplog-btn.primary:hover{color:#fff}.erp-oplog-table-wrap{overflow:auto;border:1px solid #bfc3c9}.erp-oplog-table{width:100%;min-width:760px;border-collapse:collapse;table-layout:fixed;font-size:14px}.erp-oplog-table th,.erp-oplog-table td{height:60px;padding:10px;border-right:1px solid #bfc3c9;border-bottom:1px solid #bfc3c9;text-align:left;vertical-align:middle;word-break:break-word}.erp-oplog-table th{height:39px;background:#e9e9e9;color:#1f2d3d;font-weight:600}.erp-oplog-table tr>:last-child{border-right:0}.erp-oplog-table tbody tr:last-child td{border-bottom:0}.erp-oplog-table .erp-oplog-index{width:40px;text-align:center}.erp-oplog-empty{text-align:center!important;color:#909399}.erp-oplog-pager{height:42px;display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px}.erp-oplog-page{height:26px;min-width:26px;padding:0 6px;border:1px solid transparent;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-page.active{border-color:#3d68ff;color:#3d68ff}.erp-oplog-page:disabled{color:#c0c4cc;cursor:not-allowed}.erp-oplog-size{height:28px;min-width:96px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;padding:0 6px}@media(max-width:760px){.erp-oplog-body{padding:0 14px 14px}.erp-oplog-filters{grid-template-columns:1fr;gap:12px}.erp-oplog-actions{grid-column:auto}.erp-oplog-dialog{width:calc(100vw - 16px)}.erp-oplog-head{padding:0 14px}}' +
+      '.erp-sticky-table thead th{position:sticky;top:var(--erp-sticky-header-top,0px);z-index:var(--erp-sticky-header-z-index,30);background:var(--erp-sticky-header-background,#e9e9e9)}';
+    style.textContent += '.floating-select{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:3px;min-height:32px;padding:0 24px 0 8px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.floating-select:focus-within{border-color:#3d68ff}.floating-select .ph{padding:0 2px;color:#c0c4cc;font-size:13px}.floating-select .val{overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.floating-select .caret{position:absolute;top:50%;right:8px;transform:translateY(-50%);color:#999;pointer-events:none}.floating-select .clear{display:none;position:absolute;top:50%;right:25px;transform:translateY(-50%);color:#a0a4ad;font-size:12px}.floating-select .clear.has-v{display:block}.floating-select .tag{display:inline-flex;align-items:center;gap:3px;max-width:110px;height:22px;padding:0 5px;border:1px solid #c9d6ff;border-radius:3px;background:#f5f7ff;color:#3d68ff;font-size:13px}.floating-select .tag i{font-style:normal;cursor:pointer}.dropdown-panel{position:fixed;z-index:2000;min-width:140px;padding:6px;border:1px solid #e4e7ed;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002;color:#303133}.dropdown-panel .dp-search input{width:100%;height:30px;margin-bottom:5px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px}.dropdown-panel .dp-list{max-height:210px;overflow:auto}.dropdown-panel .dp-opt{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;overflow:hidden;border-radius:3px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dropdown-panel .dp-opt:hover,.dropdown-panel .dp-opt.sel{background:#f1f5ff;color:#3d68ff}.dropdown-panel .dp-opt .ck{width:16px;flex:none;color:#3d68ff}.dropdown-panel .dp-empty{padding:12px;text-align:center;color:#909399}.erp-tile-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.erp-tile-group .tile{height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;font-size:13px}.erp-tile-group .tile:hover{border-color:#3d68ff;color:#3d68ff}.erp-tile-group .tile.active{border-color:#3d68ff;background:#3d68ff;color:#fff}';
+    style.textContent += '.warehouse-filter{position:relative}.warehouse-filter-button{position:relative;padding:0 28px 0 9px;text-align:left;cursor:pointer}.warehouse-filter-button:after{position:absolute;right:10px;color:#999;content:"⌄"}.warehouse-filter-button.placeholder{color:#bbb}.warehouse-filter-panel{position:absolute;top:35px;right:0;left:0;z-index:90;min-width:180px;padding:5px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;box-shadow:0 6px 18px #00000018}.warehouse-filter-panel>.erp-disabled-toggle{margin:5px -5px -5px}.warehouse-filter-search{width:100%;height:30px;margin-bottom:5px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px}.warehouse-filter-options{max-height:220px;overflow:auto}.warehouse-filter-options button{display:block;width:100%;height:30px;padding:0 8px;border:0;border-radius:3px;background:#fff;text-align:left;cursor:pointer}.warehouse-filter-options button:hover,.warehouse-filter-options button.active{background:#f3f6ff;color:#3d68ff}';
     doc.head.appendChild(style);
   }
 
@@ -27,6 +32,67 @@
     if (!target) return [];
     if (typeof target !== 'string') return Array.prototype.slice.call(target);
     return Array.prototype.slice.call((root || doc).querySelectorAll(target));
+  }
+
+  // Shared list behavior: createStickyTableHeader({ table, wrapper?, scrollContainer?, top? }).
+  // Let the page scroll and keep its table header flush with the visible scrollport edge.
+  function createStickyTableHeader(options) {
+    options = options || {};
+    var target = options.table || options.tables;
+    var tables = typeof target === 'string' ? elements(target, options.root) : (target && target.nodeType ? [target] : elements(target));
+    var zIndex = String(options.zIndex == null ? 30 : options.zIndex);
+    var wrappers = [];
+    function scrollContainerFor(table) {
+      var explicit = element(options.scrollContainer);
+      if (explicit) return explicit;
+      var wrapper = element(options.wrapper) || table.parentElement;
+      var current = table.parentElement;
+      while (current && current !== doc.body) {
+        if (current !== wrapper && /(auto|scroll)/.test(global.getComputedStyle(current).overflowY)) return current;
+        current = current.parentElement;
+      }
+      return doc.scrollingElement || doc.documentElement;
+    }
+    function topFor(table) {
+      if (options.top != null) return typeof options.top === 'number' ? options.top + 'px' : String(options.top);
+      var scroller = scrollContainerFor(table);
+      if (scroller === doc.scrollingElement || scroller === doc.documentElement || scroller === doc.body) {
+        var nav = doc.querySelector('.topbar');
+        return nav && global.getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().height + 'px' : '0px';
+      }
+      var padding = parseFloat(global.getComputedStyle(scroller).paddingTop) || 0;
+      return padding ? -padding + 'px' : '0px';
+    }
+    function apply() {
+      tables.forEach(function (table) {
+        if (!table || !table.classList) return;
+        table.classList.add('erp-sticky-table');
+        table.style.setProperty('--erp-sticky-header-top', topFor(table));
+        table.style.setProperty('--erp-sticky-header-z-index', zIndex);
+        if (options.background) table.style.setProperty('--erp-sticky-header-background', options.background);
+        var wrapper = element(options.wrapper) || table.parentElement;
+        if (wrapper && wrapper !== table && wrappers.every(function (saved) { return saved.el !== wrapper; })) {
+          wrappers.push({ el: wrapper, overflow: wrapper.style.overflow, maxHeight: wrapper.style.maxHeight, minHeight: wrapper.style.minHeight });
+          wrapper.style.overflow = 'visible';
+          wrapper.style.maxHeight = 'none';
+          wrapper.style.minHeight = '0';
+        }
+      });
+    }
+    function destroy() {
+      global.removeEventListener('resize', apply);
+      tables.forEach(function (table) {
+        if (!table || !table.classList) return;
+        table.classList.remove('erp-sticky-table');
+        table.style.removeProperty('--erp-sticky-header-top');
+        table.style.removeProperty('--erp-sticky-header-z-index');
+        table.style.removeProperty('--erp-sticky-header-background');
+      });
+      wrappers.forEach(function (saved) { saved.el.style.overflow = saved.overflow; saved.el.style.maxHeight = saved.maxHeight; saved.el.style.minHeight = saved.minHeight; });
+    }
+    apply();
+    global.addEventListener('resize', apply);
+    return { apply: apply, refresh: apply, destroy: destroy };
   }
 
   function escapeHtml(value) {
@@ -72,14 +138,14 @@
 
     function sync() {
       if (state.start) {
-        startText.textContent = dateText(state.start) + (options.startSuffix || '　00:00');
+        startText.textContent = dateText(state.start) + (options.startSuffix == null ? '　00:00' : options.startSuffix);
         startText.className = options.valueClass || 'date-value';
       } else {
         startText.textContent = options.startPlaceholder || '开始日期　　开始时间';
         startText.className = '';
       }
       if (state.end) {
-        endText.textContent = dateText(state.end) + (options.endSuffix || '　23:59');
+        endText.textContent = dateText(state.end) + (options.endSuffix == null ? '　23:59' : options.endSuffix);
         endText.className = options.valueClass || 'date-value';
       } else {
         endText.textContent = options.endPlaceholder || '结束日期　　结束时间';
@@ -210,6 +276,13 @@
     var panel = element(options.panel, root);
     var search = element(options.search, root);
     var list = element(options.list, root);
+    if (options.variant === 'warehouse') {
+      root.classList.add('warehouse-filter');
+      button.classList.add('warehouse-filter-button');
+      panel.classList.add('warehouse-filter-panel');
+      list.classList.add('warehouse-filter-options');
+      if (search) search.classList.add('warehouse-filter-search');
+    }
     var value = options.value == null ? '' : String(options.value);
     var showDisabled = Boolean(options.showDisabled);
     var disabledToggle = null;
@@ -266,6 +339,10 @@
       }
     }
 
+    function closeOnOutsideClick(event) {
+      if (options.variant === 'warehouse' && !root.contains(event.target)) close();
+    }
+
     button.addEventListener('click', function (event) {
       event.stopPropagation();
       if (panel.classList.contains(options.hiddenClass || 'hidden')) open(); else close();
@@ -286,6 +363,7 @@
       if (options.onDisabledChange) options.onDisabledChange(showDisabled);
     });
     if (search) search.addEventListener('input', render);
+    if (options.variant === 'warehouse') doc.addEventListener('click', closeOnOutsideClick);
     render();
 
     return {
@@ -297,8 +375,17 @@
       },
       render: render,
       open: open,
-      close: close
+      close: close,
+      destroy: function () {
+        if (options.variant === 'warehouse') doc.removeEventListener('click', closeOnOutsideClick);
+      }
     };
+  }
+
+  function createWarehouseDropdown(options) {
+    options = Object.assign({}, options || {}, { variant: 'warehouse' });
+    if (!options.fieldName) options.fieldName = '仓库';
+    return createSearchDropdown(options);
   }
 
   function createFloatingSelect(options) {
@@ -307,7 +394,14 @@
     var panel = null;
     var showDisabled = Boolean(options.showDisabled);
 
-    function closePanels() { if (options.closePanels) options.closePanels(); }
+    function closePanels() {
+      if (panel && panel.parentNode) panel.remove();
+      if (activeFloatingPanel && activeFloatingPanel.parentNode) activeFloatingPanel.remove();
+      panel = null;
+      activeFloatingPanel = null;
+      setActivePanel(null);
+      if (options.closePanels) options.closePanels();
+    }
     function getActivePanel() { return options.getActivePanel ? options.getActivePanel() : null; }
     function setActivePanel(nextPanel) { if (options.setActivePanel) options.setActivePanel(nextPanel); }
     function visibleOptions(keyword) {
@@ -359,7 +453,7 @@
       });
     }
     function open() {
-      if (getActivePanel() === panel && panel) { closePanels(); return; }
+      if (panel && (getActivePanel() === panel || activeFloatingPanel === panel)) { closePanels(); return; }
       closePanels();
       panel = doc.createElement('div');
       panel.className = 'dropdown-panel';
@@ -367,6 +461,8 @@
       panel.style.minWidth = minimumWidth + 'px';
       panel.innerHTML = (options.searchable ? '<div class="dp-search"><input placeholder="搜索"></div>' : '') + '<div class="dp-list"></div>' + ((options.fieldName || options.disabledLabel) ? '<label class="erp-disabled-toggle"><input type="checkbox" data-common-show-disabled ' + (showDisabled ? 'checked' : '') + '> ' + escapeHtml(options.disabledLabel || ('显示停用' + options.fieldName)) + '</label>' : '');
       doc.body.appendChild(panel);
+      activeFloatingPanel = panel;
+      if (options.panelZIndex) panel.style.zIndex = String(options.panelZIndex);
       setActivePanel(panel);
       var rect = root.getBoundingClientRect();
       var height = panel.offsetHeight || 200;
@@ -389,11 +485,57 @@
       render();
       if (fire && options.onChange) options.onChange(value);
     }
-    root.addEventListener('click', function (event) { if (!event.target.closest('[data-clear]')) open(); });
+    function onOutsideClick(event) {
+      if (!activeFloatingPanel || root.contains(event.target) || activeFloatingPanel.contains(event.target)) return;
+      closePanels();
+    }
+    function onRootClick(event) { event.stopPropagation(); if (!event.target.closest('[data-clear]')) open(); }
+    root.addEventListener('click', onRootClick);
+    doc.addEventListener('click', onOutsideClick);
     render();
     root.setValue = setValue;
     root.getValue = function () { return value; };
-    return { setValue: setValue, getValue: function () { return value; } };
+    return { setValue: setValue, getValue: function () { return value; }, close: closePanels, destroy: function () { closePanels(); doc.removeEventListener('click', onOutsideClick); root.removeEventListener('click', onRootClick); } };
+  }
+
+  function createTileGroup(options) {
+    options = options || {};
+    var root = element(options.root || options.el);
+    if (!root) throw new Error('createTileGroup requires root');
+    root.classList.add(options.rootClass || 'erp-tile-group');
+    var values = options.options || options.items || [];
+    var value = options.value == null ? '' : String(options.value);
+    function render() {
+      root.innerHTML = values.map(function (item) {
+        var itemValue = String(item.value == null ? item : item.value);
+        var itemLabel = item.label == null ? itemValue : String(item.label);
+        return '<button type="button" class="' + escapeHtml(options.buttonClass || 'tile') + (itemValue === value ? ' active' : '') + '" data-common-tile-value="' + escapeHtml(itemValue) + '">' + escapeHtml(itemLabel) + '</button>';
+      }).join('');
+    }
+    function onClick(event) {
+      var button = event.target.closest('[data-common-tile-value]');
+      if (!button || !root.contains(button)) return;
+      event.stopPropagation();
+      var next = button.dataset.commonTileValue;
+      if (next === value) return;
+      var previous = value;
+      value = next;
+      render();
+      if (!options.onChange) return;
+      options.onChange(value, previous);
+    }
+    root.addEventListener('click', onClick);
+    render();
+    return {
+      render: render,
+      getValue: function () { return value; },
+      setValue: function (next, silent) {
+        value = next == null ? '' : String(next);
+        render();
+        if (!silent && options.onChange) options.onChange(value);
+      },
+      destroy: function () { root.removeEventListener('click', onClick); root.innerHTML = ''; }
+    };
   }
 
   function createStaticDropdown(options) {
@@ -592,6 +734,198 @@
     });
     source.addEventListener('dblclick', open);
     var api = { open: open, close: close, values: values, setField: syncField, root: root, textarea: textarea };
+    return api;
+  }
+
+  /*
+   * 操作日志弹窗：页面只需传入各自的业务操作属性、人员和日志记录。
+   * 操作属性是固定枚举，不显示停用项；操作员复用人员数据并显示“停用人员”。
+   */
+  function createOperationLog(options) {
+    options = options || {};
+    var trigger = element(options.trigger);
+    var sourceRecords = Array.isArray(options.records) ? options.records.slice() : [];
+    var page = 1;
+    var pageSize = Number(options.pageSize) || 100;
+    var pageSizes = options.pageSizes || [10, 20, 30, 50, 100, 200, 500];
+    var filteredRecords = [];
+    var activePanel = null;
+    function normalizedItems(items, preferLabel) {
+      return (items || []).map(function (item) {
+        if (typeof item === 'string') return { value: item, label: item, enabled: true };
+        var label = item.label == null ? (item.name == null ? (item.userName == null ? (item.text == null ? item.value : item.text) : item.userName) : item.name) : item.label;
+        return {
+          value: String(preferLabel || item.value == null ? label : item.value),
+          label: String(label == null ? '' : label),
+          enabled: item.enabled !== false && item.disabled !== true
+        };
+      });
+    }
+
+    function closePanels() {
+      if (activePanel && activePanel.parentNode) activePanel.parentNode.removeChild(activePanel);
+      activePanel = null;
+    }
+
+    function itemTime(record) {
+      var value = record.time == null ? (record.operationTime == null ? (record.createdAt == null ? record.created : record.createdAt) : record.operationTime) : record.time;
+      if (value instanceof Date) return value.getTime();
+      var result = new Date(String(value || '').replace(/-/g, '/')).getTime();
+      return isNaN(result) ? null : result;
+    }
+
+    function recordValue(record, names) {
+      for (var index = 0; index < names.length; index += 1) {
+        if (record[names[index]] != null) return String(record[names[index]]);
+      }
+      return '';
+    }
+
+    var root = doc.createElement('div');
+    root.className = 'erp-oplog-mask';
+    root.innerHTML = '<section class="erp-oplog-dialog" role="dialog" aria-modal="true" aria-label="' + escapeHtml(options.title || '操作日志') + '">' +
+      '<div class="erp-oplog-head"><span>' + escapeHtml(options.title || '操作日志') + '</span><button type="button" class="erp-oplog-close" data-oplog-close aria-label="关闭">×</button></div>' +
+      '<div class="erp-oplog-body"><div class="erp-oplog-filters">' +
+      '<div class="erp-oplog-field"><label>操作属性</label><div class="erp-oplog-select"><div class="floating-select" data-oplog-attribute></div></div></div>' +
+      '<div class="erp-oplog-field"><label>操作员</label><div class="erp-oplog-select"><div class="floating-select" data-oplog-operator></div></div></div>' +
+      '<div class="erp-oplog-field erp-oplog-date-wrap"><label>操作时间</label><div class="erp-oplog-date" data-oplog-date><span data-oplog-start></span><span class="dash">—</span><span data-oplog-end></span><i class="erp-oplog-date-icon">▣</i></div>' +
+      '<div class="erp-oplog-date-picker hidden" data-oplog-date-panel><div class="date-shortcuts" data-oplog-shortcuts><button type="button" data-range="0">今天</button><button type="button" data-range="6">近7天</button><button type="button" data-range="29">近30天</button><button type="button" data-range="89">近90天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" data-oplog-prev-year>«</button><button type="button" class="cal-nav" data-oplog-prev-month>‹</button><span class="cal-title" data-oplog-cal-title></span><button type="button" class="cal-nav" data-oplog-next-month>›</button><button type="button" class="cal-nav" data-oplog-next-year>»</button></div><div class="cal-grid" data-oplog-cal-grid></div></div></div></div>' +
+      '<div class="erp-oplog-actions"><button type="button" class="erp-oplog-btn" data-oplog-reset>重置</button><button type="button" class="erp-oplog-btn primary" data-oplog-query>搜索</button></div>' +
+      '</div><div class="erp-oplog-table-wrap"><table class="erp-oplog-table"><colgroup><col style="width:40px"><col style="width:120px"><col><col style="width:120px"><col style="width:180px"></colgroup><thead><tr><th class="erp-oplog-index"></th><th>操作属性</th><th>操作描述</th><th>操作人</th><th>操作时间</th></tr></thead><tbody data-oplog-body></tbody></table></div>' +
+      '<div class="erp-oplog-pager"><span data-oplog-total></span><button type="button" class="erp-oplog-page" data-oplog-prev>‹</button><span data-oplog-pages></span><button type="button" class="erp-oplog-page" data-oplog-next>›</button><select class="erp-oplog-size" data-oplog-size></select></div>' +
+      '</div></section>';
+    doc.body.appendChild(root);
+
+    var attributeRoot = root.querySelector('[data-oplog-attribute]');
+    var operatorRoot = root.querySelector('[data-oplog-operator]');
+    var body = root.querySelector('[data-oplog-body]');
+    var total = root.querySelector('[data-oplog-total]');
+    var pages = root.querySelector('[data-oplog-pages]');
+    var prev = root.querySelector('[data-oplog-prev]');
+    var next = root.querySelector('[data-oplog-next]');
+    var sizeSelect = root.querySelector('[data-oplog-size]');
+    var datePanel = root.querySelector('[data-oplog-date-panel]');
+
+    var attributeItems = normalizedItems(options.operationAttributes || options.attributes);
+    var operatorItems = normalizedItems(options.operators || options.people, true);
+    var attributeSelect = createFloatingSelect({
+      el: attributeRoot, options: attributeItems, searchable: true, placeholder: '请选择',
+      closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
+    });
+    var operatorSelect = createFloatingSelect({
+      el: operatorRoot, options: operatorItems, searchable: true, placeholder: '请选择', fieldName: '人员', disabledLabel: '显示停用人员',
+      closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
+    });
+    var datePicker = createDateRangePicker({
+      trigger: root.querySelector('[data-oplog-date]'), panel: datePanel, shortcuts: root.querySelector('[data-oplog-shortcuts]'), grid: root.querySelector('[data-oplog-cal-grid]'), title: root.querySelector('[data-oplog-cal-title]'),
+      startText: root.querySelector('[data-oplog-start]'), endText: root.querySelector('[data-oplog-end]'), prevMonth: root.querySelector('[data-oplog-prev-month]'), nextMonth: root.querySelector('[data-oplog-next-month]'), prevYear: root.querySelector('[data-oplog-prev-year]'), nextYear: root.querySelector('[data-oplog-next-year]'),
+      state: { view: new Date(), start: null, end: null }, startPlaceholder: '开始日期', endPlaceholder: '结束日期', startSuffix: '', endSuffix: '', closeOthers: function () { closePanels(); }
+    });
+
+    sizeSelect.innerHTML = pageSizes.map(function (size) { return '<option value="' + Number(size) + '"' + (Number(size) === pageSize ? ' selected' : '') + '>' + Number(size) + '条/页</option>'; }).join('');
+
+    function filters() {
+      return { attribute: attributeSelect.getValue(), operator: operatorSelect.getValue(), start: datePicker.getStart(), end: datePicker.getEnd() };
+    }
+
+    function filterRecords(records) {
+      var current = filters();
+      function matches(value, selected, items) {
+        if (!selected) return true;
+        var selectedItem = items.find(function (item) { return String(item.value) === String(selected); });
+        return value === String(selected) || Boolean(selectedItem && value === selectedItem.label);
+      }
+      return (records || []).filter(function (record) {
+        var attribute = recordValue(record, ['attribute', 'action', 'property', 'operationAttribute']);
+        var operator = recordValue(record, ['operator', 'user', 'creator', 'operatorName']);
+        var time = itemTime(record);
+        return matches(attribute, current.attribute, attributeItems) && matches(operator, current.operator, operatorItems) &&
+          (!current.start || (time != null && time >= current.start)) && (!current.end || (time != null && time <= current.end));
+      });
+    }
+
+    function renderPager() {
+      var count = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+      if (page > count) page = count;
+      total.textContent = '共 ' + filteredRecords.length + ' 条';
+      prev.disabled = page <= 1;
+      next.disabled = page >= count;
+      var start = Math.max(1, Math.min(page - 2, count - 4));
+      var end = Math.min(count, start + 4);
+      var html = '';
+      for (var current = start; current <= end; current += 1) html += '<button type="button" class="erp-oplog-page' + (current === page ? ' active' : '') + '" data-oplog-page="' + current + '">' + current + '</button>';
+      pages.innerHTML = html;
+    }
+
+    function render() {
+      var from = (page - 1) * pageSize;
+      var rows = filteredRecords.slice(from, from + pageSize);
+      body.innerHTML = rows.length ? rows.map(function (record, index) {
+        return '<tr><td class="erp-oplog-index">' + (from + index + 1) + '</td><td>' + escapeHtml(recordValue(record, ['attribute', 'action', 'property', 'operationAttribute'])) + '</td><td>' + escapeHtml(recordValue(record, ['description', 'desc', 'detail', 'operationDescription'])) + '</td><td>' + escapeHtml(recordValue(record, ['operator', 'user', 'creator', 'operatorName'])) + '</td><td>' + escapeHtml(recordValue(record, ['time', 'operationTime', 'createdAt', 'created'])) + '</td></tr>';
+      }).join('') : '<tr><td class="erp-oplog-empty" colspan="5">暂无数据</td></tr>';
+      renderPager();
+    }
+
+    function query(resetPage) {
+      if (resetPage !== false) page = 1;
+      var rows = typeof options.getRecords === 'function' ? options.getRecords(filters(), api) : sourceRecords;
+      if (typeof options.onQuery === 'function') {
+        var result = options.onQuery(filters(), api, rows);
+        if (Array.isArray(result)) rows = result;
+      }
+      filteredRecords = filterRecords(Array.isArray(rows) ? rows : sourceRecords);
+      render();
+      return filteredRecords.slice();
+    }
+
+    function reset() {
+      attributeSelect.setValue('');
+      operatorSelect.setValue('');
+      datePicker.reset();
+      if (options.onReset) options.onReset(api);
+      return query(true);
+    }
+
+    function open(records) {
+      if (Array.isArray(records)) sourceRecords = records.slice();
+      root.classList.add('show');
+      query(true);
+      if (options.onOpen) options.onOpen(api);
+    }
+
+    function close() {
+      closePanels();
+      datePanel.classList.add('hidden');
+      root.classList.remove('show');
+      if (trigger) trigger.focus();
+      if (options.onClose) options.onClose(api);
+    }
+
+    root.addEventListener('click', function (event) {
+      if (event.target === root || event.target.closest('[data-oplog-close]')) { close(); return; }
+      if (event.target.closest('[data-oplog-query]')) { query(true); return; }
+      if (event.target.closest('[data-oplog-reset]')) { reset(); return; }
+      var pageButton = event.target.closest('[data-oplog-page]');
+      if (pageButton) { page = Number(pageButton.dataset.oplogPage); render(); return; }
+      if (event.target.closest('[data-oplog-prev]') && page > 1) { page -= 1; render(); return; }
+      if (event.target.closest('[data-oplog-next]') && page * pageSize < filteredRecords.length) { page += 1; render(); }
+    });
+    sizeSelect.addEventListener('change', function () { pageSize = Number(sizeSelect.value) || 100; page = 1; render(); });
+    doc.addEventListener('click', function (event) {
+      if (!root.classList.contains('show')) return;
+      if (!root.contains(event.target) && !(activePanel && activePanel.contains(event.target))) { closePanels(); datePanel.classList.add('hidden'); }
+    });
+    doc.addEventListener('keydown', function (event) { if (event.key === 'Escape' && root.classList.contains('show')) close(); });
+    if (trigger) trigger.addEventListener('click', open);
+
+    var api = {
+      open: open, close: close, query: query, reset: reset, root: root,
+      getFilters: filters,
+      setRecords: function (records) { sourceRecords = Array.isArray(records) ? records.slice() : []; if (root.classList.contains('show')) query(false); },
+      setOperationAttributes: function (items) { attributeItems.splice.apply(attributeItems, [0, attributeItems.length].concat(normalizedItems(items))); attributeSelect.setValue(''); },
+      setOperators: function (items) { operatorItems.splice.apply(operatorItems, [0, operatorItems.length].concat(normalizedItems(items, true))); operatorSelect.setValue(''); }
+    };
+    query(true);
     return api;
   }
 
@@ -823,7 +1157,7 @@
   }
 
   global.ERPComponents = Object.freeze({
-    version: '1.0.0',
+    version: '1.4.0',
     element: element,
     elements: elements,
     escapeHtml: escapeHtml,
@@ -831,14 +1165,18 @@
     dateText: dateText,
     createDateRangePicker: createDateRangePicker,
     createSearchDropdown: createSearchDropdown,
+    createWarehouseDropdown: createWarehouseDropdown,
     createFloatingSelect: createFloatingSelect,
+    createTileGroup: createTileGroup,
     createStaticDropdown: createStaticDropdown,
     createPagination: createPagination,
     createBatchInput: createBatchInput,
     createBatchSearch: createBatchSearch,
+    createOperationLog: createOperationLog,
     createColumnCustomizer: createColumnCustomizer,
     createWarehouseSelector: createWarehouseSelector,
     createHistoryExportTasks: createHistoryExportTasks,
+    createStickyTableHeader: createStickyTableHeader,
     parseBatch: parseBatch,
     pageItems: pageItems
   });
