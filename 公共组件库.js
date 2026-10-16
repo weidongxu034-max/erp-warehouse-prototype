@@ -15,8 +15,12 @@
     style.textContent += '.erp-column-trigger{flex:none;height:28px;min-width:44px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer}.erp-column-trigger:hover{border-color:#3d68ff;color:#3d68ff}.erp-column-mask{position:fixed;inset:0;z-index:4900;display:none;background:#0006}.erp-column-mask.show{display:block}.erp-column-drawer{position:absolute;top:0;right:0;bottom:0;width:240px;display:flex;flex-direction:column;background:#fff;box-shadow:-4px 0 20px #0002;color:#303133}.erp-column-head{height:56px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #eee;font-size:16px;font-weight:600}.erp-column-close{margin-right:12px;padding:0;border:0;background:none;color:#909399;font-size:24px;cursor:pointer}.erp-column-list{flex:1;overflow:auto;padding:5px 4px}.erp-column-item{min-height:42px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-bottom:1px solid #eee;background:#fff;transition:opacity .12s,box-shadow .12s}.erp-column-item.dragging{opacity:.45;box-shadow:0 3px 12px #0002}.erp-column-handle{flex:none;color:#909399;letter-spacing:-2px;cursor:grab;user-select:none}.erp-column-handle:active{cursor:grabbing}.erp-column-item label{display:flex;align-items:center;gap:7px;cursor:pointer}.erp-column-item input{width:16px;height:16px;margin:0;accent-color:#3d68ff}.erp-column-foot{height:48px;display:flex;align-items:center;padding:0 16px;border-top:1px solid #eee}.erp-column-reset{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#303133;cursor:pointer}.erp-column-reset:hover{border-color:#3d68ff;color:#3d68ff}';
     style.textContent += '.erp-oplog-mask{position:fixed;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;padding:12px;background:#0006}.erp-oplog-mask.show{display:flex}.erp-oplog-dialog{width:min(1000px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;border-radius:8px;background:#fff;box-shadow:0 16px 46px #0004;color:#303133}.erp-oplog-head{height:56px;display:flex;align-items:center;padding:0 24px;font-size:16px;font-weight:600}.erp-oplog-close{margin-left:auto;border:0;background:none;color:#909399;font-size:25px;cursor:pointer}.erp-oplog-body{padding:0 24px 20px}.erp-oplog-filters{display:grid;grid-template-columns:220px 220px 290px 1fr;gap:24px;align-items:end;margin-bottom:22px}.erp-oplog-field{position:relative}.erp-oplog-field label{display:block;margin-bottom:8px;color:#303133;font-size:13px}.erp-oplog-select{height:32px;position:relative;border:1px solid #dcdfe6;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-select:focus-within{border-color:#3d68ff}.erp-oplog-select .floating-select{height:30px;min-height:30px;border:0;border-radius:5px}.erp-oplog-date-wrap{position:relative}.erp-oplog-date{height:32px;width:100%;padding:0 30px 0 10px;justify-content:flex-start;white-space:nowrap;overflow:hidden}.erp-oplog-date .dash{margin:0 13px}.erp-oplog-date-icon{position:absolute;right:10px;top:7px;color:#909399;font-style:normal;pointer-events:none}.erp-oplog-date-picker{z-index:5300!important}.erp-oplog-actions{display:flex;justify-content:flex-end;gap:10px;grid-column:1 / -1;margin-top:0}.erp-oplog-btn{height:32px;padding:0 17px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.erp-oplog-btn:hover{border-color:#3d68ff;color:#3d68ff}.erp-oplog-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.erp-oplog-btn.primary:hover{color:#fff}.erp-oplog-table-wrap{overflow:auto;border:1px solid #bfc3c9}.erp-oplog-table{width:100%;min-width:760px;border-collapse:collapse;table-layout:fixed;font-size:14px}.erp-oplog-table th,.erp-oplog-table td{height:60px;padding:10px;border-right:1px solid #bfc3c9;border-bottom:1px solid #bfc3c9;text-align:left;vertical-align:middle;word-break:break-word}.erp-oplog-table th{height:39px;background:#e9e9e9;color:#1f2d3d;font-weight:600}.erp-oplog-table tr>:last-child{border-right:0}.erp-oplog-table tbody tr:last-child td{border-bottom:0}.erp-oplog-table .erp-oplog-index{width:40px;text-align:center}.erp-oplog-empty{text-align:center!important;color:#909399}.erp-oplog-pager{height:42px;display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px}.erp-oplog-page{height:26px;min-width:26px;padding:0 6px;border:1px solid transparent;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-page.active{border-color:#3d68ff;color:#3d68ff}.erp-oplog-page:disabled{color:#c0c4cc;cursor:not-allowed}.erp-oplog-size{height:28px;min-width:96px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;padding:0 6px}@media(max-width:760px){.erp-oplog-body{padding:0 14px 14px}.erp-oplog-filters{grid-template-columns:1fr;gap:12px}.erp-oplog-actions{grid-column:auto}.erp-oplog-dialog{width:calc(100vw - 16px)}.erp-oplog-head{padding:0 14px}}' +
       '.erp-sticky-table thead th{position:sticky;top:var(--erp-sticky-header-top,0px);z-index:var(--erp-sticky-header-z-index,30);background:var(--erp-sticky-header-background,#e9e9e9)}';
-    style.textContent += '.floating-select{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:3px;min-height:32px;padding:0 24px 0 8px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.floating-select:focus-within{border-color:#3d68ff}.floating-select .ph{padding:0 2px;color:#c0c4cc;font-size:13px}.floating-select .val{overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.floating-select .caret{position:absolute;top:50%;right:8px;transform:translateY(-50%);color:#999;pointer-events:none}.floating-select .clear{display:none;position:absolute;top:50%;right:25px;transform:translateY(-50%);color:#a0a4ad;font-size:12px}.floating-select .clear.has-v{display:block}.floating-select .tag{display:inline-flex;align-items:center;gap:3px;max-width:110px;height:22px;padding:0 5px;border:1px solid #c9d6ff;border-radius:3px;background:#f5f7ff;color:#3d68ff;font-size:13px}.floating-select .tag i{font-style:normal;cursor:pointer}.dropdown-panel{position:fixed;z-index:2000;min-width:140px;padding:6px;border:1px solid #e4e7ed;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002;color:#303133}.dropdown-panel .dp-search input{width:100%;height:30px;margin-bottom:5px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px}.dropdown-panel .dp-list{max-height:210px;overflow:auto}.dropdown-panel .dp-opt{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;overflow:hidden;border-radius:3px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dropdown-panel .dp-opt:hover,.dropdown-panel .dp-opt.sel{background:#f1f5ff;color:#3d68ff}.dropdown-panel .dp-opt .ck{width:16px;flex:none;color:#3d68ff}.dropdown-panel .dp-empty{padding:12px;text-align:center;color:#909399}.erp-tile-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.erp-tile-group .tile{height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;font-size:13px}.erp-tile-group .tile:hover{border-color:#3d68ff;color:#3d68ff}.erp-tile-group .tile.active{border-color:#3d68ff;background:#3d68ff;color:#fff}';
+    style.textContent += '.floating-select{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:3px;min-height:32px;padding:0 24px 0 8px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.floating-select:focus-within{border-color:#3d68ff}.floating-select .ph{padding:0 2px;color:#c0c4cc;font-size:13px}.floating-select .val{overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.floating-select .caret{position:absolute;top:50%;right:8px;transform:translateY(-50%);color:#999;pointer-events:none}.floating-select .clear{display:none;position:absolute;top:50%;right:25px;transform:translateY(-50%);color:#a0a4ad;font-size:12px}.floating-select .clear.has-v{display:block}.floating-select .tag{display:inline-flex;align-items:center;gap:3px;max-width:110px;height:22px;padding:0 5px;border:1px solid #c9d6ff;border-radius:3px;background:#f5f7ff;color:#3d68ff;font-size:13px}.floating-select .tag i{font-style:normal;cursor:pointer}.dropdown-panel{position:fixed;z-index:2000;min-width:140px;padding:6px;border:1px solid #e4e7ed;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002;color:#303133}.dropdown-panel .dp-list{max-height:210px;overflow:auto}.dropdown-panel .dp-opt{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;overflow:hidden;border-radius:3px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dropdown-panel .dp-opt:hover,.dropdown-panel .dp-opt.sel{background:#f1f5ff;color:#3d68ff}.dropdown-panel .dp-opt .ck{width:16px;flex:none;color:#3d68ff}.dropdown-panel .dp-empty{padding:12px;text-align:center;color:#909399}.erp-tile-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.erp-tile-group .tile{height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;font-size:13px}.erp-tile-group .tile:hover{border-color:#3d68ff;color:#3d68ff}.erp-tile-group .tile.active{border-color:#3d68ff;background:#3d68ff;color:#fff}';
     style.textContent += '.warehouse-filter{position:relative}.warehouse-filter-button{position:relative;padding:0 28px 0 9px;text-align:left;cursor:pointer}.warehouse-filter-button:after{position:absolute;right:10px;color:#999;content:"⌄"}.warehouse-filter-button.placeholder{color:#bbb}.warehouse-filter-panel{position:absolute;top:35px;right:0;left:0;z-index:90;min-width:180px;padding:5px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;box-shadow:0 6px 18px #00000018}.warehouse-filter-panel>.erp-disabled-toggle{margin:5px -5px -5px}.warehouse-filter-search{width:100%;height:30px;margin-bottom:5px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px}.warehouse-filter-options{max-height:220px;overflow:auto}.warehouse-filter-options button{display:block;width:100%;height:30px;padding:0 8px;border:0;border-radius:3px;background:#fff;text-align:left;cursor:pointer}.warehouse-filter-options button:hover,.warehouse-filter-options button.active{background:#f3f6ff;color:#3d68ff}';
+    style.textContent += '.erp-export-history-mask{position:fixed;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;background:#0006}.erp-export-history-mask.show{display:flex}.erp-export-history-dialog{width:min(1500px,calc(100vw - 32px));max-height:90vh;display:flex;flex-direction:column;border-radius:6px;background:#fff;box-shadow:0 12px 40px #0003;color:#303133;font:13px/1.5 Arial,"Microsoft YaHei",sans-serif}.erp-export-history-head{height:54px;display:flex;align-items:center;flex:none;padding:0 20px;border-bottom:1px solid #ebeef5;font-size:16px;font-weight:600}.erp-export-history-close{margin-left:auto;padding:0 4px;border:0;background:none;color:#909399;font-size:25px;cursor:pointer}.erp-export-history-body{min-height:0;overflow:auto;padding:18px 20px}.erp-export-history-filters{display:grid;grid-template-columns:120px minmax(230px,1.3fr) 120px 120px minmax(290px,1.3fr) auto;gap:10px;align-items:end}.erp-export-history-field{min-width:0}.erp-export-history-field>label{display:block;margin-bottom:7px;color:#606266}.erp-export-history-input,.erp-export-history-select,.erp-export-history-size{height:32px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;font:inherit}.erp-export-history-input{width:100%;min-width:0;padding:0 9px}.erp-export-history-name{display:flex}.erp-export-history-name .erp-export-history-select{width:105px;flex:none;border-radius:5px 0 0 5px}.erp-export-history-name .erp-export-history-input{border-left:0;border-radius:0 5px 5px 0}.erp-export-history-select{position:relative;display:flex;align-items:center;padding:0 25px 0 9px;cursor:pointer}.erp-export-history-select>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.erp-export-history-select>i{position:absolute;right:8px;color:#909399;font-style:normal}.erp-export-history-select-panel{position:absolute;top:35px;left:0;right:0;z-index:5300;padding:5px;border:1px solid #e4e7ed;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002}.erp-export-history-select-panel.hidden{display:none}.erp-export-history-select-panel button{display:block;width:100%;height:30px;padding:0 8px;border:0;border-radius:3px;background:#fff;text-align:left;cursor:pointer}.erp-export-history-select-panel button:hover{background:#f1f5ff;color:#3d68ff}.erp-export-history-date{position:relative}.erp-export-history-date .erp-date-range{width:100%;height:32px;justify-content:space-between;white-space:nowrap;overflow:hidden}.erp-export-history-date .erp-date-picker{left:0!important;top:35px!important}.erp-export-history-actions{display:flex;gap:8px}.erp-export-history-btn{height:32px;padding:0 15px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;white-space:nowrap;cursor:pointer}.erp-export-history-btn:hover{border-color:#3d68ff;color:#3d68ff}.erp-export-history-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.erp-export-history-btn.danger{border-color:#f56c6c;color:#f56c6c}.erp-export-history-note{min-height:50px;display:flex;align-items:center;margin:12px 0 10px;padding:9px 15px;border:1px solid #ffe58f;border-radius:4px;background:#fffbe6;color:#8c6d1f}.erp-export-history-note i{width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;margin-right:10px;border-radius:50%;background:#faad14;color:#fff;font-style:normal}.erp-export-history-toolbar{margin-bottom:10px}.erp-export-history-scroll{overflow:auto;max-height:43vh}.erp-export-history-table{width:100%;min-width:1080px;border-collapse:collapse}.erp-export-history-table th,.erp-export-history-table td{height:43px;padding:8px;border:1px solid #d5d7dc;text-align:left}.erp-export-history-table th{background:#eee}.erp-export-history-table .center{text-align:center}.erp-export-history-table .empty{text-align:center;color:#909399;height:120px}.erp-export-history-table input[type=checkbox]{width:16px;height:16px;margin:0;accent-color:#3d68ff}.erp-export-history-status{display:inline-block;padding:3px 9px;border-radius:4px;background:#12c98a;color:#fff}.erp-export-history-status.failed{background:#f56c6c}.erp-export-history-link{padding:0 4px;border:0;background:none;color:#3d68ff;cursor:pointer}.erp-export-history-link.danger{color:#f56c6c}.erp-export-history-pager{height:42px;display:flex;align-items:center;justify-content:flex-end;gap:8px}.erp-export-history-pager button{height:28px;min-width:27px;border:1px solid transparent;border-radius:5px;background:#fff;cursor:pointer}.erp-export-history-pager button.active{border-color:#3d68ff;color:#3d68ff}.erp-export-history-pager button:disabled{color:#c0c4cc;cursor:default}.erp-export-history-size{padding:0 5px}@media(max-width:1200px){.erp-export-history-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.erp-export-history-actions{justify-content:flex-end}}';
+    style.textContent += '.erp-export-history-dialog{width:min(1120px,calc(100vw - 32px));max-height:78vh}.erp-export-history-scroll{max-height:32vh}.erp-export-history-dialog.import-mode{width:min(1600px,calc(100vw - 32px));max-height:90vh}.erp-export-history-dialog.import-mode .erp-export-history-scroll{max-height:48vh}.erp-export-history-dialog.import-mode [data-batch-delete]{border-color:#dcdfe6;color:#303133}.erp-export-history-status.processing{background:#409eff}.erp-export-history-date .erp-date-range{gap:5px}.erp-export-history-time{width:67px;min-width:0;height:25px;padding:0 2px;border:0;background:transparent;color:#606266;font:inherit}.erp-export-history-time::placeholder{color:#bbb}.erp-export-history-time:focus{outline:0}.erp-export-history-time::-webkit-calendar-picker-indicator{display:none}';
+    style.textContent += '.erp-copy-button{display:inline-flex;flex:0 0 16px;align-items:center;justify-content:center;width:16px;height:16px;padding:0;border:0;background:transparent;color:#315efb;cursor:pointer;vertical-align:middle}.erp-copy-button svg{display:block;width:14px;height:14px;flex:none}.erp-copy-button:hover{color:#1d4ed8}';
+    style.textContent += '.floating-select .floating-search-input{flex:1;min-width:36px;width:36px;height:28px;padding:0 2px;border:0;background:transparent;color:#303133;font:inherit;outline:none;cursor:text}.floating-select .floating-search-input::placeholder{color:#c0c4cc}';
     doc.head.appendChild(style);
   }
 
@@ -99,6 +103,45 @@
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
     });
+  }
+
+  function copyButtonHtml(value, options) {
+    options = options || {};
+    var label = options.label || '复制';
+    return '<button type="button" class="erp-copy-button" data-erp-copy-value="' + escapeHtml(value) + '" aria-label="' + escapeHtml(label) + '" title="' + escapeHtml(label) + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="4" width="9" height="10" rx="1"/><path d="M11 4V2H3a1 1 0 0 0-1 1v9h3"/></svg></button>';
+  }
+
+  function copyText(value) {
+    var text = String(value == null ? '' : value);
+    function fallback() {
+      if (!doc || !doc.body || !doc.execCommand) throw new Error('Clipboard unavailable');
+      var input = doc.createElement('textarea');
+      input.value = text;
+      input.setAttribute('readonly', '');
+      input.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      doc.body.appendChild(input);
+      input.select();
+      try { if (!doc.execCommand('copy')) throw new Error('Copy failed'); }
+      finally { input.remove(); }
+    }
+    var clipboard = global.navigator && global.navigator.clipboard;
+    return clipboard && clipboard.writeText ? clipboard.writeText(text).catch(fallback) : Promise.resolve().then(fallback);
+  }
+
+  function bindCopyButtons(options) {
+    options = options || {};
+    var root = element(options.root) || doc;
+    function onClick(event) {
+      var button = event.target.closest('[data-erp-copy-value]');
+      if (!button || !root.contains(button)) return;
+      copyText(button.getAttribute('data-erp-copy-value')).then(function () {
+        if (options.onSuccess) options.onSuccess(button);
+      }).catch(function (error) {
+        if (options.onError) options.onError(error, button);
+      });
+    }
+    root.addEventListener('click', onClick);
+    return { destroy: function () { root.removeEventListener('click', onClick); } };
   }
 
   function disabledToggleHtml(fieldName, checked, label) {
@@ -222,6 +265,15 @@
       if (!button) return;
       var parts = button.dataset.date.split('-');
       var selected = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      if (options.singleDate) {
+        state.start = selected;
+        state.end = selected;
+        state.view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+        sync();
+        render();
+        close();
+        return;
+      }
       if (!state.start || state.end) {
         state.start = selected;
         state.end = null;
@@ -384,7 +436,7 @@
 
   function createWarehouseDropdown(options) {
     options = Object.assign({}, options || {}, { variant: 'warehouse' });
-    if (!options.fieldName) options.fieldName = '仓库';
+    if (!options.fieldName && options.showDisabledToggle !== false) options.fieldName = '仓库';
     return createSearchDropdown(options);
   }
 
@@ -393,32 +445,37 @@
     var value = options.multiple ? [] : '';
     var panel = null;
     var showDisabled = Boolean(options.showDisabled);
+    var searchQuery = '';
 
     function closePanels() {
       if (panel && panel.parentNode) panel.remove();
       if (activeFloatingPanel && activeFloatingPanel.parentNode) activeFloatingPanel.remove();
       panel = null;
       activeFloatingPanel = null;
+      searchQuery = '';
+      var rootSearch = root.querySelector('.floating-search-input');
+      if (rootSearch) rootSearch.value = '';
       setActivePanel(null);
       if (options.closePanels) options.closePanels();
     }
     function getActivePanel() { return options.getActivePanel ? options.getActivePanel() : null; }
     function setActivePanel(nextPanel) { if (options.setActivePanel) options.setActivePanel(nextPanel); }
-    function visibleOptions(keyword) {
-      var items = (options.options || []).filter(function (item) { return showDisabled || item.enabled !== false; });
-      if (!keyword) return items;
-      keyword = keyword.toLowerCase();
-      return items.filter(function (item) { return String(item.label).toLowerCase().indexOf(keyword) >= 0; });
+    function visibleOptions() {
+      return (options.options || []).filter(function (item) {
+        return String(item.label == null ? item.value : item.label).trim() !== '请选择' && (showDisabled || item.enabled !== false);
+      });
     }
     function render() {
       if (options.multiple) {
         var values = value;
         var inner = '';
-        if (!values.length) inner = '<span class="ph">' + escapeHtml(options.placeholder || '请选择') + '</span>';
+        if (!values.length && !options.searchable) inner = '<span class="ph">' + escapeHtml(options.placeholder || '请选择') + '</span>';
         else {
           inner = values.slice(0, 2).map(function (current) { return '<span class="tag" data-v="' + escapeHtml(current) + '">' + escapeHtml(current) + '<i data-del="' + escapeHtml(current) + '">✕</i></span>'; }).join('') + (values.length > 2 ? '<span class="tag more">+' + (values.length - 2) + '</span>' : '');
         }
-        root.innerHTML = inner + '<span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+        root.innerHTML = inner + (options.searchable ? '<input class="floating-search-input" type="search" placeholder="' + escapeHtml(values.length ? '' : (options.placeholder || '请选择')) + '" aria-label="' + escapeHtml(options.searchPlaceholder || '搜索选项') + '">' : '') + '<span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+        var searchField = root.querySelector('.floating-search-input');
+        if (searchField) searchField.value = searchQuery;
         elements('.tag i', root).forEach(function (icon) { icon.addEventListener('click', function (event) { event.stopPropagation(); remove(icon.dataset.del); }); });
       } else {
         root.innerHTML = (value ? '<span class="val">' + escapeHtml(value) + '</span>' : '<span class="ph">' + escapeHtml(options.placeholder || '请选择') + '</span>') + '<span class="clear ' + (value ? 'has-v' : '') + '" data-clear>✕</span><span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
@@ -429,13 +486,15 @@
     function remove(current) {
       value = value.filter(function (item) { return item !== current; });
       render();
-      renderList(panel && panel.querySelector('input') ? panel.querySelector('input').value : '');
+      renderList();
       if (options.onChange) options.onChange(value);
     }
-    function renderList(keyword) {
+    function renderList() {
       if (!panel) return;
       var list = panel.querySelector('.dp-list');
-      var items = visibleOptions(keyword);
+      var items = visibleOptions().filter(function (item) {
+        return !searchQuery || String(item.label == null ? item.value : item.label).toLocaleLowerCase().indexOf(searchQuery) >= 0;
+      });
       list.innerHTML = items.length ? items.map(function (item) {
         var selected = options.multiple ? value.indexOf(item.value) >= 0 : String(value) === String(item.value);
         return '<div class="dp-opt' + (selected ? ' sel' : '') + '" data-v="' + escapeHtml(item.value) + '">' + (options.multiple ? '<span class="ck">' + (selected ? '✓' : '') + '</span>' : '') + escapeHtml(item.label) + '</div>';
@@ -445,7 +504,7 @@
           var nextValue = itemElement.dataset.v;
           if (options.multiple) {
             if (value.indexOf(nextValue) >= 0) value = value.filter(function (item) { return item !== nextValue; }); else value.push(nextValue);
-            render(); renderList(keyword); if (options.onChange) options.onChange(value);
+            render(); renderList(); if (options.onChange) options.onChange(value);
           } else {
             setValue(nextValue, true); closePanels();
           }
@@ -454,12 +513,15 @@
     }
     function open() {
       if (panel && (getActivePanel() === panel || activeFloatingPanel === panel)) { closePanels(); return; }
+      var currentQuery = options.searchable ? (root.querySelector('.floating-search-input') || {}).value || '' : '';
       closePanels();
+      searchQuery = currentQuery.trim().toLocaleLowerCase();
+      if (options.searchable) root.querySelector('.floating-search-input').value = currentQuery;
       panel = doc.createElement('div');
       panel.className = 'dropdown-panel';
       var minimumWidth = Math.max(root.offsetWidth, 120);
       panel.style.minWidth = minimumWidth + 'px';
-      panel.innerHTML = (options.searchable ? '<div class="dp-search"><input placeholder="搜索"></div>' : '') + '<div class="dp-list"></div>' + ((options.fieldName || options.disabledLabel) ? '<label class="erp-disabled-toggle"><input type="checkbox" data-common-show-disabled ' + (showDisabled ? 'checked' : '') + '> ' + escapeHtml(options.disabledLabel || ('显示停用' + options.fieldName)) + '</label>' : '');
+      panel.innerHTML = '<div class="dp-list"></div>' + ((options.fieldName || options.disabledLabel) ? '<label class="erp-disabled-toggle"><input type="checkbox" data-common-show-disabled ' + (showDisabled ? 'checked' : '') + '> ' + escapeHtml(options.disabledLabel || ('显示停用' + options.fieldName)) + '</label>' : '');
       doc.body.appendChild(panel);
       activeFloatingPanel = panel;
       if (options.panelZIndex) panel.style.zIndex = String(options.panelZIndex);
@@ -470,15 +532,9 @@
       if (top + Math.min(height, 300) > global.innerHeight - 8) top = Math.max(8, rect.top - height - 8);
       panel.style.left = Math.min(rect.left, global.innerWidth - minimumWidth - 8) + 'px';
       panel.style.top = top + 'px';
-      renderList('');
-      var search = panel.querySelector('.dp-search input');
-      if (search) {
-        search.addEventListener('input', function () { renderList(search.value); });
-        search.addEventListener('mousedown', function (event) { event.stopPropagation(); });
-        global.setTimeout(function () { search.focus(); }, 30);
-      }
+      renderList();
       var toggle = panel.querySelector('[data-common-show-disabled]');
-      if (toggle) toggle.addEventListener('change', function () { showDisabled = toggle.checked; renderList(search ? search.value : ''); });
+      if (toggle) toggle.addEventListener('change', function () { showDisabled = toggle.checked; renderList(); });
     }
     function setValue(nextValue, fire) {
       value = nextValue;
@@ -489,13 +545,15 @@
       if (!activeFloatingPanel || root.contains(event.target) || activeFloatingPanel.contains(event.target)) return;
       closePanels();
     }
-    function onRootClick(event) { event.stopPropagation(); if (!event.target.closest('[data-clear]')) open(); }
+    function onRootClick(event) { event.stopPropagation(); if (event.target.closest('[data-clear]')) return; if (event.target.closest('.floating-search-input') && panel) return; open(); if (options.searchable) root.querySelector('.floating-search-input').focus(); }
+    function onRootInput(event) { if (!event.target.matches('.floating-search-input')) return; searchQuery = event.target.value.trim().toLocaleLowerCase(); if (!panel) open(); else renderList(); }
     root.addEventListener('click', onRootClick);
+    root.addEventListener('input', onRootInput);
     doc.addEventListener('click', onOutsideClick);
     render();
     root.setValue = setValue;
     root.getValue = function () { return value; };
-    return { setValue: setValue, getValue: function () { return value; }, close: closePanels, destroy: function () { closePanels(); doc.removeEventListener('click', onOutsideClick); root.removeEventListener('click', onRootClick); } };
+    return { setValue: setValue, getValue: function () { return value; }, close: closePanels, destroy: function () { closePanels(); doc.removeEventListener('click', onOutsideClick); root.removeEventListener('click', onRootClick); root.removeEventListener('input', onRootInput); } };
   }
 
   function createTileGroup(options) {
@@ -722,7 +780,7 @@
       textarea.focus();
       if (options.onOpen) options.onOpen(api);
     }
-    function close() { root.classList.remove('show'); source.focus(); }
+    function close() { root.classList.remove('show'); source.focus(); if (options.onClose) options.onClose(api); }
     root.addEventListener('change', function (event) {
       if (event.target.name === name) syncField(event.target.value);
     });
@@ -733,7 +791,7 @@
       if (result !== false) close();
     });
     source.addEventListener('dblclick', open);
-    var api = { open: open, close: close, values: values, setField: syncField, root: root, textarea: textarea };
+    var api = { open: open, close: close, values: values, setField: syncField, root: root, textarea: textarea, destroy: function () { source.removeEventListener('dblclick', open); root.remove(); } };
     return api;
   }
 
@@ -809,11 +867,11 @@
     var attributeItems = normalizedItems(options.operationAttributes || options.attributes);
     var operatorItems = normalizedItems(options.operators || options.people, true);
     var attributeSelect = createFloatingSelect({
-      el: attributeRoot, options: attributeItems, searchable: true, placeholder: '请选择',
+      el: attributeRoot, options: attributeItems, placeholder: '请选择',
       closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
     });
     var operatorSelect = createFloatingSelect({
-      el: operatorRoot, options: operatorItems, searchable: true, placeholder: '请选择', fieldName: '人员', disabledLabel: '显示停用人员',
+      el: operatorRoot, options: operatorItems, placeholder: '请选择', fieldName: '人员', disabledLabel: '显示停用人员',
       closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
     });
     var datePicker = createDateRangePicker({
@@ -1074,7 +1132,7 @@
     var observer = new MutationObserver(function () { apply(); });
     Array.prototype.forEach.call(table.tBodies, function (tbody) { observer.observe(tbody, { childList: true }); });
     apply();
-    return { open: open, close: close, apply: apply, reset: function () { visible = new Set(defaults); columns = originalColumns.slice(); render(); apply(); }, visible: function () { return Array.from(visible); }, order: function () { return columns.map(function (column) { return String(column.key); }); } };
+    return { open: open, close: close, apply: apply, destroy: function () { observer.disconnect(); mask.remove(); trigger.remove(); }, reset: function () { visible = new Set(defaults); columns = originalColumns.slice(); render(); apply(); }, visible: function () { return Array.from(visible); }, order: function () { return columns.map(function (column) { return String(column.key); }); } };
   }
 
   function createWarehouseSelector(options) {
@@ -1156,16 +1214,158 @@
     return { filter: filter, matchesName: matchesName };
   }
 
+  function createHistoryExportDialog(options) {
+    options = options || {};
+    var importMode = options.mode === 'import';
+    var title = options.title || (importMode ? '历史导入任务' : '历史导出任务');
+    var taskTypeLabel = importMode ? '导入类型' : '导出类型';
+    var emptyLabel = importMode ? '暂无导入任务' : '暂无导出任务';
+    var trigger = element(options.trigger);
+    var mask = doc.createElement('div');
+    mask.className = 'erp-export-history-mask';
+    mask.setAttribute('role', 'dialog');
+    mask.setAttribute('aria-modal', 'true');
+    mask.setAttribute('aria-label', title);
+    mask.innerHTML = '<div class="erp-export-history-dialog' + (importMode ? ' import-mode' : '') + '"><div class="erp-export-history-head">' + escapeHtml(title) + '<button type="button" class="erp-export-history-close" data-close aria-label="关闭">×</button></div><div class="erp-export-history-body">' +
+      '<div class="erp-export-history-filters">' +
+      '<div class="erp-export-history-field"><label>状态</label><div class="erp-export-history-select" data-filter="status"><span></span><i>⌄</i></div></div>' +
+      '<div class="erp-export-history-field"><label>任务名称</label><div class="erp-export-history-name"><div class="erp-export-history-select" data-filter="mode"><span></span><i>⌄</i></div><input class="erp-export-history-input" data-filter="name" placeholder="请输入"></div></div>' +
+      '<div class="erp-export-history-field"><label>文件类型</label><div class="erp-export-history-select" data-filter="fileType"><span></span><i>⌄</i></div></div>' +
+      '<div class="erp-export-history-field"><label>' + taskTypeLabel + '</label><div class="erp-export-history-select" data-filter="exportType"><span></span><i>⌄</i></div></div>' +
+      '<div class="erp-export-history-field erp-export-history-date"><label>时间范围</label><div data-date-trigger><span data-date-start></span><input class="erp-export-history-time" type="text" placeholder="开始时间" data-start-time aria-label="开始时间"><span class="dash">~</span><span data-date-end></span><input class="erp-export-history-time" type="text" placeholder="结束时间" data-end-time aria-label="结束时间"></div><div class="date-picker hidden" data-date-panel><div class="date-shortcuts" data-date-shortcuts><button type="button" data-days="0">今天</button><button type="button" data-days="1">昨天</button><button type="button" data-range="7">近7天</button><button type="button" data-range="30">近30天</button><button type="button" data-range="90">近90天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" data-date-prev-year>«</button><button type="button" class="cal-nav" data-date-prev-month>‹</button><span class="cal-title" data-date-title></span><button type="button" class="cal-nav" data-date-next-month>›</button><button type="button" class="cal-nav" data-date-next-year>»</button></div><div class="cal-grid" data-date-grid></div></div></div></div>' +
+      '<div class="erp-export-history-actions"><button type="button" class="erp-export-history-btn" data-reset>重置</button><button type="button" class="erp-export-history-btn primary" data-query>查询</button></div></div>' +
+      '<div class="erp-export-history-note"><i>!</i>' + (importMode ? '导入任务' : '导出任务') + '创建时间距今超过半年的系统自动删除</div><div class="erp-export-history-toolbar"><button type="button" class="erp-export-history-btn danger" data-batch-delete>批量删除</button></div>' +
+      '<div class="erp-export-history-scroll"><table class="erp-export-history-table"><thead><tr><th class="center"><input type="checkbox" data-check-all aria-label="全选当前页"></th><th>任务名称</th><th>文件类型</th><th>' + taskTypeLabel + '</th><th>操作人</th><th>操作时间</th><th>完成时间</th><th class="center">状态</th><th class="center">操作</th></tr></thead><tbody data-task-body></tbody></table></div>' +
+      '<div class="erp-export-history-pager"><span data-total>共 0 条</span><button type="button" data-previous aria-label="上一页">‹</button><span data-pages></span><button type="button" data-next aria-label="下一页">›</button><select class="erp-export-history-size" data-page-size aria-label="每页条数"><option value="10">10 条/页</option><option value="20">20 条/页</option><option value="50">50 条/页</option></select></div></div></div>';
+    doc.body.appendChild(mask);
+    function find(selector) { return mask.querySelector(selector); }
+    var status = createStaticDropdown({ control: find('[data-filter="status"]'), display: find('[data-filter="status"] span'), items: ['处理中', '成功', '部分成功', '失败'], placeholder: '请选择', panelClass: 'erp-export-history-select-panel' });
+    var mode = createStaticDropdown({ control: find('[data-filter="mode"]'), display: find('[data-filter="mode"] span'), items: ['等于', '包含', '开头是', '结尾是'], value: '开头是', panelClass: 'erp-export-history-select-panel' });
+    var fileType = createStaticDropdown({ control: find('[data-filter="fileType"]'), display: find('[data-filter="fileType"] span'), items: ['共享文件', '普通文件'], placeholder: '请选择', panelClass: 'erp-export-history-select-panel' });
+    var exportType = createStaticDropdown({ control: find('[data-filter="exportType"]'), display: find('[data-filter="exportType"] span'), items: importMode ? ['更新导入', '新增导入'] : ['实时导出', '定时导出'], placeholder: '请选择', panelClass: 'erp-export-history-select-panel' });
+    var date = createDateRangePicker({ trigger: find('[data-date-trigger]'), panel: find('[data-date-panel]'), shortcuts: find('[data-date-shortcuts]'), grid: find('[data-date-grid]'), title: find('[data-date-title]'), startText: find('[data-date-start]'), endText: find('[data-date-end]'), prevMonth: find('[data-date-prev-month]'), nextMonth: find('[data-date-next-month]'), prevYear: find('[data-date-prev-year]'), nextYear: find('[data-date-next-year]'), state: { view: new Date(), start: null, end: null }, startSuffix: '', endSuffix: '', closeOthers: function () { closeSelects(); } });
+    var taskFilter = createHistoryExportTasks({ timeValue: function (value) { return value ? new Date(String(value).replace(/-/g, '/')).getTime() : 0; }, timeField: 'started' });
+    var selected = new Set();
+    var filtered = [];
+    var page = 1;
+    var pageSize = 10;
+    function closeSelects() { [status, mode, fileType, exportType].forEach(function (control) { control.close(); }); }
+    function taskList() { return typeof options.getTasks === 'function' ? options.getTasks() : (options.tasks || []); }
+    function currentFilters() {
+      var start = date.getStart(), end = date.getEnd();
+      var startTime = find('[data-start-time]').value, endTime = find('[data-end-time]').value;
+      if (start && startTime) { var startParts = startTime.split(':'); start += (Number(startParts[0]) * 60 + Number(startParts[1])) * 60000; }
+      if (end && endTime) { var endParts = endTime.split(':'), endDate = new Date(end); endDate.setHours(Number(endParts[0]), Number(endParts[1]), 59, 999); end = endDate.getTime(); }
+      return { status: status.getValue(), name: find('[data-filter="name"]').value.trim(), nameMode: mode.getValue(), fileType: fileType.getValue(), exportType: exportType.getValue(), start: start, end: end };
+    }
+    [find('[data-start-time]'), find('[data-end-time]')].forEach(function (input) {
+      input.addEventListener('click', function (event) { event.stopPropagation(); });
+      input.addEventListener('focus', function () { input.type = 'time'; });
+      input.addEventListener('blur', function () { if (!input.value) input.type = 'text'; });
+    });
+    var pager = createPagination({ numbers: find('[data-pages]'), previous: find('[data-previous]'), next: find('[data-next]'), buttonClass: 'erp-export-history-page', onChange: function (next) { page = next; render(); }, onPrevious: function () { page -= 1; render(); }, onNext: function () { page += 1; render(); } });
+    function render() {
+      filtered = taskFilter.filter(taskList().slice(), currentFilters());
+      page = Math.max(1, Math.min(page, Math.ceil(filtered.length / pageSize) || 1));
+      var current = filtered.slice((page - 1) * pageSize, page * pageSize);
+      find('[data-task-body]').innerHTML = current.length ? current.map(function (task) {
+        var taskId = escapeHtml(task.id);
+        var statusClass = task.status === '失败' ? ' failed' : task.status === '处理中' ? ' processing' : '';
+        var canDownload = !importMode || task.status === '成功';
+        return '<tr><td class="center"><input type="checkbox" data-task-id="' + taskId + '" ' + (selected.has(task.id) ? 'checked' : '') + '></td><td>' + escapeHtml(task.name) + '</td><td>' + escapeHtml(task.fileType || '普通文件') + '</td><td>' + escapeHtml(task.exportType || (importMode ? '更新导入' : '实时导出')) + '</td><td>' + escapeHtml(task.user || 'XWD') + '</td><td>' + escapeHtml(task.started || '') + '</td><td>' + escapeHtml(task.completed || '—') + '</td><td class="center"><span class="erp-export-history-status' + statusClass + '">' + escapeHtml(task.status || '成功') + '</span></td><td class="center">' + (canDownload ? '<button type="button" class="erp-export-history-link" data-download="' + taskId + '">下载</button>' : '') + '<button type="button" class="erp-export-history-link danger" data-delete="' + taskId + '">删除</button></td></tr>';
+      }).join('') : '<tr><td class="empty" colspan="9">' + emptyLabel + '</td></tr>';
+      find('[data-total]').textContent = '共 ' + filtered.length + ' 条';
+      find('[data-check-all]').checked = current.length > 0 && current.every(function (task) { return selected.has(task.id); });
+      pager.render({ page: page, pageCount: Math.ceil(filtered.length / pageSize) || 1 });
+    }
+    function close() { mask.classList.remove('show'); date.close(); closeSelects(); }
+    function open() { page = 1; render(); mask.classList.add('show'); }
+    if (trigger) trigger.addEventListener('click', open);
+    find('[data-close]').addEventListener('click', close);
+    mask.addEventListener('click', function (event) { if (event.target === mask) close(); });
+    find('[data-query]').addEventListener('click', function () { page = 1; render(); });
+    find('[data-reset]').addEventListener('click', function () { status.set('', true); mode.set('开头是', true); fileType.set('', true); exportType.set('', true); find('[data-filter="name"]').value = ''; find('[data-start-time]').value = ''; find('[data-start-time]').type = 'text'; find('[data-end-time]').value = ''; find('[data-end-time]').type = 'text'; date.reset(); selected.clear(); page = 1; render(); });
+    find('[data-page-size]').addEventListener('change', function () { pageSize = Number(this.value); page = 1; render(); });
+    find('[data-check-all]').addEventListener('change', function () { var checked = this.checked; filtered.slice((page - 1) * pageSize, page * pageSize).forEach(function (task) { if (checked) selected.add(task.id); else selected.delete(task.id); }); render(); });
+    find('[data-task-body]').addEventListener('change', function (event) { if (!event.target.matches('[data-task-id]')) return; if (event.target.checked) selected.add(event.target.dataset.taskId); else selected.delete(event.target.dataset.taskId); render(); });
+    function deleteTasks(ids) { if (!ids.length) return; if (options.onDelete) options.onDelete(ids); else options.tasks = taskList().filter(function (task) { return ids.indexOf(task.id) < 0; }); ids.forEach(function (id) { selected.delete(id); }); render(); }
+    find('[data-batch-delete]').addEventListener('click', function () { if (!selected.size) { if (options.onEmptySelection) options.onEmptySelection(); return; } deleteTasks(Array.from(selected)); });
+    find('[data-task-body]').addEventListener('click', function (event) { var download = event.target.closest('[data-download]'); var deletion = event.target.closest('[data-delete]'); if (download) { var task = taskList().find(function (item) { return item.id === download.dataset.download; }); if (task && options.onDownload) options.onDownload(task); } else if (deletion) deleteTasks([deletion.dataset.delete]); });
+    function onKeydown(event) { if (event.key === 'Escape' && mask.classList.contains('show')) close(); }
+    doc.addEventListener('keydown', onKeydown);
+    return { open: open, close: close, render: render, destroy: function () { if (trigger) trigger.removeEventListener('click', open); doc.removeEventListener('keydown', onKeydown); mask.remove(); }, element: mask };
+  }
+
+  function createHistoryImportDialog(options) {
+    return createHistoryExportDialog(Object.assign({}, options || {}, { mode: 'import' }));
+  }
+  /* PDA-切换仓库样式：在 375×812 的 PDA 视口内复用同一套仓库选择抽屉。 */
+  function createPdaWarehouseSwitcher(options) {
+    options = options || {};
+    var root = element(options.root) || doc.body;
+    var trigger = element(options.trigger);
+    var label = element(options.label);
+    if (!trigger || !label) throw new Error('PDA-切换仓库样式需要 trigger 和 label');
+    if (!doc.getElementById('pda-warehouse-switcher-styles')) {
+      var styles = doc.createElement('style');
+      styles.id = 'pda-warehouse-switcher-styles';
+      styles.textContent = '.pda-warehouse-mask[hidden]{display:none!important}.pda-warehouse-mask{position:absolute;inset:0;z-index:100;background:#0009}.pda-warehouse-sheet{position:absolute;left:0;right:0;bottom:0;height:75%;max-height:650px;display:flex;flex-direction:column;background:#fff;color:#172333;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}.pda-warehouse-head{height:52px;flex:none;display:grid;grid-template-columns:80px 1fr 80px;align-items:center;text-align:center;font-size:18px;font-weight:700}.pda-warehouse-head button{height:48px;border:0;background:none;color:#315efb;font:inherit;font-size:16px;font-weight:400;cursor:pointer}.pda-warehouse-head button:first-child{color:#172333;text-align:left;padding-left:14px}.pda-warehouse-head button:last-child{text-align:right;padding-right:14px}.pda-warehouse-search-wrap{height:56px;flex:none;padding:10px 9px;background:#f0f1f4}.pda-warehouse-search{width:100%;height:36px;padding:0 17px;border:0;border-radius:20px;background:#fff;outline:0;font:inherit}.pda-warehouse-search::placeholder{color:#b7bec9}.pda-warehouse-list{min-height:0;flex:1;overflow:auto;padding:0 14px}.pda-warehouse-row{width:100%;min-height:43px;display:flex;align-items:center;justify-content:space-between;padding:6px 0;border:0;border-bottom:1px solid #e7e9ee;background:#fff;text-align:left;color:#172333;font:inherit;cursor:pointer}.pda-warehouse-check{color:#315efb;font-size:19px}.pda-warehouse-empty{padding:24px;text-align:center;color:#909399}';
+      doc.head.appendChild(styles);
+    }
+    var names = (options.warehouses || []).slice();
+    var value = options.value || names[0] || '';
+    var draft = value;
+    var mask = doc.createElement('div');
+    mask.className = 'pda-warehouse-mask';
+    mask.hidden = true;
+    mask.innerHTML = '<section class="pda-warehouse-sheet" role="dialog" aria-modal="true" aria-label="仓库"><header class="pda-warehouse-head"><button type="button" data-cancel>取消</button><strong>仓库</strong><button type="button" data-confirm>确定</button></header><div class="pda-warehouse-search-wrap"><input class="pda-warehouse-search" placeholder="请输入仓库名称" autocomplete="off" aria-label="搜索仓库"></div><div class="pda-warehouse-list"></div></section>';
+    root.appendChild(mask);
+    var search = mask.querySelector('.pda-warehouse-search');
+    var list = mask.querySelector('.pda-warehouse-list');
+    function renderList() {
+      var query = search.value.trim().toLowerCase();
+      var visible = names.filter(function (name) { return name.toLowerCase().indexOf(query) >= 0; });
+      list.innerHTML = visible.length ? visible.map(function (name, index) { return '<button type="button" class="pda-warehouse-row" data-index="' + names.indexOf(name) + '"><span>' + escapeHtml(name) + '</span>' + (name === draft ? '<span class="pda-warehouse-check">✓</span>' : '') + '</button>'; }).join('') : '<div class="pda-warehouse-empty">暂无仓库</div>';
+    }
+    function open() { draft = value; search.value = ''; renderList(); mask.hidden = false; search.focus(); }
+    function close() { mask.hidden = true; }
+    function setValue(next, notify) {
+      if (names.indexOf(next) < 0) return false;
+      var changed = next !== value;
+      value = next;
+      label.textContent = value;
+      if (changed && notify !== false && options.onChange) options.onChange(value);
+      return true;
+    }
+    function onTrigger() { open(); }
+    function onListClick(event) { var row = event.target.closest('[data-index]'); if (!row) return; draft = names[Number(row.dataset.index)]; renderList(); }
+    function onMaskClick(event) { if (event.target === mask) close(); }
+    function onKeydown(event) { if (event.key === 'Escape' && !mask.hidden) close(); }
+    trigger.addEventListener('click', onTrigger);
+    search.addEventListener('input', renderList);
+    list.addEventListener('click', onListClick);
+    mask.querySelector('[data-cancel]').addEventListener('click', close);
+    mask.querySelector('[data-confirm]').addEventListener('click', function () { setValue(draft); close(); });
+    mask.addEventListener('click', onMaskClick);
+    doc.addEventListener('keydown', onKeydown);
+    label.textContent = value;
+    return { open: open, close: close, getValue: function () { return value; }, setValue: setValue, element: mask, destroy: function () { trigger.removeEventListener('click', onTrigger); doc.removeEventListener('keydown', onKeydown); mask.remove(); } };
+  }
+
   global.ERPComponents = Object.freeze({
-    version: '1.4.0',
+    version: '1.4.3',
     element: element,
     elements: elements,
     escapeHtml: escapeHtml,
+    copyButtonHtml: copyButtonHtml,
+    copyText: copyText,
+    bindCopyButtons: bindCopyButtons,
     disabledToggleHtml: disabledToggleHtml,
     dateText: dateText,
     createDateRangePicker: createDateRangePicker,
     createSearchDropdown: createSearchDropdown,
     createWarehouseDropdown: createWarehouseDropdown,
+    createPdaWarehouseSwitcher: createPdaWarehouseSwitcher,
     createFloatingSelect: createFloatingSelect,
     createTileGroup: createTileGroup,
     createStaticDropdown: createStaticDropdown,
@@ -1176,6 +1376,8 @@
     createColumnCustomizer: createColumnCustomizer,
     createWarehouseSelector: createWarehouseSelector,
     createHistoryExportTasks: createHistoryExportTasks,
+    createHistoryExportDialog: createHistoryExportDialog,
+    createHistoryImportDialog: createHistoryImportDialog,
     createStickyTableHeader: createStickyTableHeader,
     parseBatch: parseBatch,
     pageItems: pageItems

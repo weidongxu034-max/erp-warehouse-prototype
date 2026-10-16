@@ -186,12 +186,27 @@
   .qty-ipt:focus { border-color:#3D68FF; }
   .wh-ipt { width:44px; height:24px; border:1px solid #d9d9d9; border-radius:3px; padding:0 4px; font-size:14px; outline:none; text-align:center; }
   .wh-ipt:focus { border-color:#3D68FF; }
+  .wh-ipt:disabled { background:#edf0f3; border-color:#d5dae1; color:#999; cursor:not-allowed; }
+  .wh-ipt:disabled::placeholder { color:#aeb5be; }
+  .wh-ipt.mark-qty-ipt { width:100px; text-align:left; }
   .selbar { display:flex; align-items:center; gap:10px; padding:8px 2px 0; font-size:14px; color:#333; flex-wrap:wrap; }
   .cfg-row { display:flex; align-items:center; gap:14px; padding:8px 2px 0; font-size:14px; color:#333; flex-wrap:wrap; }
+  .cfg-title { display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
   .cfg-row .seg { display:inline-flex; border:1px solid #d9d9d9; border-radius:4px; overflow:hidden; }
   .cfg-row .seg span { padding:3px 12px; cursor:pointer; background:#fff; }
   .cfg-row .seg span.on { background:#3D68FF; color:#fff; }
+  .cfg-row .seg.disabled span { cursor:not-allowed; background:#f5f5f5; color:#999; }
+  .cfg-row .seg.disabled span.on { background:#e5e5e5; color:#666; }
   .cfg-row .lab-info { color:#666; }
+  .cfg-group { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+  .cfg-group[hidden] { display:none; }
+  #abnormalMarkFields { flex-wrap:wrap; white-space:normal; }
+  #abnormalMarkFields .lab-info, #abnormalMarkFields .mark-tip { white-space:nowrap; }
+  .cfg-row .mark-action { height:24px; padding:0 8px; border:1px solid #d9d9d9; border-radius:3px; background:#fff; color:#3D68FF; font-size:14px; cursor:pointer; }
+  .cfg-row .mark-action:hover { color:#2456e8; }
+  .cfg-row .mark-action:disabled { background:#edf0f3; color:#aaa; cursor:not-allowed; }
+  .cfg-row .mark-action[hidden] { display:none; }
+  .mark-tip { color:#999; }
   .remark-row { padding:8px 2px 0; }
   .remark-row .ctl { width:100%; height:30px; }
   .link-op { color:#3D68FF; cursor:pointer; white-space:nowrap; }
@@ -200,6 +215,11 @@
   .link-btn { color:#3D68FF; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-size:14px; user-select:none; }
   .link-btn:hover { text-decoration:underline; }
   .help-q { display:inline-flex; width:14px; height:14px; border:1px solid #c8c8c8; border-radius:50%; color:#999; font-size:14px; align-items:center; justify-content:center; cursor:help; }
+  .help-warning { position:relative; font-size:12px; font-weight:700; }
+  .help-warning::before,.help-warning::after { position:absolute; top:50%; z-index:30; visibility:hidden; opacity:0; pointer-events:none; }
+  .help-warning::before { content:""; left:100%; transform:translateY(-50%); border:5px solid transparent; border-right-color:#303133; }
+  .help-warning::after { content:attr(data-tip); left:calc(100% + 10px); transform:translateY(-50%); width:max-content; max-width:420px; padding:7px 9px; border-radius:3px; background:#303133; color:#fff; box-shadow:0 3px 10px #0003; font-size:12px; font-weight:400; line-height:1.5; text-align:left; white-space:normal; }
+  .help-warning:hover::before,.help-warning:hover::after,.help-warning:focus-visible::before,.help-warning:focus-visible::after { visibility:visible; opacity:1; }
   /* ============ 不良品登记弹窗 ============ */
   .modal-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:2500; display:none; align-items:center; justify-content:center; }
   .modal-box { width:820px; max-width:94vw; background:#fff; border-radius:6px; box-shadow:0 8px 30px rgba(0,0,0,.18); padding:14px 16px 16px; }
@@ -292,18 +312,28 @@
           <button class="btn primary sm" id="btnDefect">查看/登记不良品</button>
         </div>
         <div class="cfg-row">
-          <span>质检/贴标/加工配置：</span>
+          <span class="cfg-title">质检/贴标/加工配置：<span class="help-q help-warning" tabindex="0" role="img" data-tip="控制后续入库环节是否需要质检/贴标/加工，并根据仓储设置中的&quot;入库签收量自动填充&quot;配置控制未贴标数和仓库贴标数是否按签收量自动填充" aria-label="控制后续入库环节是否需要质检/贴标/加工，并根据仓储设置中的&quot;入库签收量自动填充&quot;配置控制未贴标数和仓库贴标数是否按签收量自动填充">!</span></span>
           <label class="ck-label"><input type="checkbox" id="cfgZj">转质检</label>
           <label class="ck-label"><input type="checkbox" id="cfgTb">转贴标</label>
           <label class="ck-label"><input type="checkbox" id="cfgJg">转加工</label>
-          <span>签收员完成贴标：</span>
-          <span class="seg" id="segLabel"><span class="on" data-v="是">是</span><span data-v="否">否</span></span>
-          <span>贴标信息：</span>
-          <span class="seg" id="segMark"><span class="on" data-v="正常">正常</span><span data-v="异常">异常</span></span>
-          <span class="lab-info">未贴标：<input class="wh-ipt" id="markWtb" placeholder="请输入" style="width:56px;text-align:left;"></span>
-          <span class="lab-info">错标：<input class="wh-ipt" id="markCb" placeholder="请输入" style="width:56px;text-align:left;"></span>
-          <span class="lab-info">仓库贴标：<input class="wh-ipt" id="markCk" placeholder="请输入" style="width:64px;text-align:left;"></span>
-          <span style="color:#FA8C16;">异常贴标必须填写数量</span>
+          <span class="cfg-group" id="suggestedMarkGroup" hidden>
+            <span>建议贴标数：</span><input class="wh-ipt" id="suggestMarkQty" type="number" min="0" placeholder="请输入" style="width:86px;text-align:left;">
+          </span>
+          <span class="cfg-group" id="supplierLabelGroup">
+            <span class="cfg-group" id="signerLabelGroup">
+              <span>签收员完成贴标：</span>
+              <span class="seg" id="segLabel"><span class="on" data-v="是">是</span><span data-v="否">否</span></span>
+            </span>
+            <span>供应商贴标信息：</span>
+            <span class="seg" id="segMark"><span data-v="正常">正常</span><span data-v="异常">异常</span></span>
+          </span>
+          <span class="cfg-group" id="abnormalMarkFields">
+            <span class="lab-info">未贴标：<input class="wh-ipt mark-qty-ipt" id="markWtb" type="number" min="0" placeholder="请输入" disabled></span>
+            <span class="lab-info">错标：<input class="wh-ipt mark-qty-ipt" id="markCb" type="number" min="0" placeholder="请输入" disabled></span>
+            <span class="lab-info" id="warehouseMarkField">仓库贴标：<input class="wh-ipt mark-qty-ipt" id="markCk" type="number" min="0" placeholder="请输入" disabled></span>
+            <button class="mark-action" id="autoFillMarkBtn" type="button" disabled hidden>自动填充</button>
+            <span class="mark-tip" id="markTip">异常贴标必须填写数量</span>
+          </span>
         </div>
         <div class="remark-row">
           <div class="ctl txt-ctl"><input class="ipt" id="signRemark" placeholder="请输入签收备注"></div>
@@ -441,13 +471,15 @@ const st = {
   rows: [],           // 当前 SKU 行（含勾选、本次签收数量）
   defects: [],        // 不良品登记
   labelDone: '是',    // 签收员完成贴标
-  mark: '正常'        // 贴标信息
+  mark: ''            // 贴标信息，需手动维护
 };
+const signCfg = { autoFill: true, threshold: 1 };   // 仓库贴标数自动填充配置
 
 /* ---------- 扫描/输入：匹配单据并加载 SKU ---------- */
 function doScan(){
   const v = $('#scanInput').value.trim();
   if(!v){ toast('warning','请先扫描/输入物流单号、采购单号或调拨批次号'); return; }
+  $('#markWtb').value = ''; $('#markCb').value = ''; $('#markCk').value = ''; $('#suggestMarkQty').value = '';
   // 任意单号均可签收：库内无记录时按采购单生成演示明细
   const doc = DOCS_DB[v] || { type:'采购单', created:fmtDT(new Date()), wh:'验证仓', items:DOCS_DB['3142737141'].items };
   st.doc = doc;
@@ -522,6 +554,11 @@ function renderRows(){
     if(isNaN(v)||v<0) v=0;
     if(v>max){ v=max; toast('warning','本次签收数量不可超过可签收数（'+max+'）'); }
     ipt.value = v; r.signQty = v; updateSelInfo();
+  }));
+  tb.querySelectorAll('.sign-qty').forEach(ipt=>ipt.addEventListener('input', ()=>{
+    const r = st.rows[+ipt.dataset.i];
+    r.signQty = Math.max(0, Math.min(r.qty-r.inbound, parseInt(ipt.value||'0',10)||0));
+    updateSelInfo();
   }));
   tb.querySelectorAll('[data-defect]').forEach(a=>a.addEventListener('click', ()=>{
     openDefectModal(+a.dataset.defect);
@@ -646,21 +683,59 @@ $('#skuQuick').addEventListener('keydown', e=>{ if(e.key==='Enter') quickPick();
 /* ---------- 段选按钮（是/否、正常/异常） ---------- */
 function bindSeg(id, key){
   $(id).querySelectorAll('span').forEach(sp=>sp.addEventListener('click', ()=>{
+    if(key==='mark' && $('#cfgTb').checked) return;
     $(id).querySelectorAll('span').forEach(x=>x.classList.remove('on'));
     sp.classList.add('on'); st[key] = sp.dataset.v;
+    if(key==='mark') updateLabelVisibility();
   }));
 }
 bindSeg('#segLabel','labelDone');
 bindSeg('#segMark','mark');
+function updateLabelVisibility(){
+  const transferToLabel = $('#cfgTb').checked;
+  if(transferToLabel) st.mark = '异常';
+  $('#segMark').classList.toggle('disabled', transferToLabel);
+  $('#segMark').setAttribute('aria-disabled', String(transferToLabel));
+  $('#segMark').querySelectorAll('span').forEach(sp=>sp.classList.toggle('on', sp.dataset.v===st.mark));
+  const abnormalMark = st.mark==='异常';
+  $('#supplierLabelGroup').hidden = false;
+  $('#signerLabelGroup').hidden = transferToLabel;
+  $('#abnormalMarkFields').hidden = false;
+  ['markWtb','markCb','markCk'].forEach(id=>{
+    const input = $('#'+id);
+    input.disabled = !abnormalMark;
+    if(!abnormalMark) input.value = '';
+  });
+  $('#autoFillMarkBtn').disabled = !abnormalMark;
+  $('#warehouseMarkField').hidden = transferToLabel;
+  $('#autoFillMarkBtn').hidden = transferToLabel || !abnormalMark;
+  $('#suggestedMarkGroup').hidden = !transferToLabel;
+  applyAutoFillMark();
+}
+$('#cfgTb').addEventListener('change', ()=>{
+  updateLabelVisibility();
+});
+$('#autoFillMarkBtn').addEventListener('click', ()=>{
+  $('#markCk').value = Math.max(0, parseInt($('#markWtb').value, 10) || 0)
+    + Math.max(0, parseInt($('#markCb').value, 10) || 0);
+  $('#markCk').focus();
+});
+updateLabelVisibility();
 
 /* ---------- 重置：清空勾选、签收种类数量、扫描区 ---------- */
 function doReset(){
   st.doc = null; st.rows = []; st.defects = [];
+  try { sessionStorage.removeItem('erp-inbound-sign-draft'); } catch (_) {}
   $('#scanInput').value=''; $('#skuQuick').value='';
+  $('#autoBindCk').checked=true; $('#printPoCk').checked=false;
   resetTaskIpt();
-  $('#signRemark').value=''; $('#markWtb').value=''; $('#markCb').value=''; $('#markCk').value='';
+  $('#signRemark').value=''; $('#markWtb').value=''; $('#markCb').value=''; $('#markCk').value=''; $('#suggestMarkQty').value='';
   $('#cfgZj').checked=false; $('#cfgTb').checked=false; $('#cfgJg').checked=false;
-  $('#docLine').style.display='none'; $('#signArea').style.display='none';
+  st.mark=''; st.labelDone='是';
+  $('#segMark').querySelectorAll('span').forEach(sp=>sp.classList.toggle('on',sp.dataset.v===st.mark));
+  $('#segLabel').querySelectorAll('span').forEach(sp=>sp.classList.toggle('on',sp.dataset.v===st.labelDone));
+  updateLabelVisibility();
+  $('#docLine').innerHTML=''; $('#docLine').style.display='none'; $('#signArea').style.display='none';
   $('#tbody').innerHTML=''; $('#emptyBox').style.display='';
   $('#ckAll').checked=false;
 }
@@ -671,10 +746,21 @@ $('#btnSign').addEventListener('click', ()=>{
   if(!st.rows.length){ toast('warning','请先扫描/输入单号加载待签收 SKU'); return; }
   const sel = selectedRows();
   if(!sel.length){ toast('warning','请先勾选要签收的商品'); return; }
+  if(!taskIpt.disabled){ toast('warning','请先绑定任务码'); return; }
+  if(($('#cfgTb').checked || st.labelDone==='是') && !st.mark){ toast('warning','请先维护供应商贴标信息'); return; }
   const totalQty = sel.reduce((s,r)=>s+(+r.signQty||0),0);
-  // 非零签收需任务码已绑定（输入任务码后回车）
-  if(totalQty>0 && !taskIpt.disabled){
-    toast('warning','非零签收必须绑定有效的上架任务码，请扫描任务码后回车绑定'); return;
+  if(st.mark==='异常'){
+    const unlabeled = Number($('#markWtb').value || 0);
+    const mislabeled = Number($('#markCb').value || 0);
+    if(!Number.isInteger(unlabeled) || unlabeled<0 || !Number.isInteger(mislabeled) || mislabeled<0){
+      toast('error','请填写有效的贴标数量'); return;
+    }
+    if(unlabeled===0 && mislabeled===0){
+      toast('error','请填写未贴标数量！'); return;
+    }
+    if(unlabeled+mislabeled>totalQty){
+      toast('error','异常贴标数量需小于等于本次签收数'); return;
+    }
   }
   // 部分签收校验：存在未全量签收的行
   const partial = sel.some(r=>r.signQty < (r.qty - r.inbound));
@@ -700,7 +786,6 @@ $('#btnPrintPo').addEventListener('click', ()=>{
 $('#btnPrintCfg').addEventListener('click', ()=> toast('info','原型演示：打印设置'));
 
 /* ---------- 签收设置弹窗 ---------- */
-const signCfg = { autoFill: true, threshold: 1 };   // 仓库贴标数自动填充配置
 $('#btnSignCfg').addEventListener('click', ()=>{
   $('#autoFillMark').checked = signCfg.autoFill;
   $('#autoFillNum').value = signCfg.threshold;
@@ -716,12 +801,18 @@ $('#signCfgOk').addEventListener('click', ()=>{
   toast('success','签收设置已保存');
   applyAutoFillMark();
 });
-// 自动填充仓库贴标数：勾选行中签收量达到阈值的数量合计
+// 勾选 SKU 的本次签收数变化时，重新计算自动填充的贴标数量
+function fillWarehouseMark(){
+  const n = selectedRows().reduce((sum,r)=>sum+(+r.signQty||0),0);
+  $('#markCk').value = n >= signCfg.threshold ? n : '';
+}
 function applyAutoFillMark(){
-  if(!signCfg.autoFill) return;
-  const n = st.rows.filter(r=>r.checked && (+r.signQty||0) >= signCfg.threshold)
-                   .reduce((s,r)=>s+(+r.signQty||0), 0);
-  if(n > 0) $('#markCk').value = n;
+  const n = selectedRows().reduce((sum,r)=>sum+(+r.signQty||0),0);
+  if(st.mark==='异常'){
+    $('#markWtb').value = n > 0 ? n : '';
+    if(signCfg.autoFill) fillWarehouseMark();
+  }
+  $('#suggestMarkQty').value = n > 0 ? n : '';
 }
 /* ---------- 查看/登记不良品（批量登记弹窗） ---------- */
 const TRASH_SVG = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M6 4V2.5h4V4M3.5 4l.7 9.5h7.6L12.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 7v4M9.5 7v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
@@ -834,6 +925,8 @@ $('#batchDefectOk').addEventListener('click', ()=>{
   toast('success','已批量登记不良品：'+n+' 个SKU');
   updateSelInfo();
 });
+doReset();
+window.addEventListener('pageshow', doReset);
 </script>
 
 </body>

@@ -170,7 +170,7 @@ var state={page:1,pageSize:100,ascending:false,selected:new Set(),historySelecte
 var filteredRows=[],exportBusy=false,returnFocus=null;
 /* ---------- 筛选控件（全部复用公共组件库） ---------- */
 var warehouseCtl=ERPComponents.createSearchDropdown({root:'#warehouseSelect',button:'#warehouseButton',panel:'#warehousePanel',search:'#warehouseSearch',list:'#warehouseOptions',fieldName:'仓库',value:'',placeholder:'请选择',allLabel:'全部仓库',emptyLabel:'暂无数据',items:warehouses,getValue:function(w){return w.name},getLabel:function(w){return w.name+(w.enabled?'':'（停用）')},onChange:function(value){state.filters.warehouse=value;applyQuery()}});
-ERPComponents.createFloatingSelect({el:$('#operatorSelect'),options:people.map(function(p){return {value:p.name,label:p.name,enabled:p.enabled}}),searchable:false,placeholder:'请选择',fieldName:'人员',disabledLabel:'显示停用人员',onChange:function(v){state.filters.operator=v}});
+ERPComponents.createFloatingSelect({el:$('#operatorSelect'),options:people.map(function(p){return {value:p.name,label:p.name,enabled:p.enabled}}),placeholder:'请选择',fieldName:'人员',disabledLabel:'显示停用人员',onChange:function(v){state.filters.operator=v}});
 var tileControls={};
 [{key:'method',options:['全部'].concat(METHODS)},{key:'relabel',options:['全部','是','否']}].forEach(function(cfg){
   tileControls[cfg.key]=ERPComponents.createTileGroup({root:$('[data-tiles="'+cfg.key+'"]'),options:cfg.options,value:'全部',onChange:function(v){state.filters[cfg.key]=v;applyQuery()}});

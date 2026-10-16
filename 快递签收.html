@@ -391,7 +391,7 @@ function createSelect(cfg){
 
 
 /* ---------- 查询控件初始化 ---------- */
-const scanWhSel = createSelect({ el:$('#scanWhSel'), options:WHS.map(v=>({label:v,value:v})), fieldName:'仓库', searchable:true, placeholder:'选择仓库',
+const scanWhSel = createSelect({ el:$('#scanWhSel'), options:WHS.map(v=>({label:v,value:v})), fieldName:'仓库', placeholder:'请选择',
   onChange:v=>{ store.scanWh=v; } });
 scanWhSel.setValue('618清仓大甩卖', true);
 createSelect({ el:$('#fOpSel'), options:OPS.map(v=>({label:v,value:v})), fieldName:'人员', placeholder:'请选择',

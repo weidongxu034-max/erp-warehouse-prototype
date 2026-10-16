@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ERP - 仓库推荐货架</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#f5f6f8;color:#303133;font:12px/1.4 Arial,"Microsoft YaHei",sans-serif}body{padding-top:38px}button,input,select{font:inherit}button{cursor:pointer}.layout>.main{height:calc(100vh - 38px);overflow:auto;padding:7px 8px 42px!important;background:#f5f6f8!important}html.erp-embedded .layout>.main{height:100vh}.cc-card{background:#fff;border-radius:3px;padding:8px;margin-bottom:7px}.cc-filter{min-height:84px}.cc-filter-grid{display:grid;grid-template-columns:210px 210px 427px 1fr;align-items:end;gap:8px}.cc-page-task .cc-filter-grid{grid-template-columns:427px 427px 427px 1fr}.cc-field{min-width:0;position:relative}.cc-field label{display:block;height:23px;line-height:23px;color:#303133}.cc-input,.cc-select{display:block;width:100%;height:28px;padding:0 9px;border:1px solid #d7dbe3;border-radius:5px;background:#fff;outline:0;color:#303133}.cc-input::placeholder{color:#bdc3ce}.cc-input:focus,.cc-select:focus{border-color:#3d68ff}.cc-field .floating-select{height:28px;min-height:28px;font-size:12px;padding-left:8px}.cc-field .floating-select .ph{font-size:12px}.cc-time{position:relative}.cc-time-trigger.erp-date-range{width:100%;height:28px;justify-content:flex-start;gap:0;white-space:nowrap;padding:0 8px;overflow:hidden;font-size:12px}.cc-time-trigger>span:first-child,.cc-time-trigger>span:last-child{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.cc-time-trigger .dash{flex:none;margin:0 7px!important}.cc-time .erp-date-picker{top:32px}.cc-filter-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding-bottom:0}.cc-btn{height:27px;padding:0 13px;border:1px solid #d5d9e1;border-radius:5px;background:#fff;color:#303133;white-space:nowrap}.cc-btn:hover{border-color:#3d68ff;color:#3d68ff}.cc-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.cc-btn.link{border:0;background:none;color:#315ff4;padding:0 5px}.cc-btn.danger{border:0;background:none;color:#f04b4b;padding:0 4px}.cc-table-card{padding:8px;min-height:calc(100vh - 182px)}.cc-toolbar{display:flex;align-items:center;justify-content:space-between;min-height:31px;margin-bottom:6px}.cc-table-wrap{overflow:auto}.cc-table{border-collapse:collapse;table-layout:fixed;width:100%;min-width:900px;font-size:12px}.cc-table th,.cc-table td{height:35px;padding:4px 7px;border:1px solid #bfc2c8;text-align:left;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cc-table th{height:33px;background:#f1f2f4;font-weight:600}.cc-table tbody tr:hover td{background:#fffaf0}.cc-table .cc-center{text-align:center}.cc-table .cc-actions{text-align:center}.cc-ops{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}.cc-ops a,.cc-edit-person{color:#315ff4;text-decoration:none;cursor:pointer}.cc-ops a:hover,.cc-edit-person:hover{text-decoration:underline}.cc-ops a.cc-delete{color:#f04b4b}.cc-edit-person{margin-left:8px}.cc-pager{position:fixed;left:170px;right:0;bottom:0;z-index:95;height:35px;display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:0 17px;border-top:1px solid #e0e4eb;background:#fff;font-size:12px}.layout:has(.sider.collapsed)~.cc-pager{left:44px}html.erp-embedded .cc-pager{left:0}.cc-pager button{height:25px;min-width:23px;border:1px solid transparent;border-radius:5px;background:#fff}.cc-pager button.active{border-color:#3d68ff;color:#3d68ff}.cc-pager button:disabled{color:#bcc2cb}.cc-pager select{height:24px;border:1px solid #d5d9e1;border-radius:4px;background:#fff}.cc-pager input{width:42px;height:24px;border:1px solid #d5d9e1;border-radius:4px;padding:0 4px;text-align:center}.cc-modal-mask{position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;padding:20px;background:#0007}.cc-modal{width:min(500px,calc(100vw - 40px));padding:18px 20px 16px;border-radius:7px;background:#fff;box-shadow:0 15px 32px #0002}.cc-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;font-size:15px;font-weight:600}.cc-modal-close{border:0;background:none;color:#8c929a;font-size:22px;line-height:20px}.cc-modal-field{margin-bottom:13px}.cc-modal-field label{display:block;margin-bottom:6px}.cc-modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:25px}.cc-modal-note{color:#8b9199;font-size:12px}.cc-barcode{height:70px;margin:16px 0 7px;background:repeating-linear-gradient(90deg,#1e2431 0 2px,#fff 2px 4px,#1e2431 4px 5px,#fff 5px 8px,#1e2431 8px 12px,#fff 12px 15px);border:12px solid #fff}.cc-code-text{text-align:center;font-size:18px;letter-spacing:2px}.cc-empty{text-align:center;padding:30px!important;color:#a2a9b3}.cc-toast{position:fixed;top:48px;right:18px;z-index:5000;padding:9px 14px;border-left:3px solid #3d68ff;background:#fff;box-shadow:0 4px 15px #0002}@media(max-width:1300px){.cc-filter-grid,.cc-page-task .cc-filter-grid{grid-template-columns:repeat(3,minmax(180px,1fr))}.cc-filter-actions{grid-column:1/-1}}@media(max-width:780px){.cc-filter-grid,.cc-page-task .cc-filter-grid{grid-template-columns:1fr 1fr}.cc-field.cc-time{grid-column:1/-1}.cc-filter-actions{grid-column:1/-1}}
+
+</style>
+<style>
+.cc-modal-create{width:min(434px,calc(100vw - 40px));padding:17px 20px 16px}
+.cc-modal-create .cc-modal-head{margin-bottom:13px}
+.cc-modal-create .cc-modal-field{margin-bottom:15px}
+.cc-modal-create .cc-modal-field:last-of-type{margin-bottom:0}
+.cc-modal-create .cc-modal-field label{margin-bottom:6px;font-size:12px}
+.cc-modal-create .cc-input,.cc-modal-create .cc-select{height:28px}
+.cc-modal-create .cc-modal-foot{margin-top:19px}
+.cc-required{color:#f14b4b}
+.cc-modal-create .cc-select{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%23b3bac5' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center;padding-right:28px}
+
+</style>
+<script>
+(function (global) {
+  'use strict';
+
+  var doc = global.document;
+  var activeFloatingPanel = null;
+
+  function ensureStyles() {
+    if (!doc || !doc.createElement || !doc.head || doc.getElementById('erp-common-component-styles')) return;
+    var style = doc.createElement('style');
+    style.id = 'erp-common-component-styles';
+    style.textContent = '.erp-disabled-toggle{min-height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;border-top:1px solid #eee;background:#fff;white-space:nowrap;color:#303133}.erp-disabled-toggle input{width:16px!important;height:16px!important;margin:0!important;accent-color:#3d68ff}.select-panel>.erp-disabled-toggle{margin:6px -6px -6px}.dropdown-panel>.erp-disabled-toggle{border-radius:0 0 4px 4px}.user-options>.erp-disabled-toggle,.person-menu>.erp-disabled-toggle{position:sticky;bottom:-5px;margin:5px -5px -5px;z-index:2}.warehouse-panel>.erp-disabled-toggle{margin:5px -5px -5px}' +
+      '.erp-date-range{height:32px;display:flex;align-items:center;padding:0 9px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#bbb;cursor:pointer}.erp-date-range:hover{border-color:#3d68ff}.erp-date-range .date-value{color:#333}.erp-date-range .dash{margin:0 7px;color:#999}' +
+      '.date-picker.hidden,.erp-date-picker.hidden{display:none!important}.erp-date-picker{position:absolute;left:0;top:35px;z-index:540;display:flex;width:410px;border:1px solid #e3e6ec;border-radius:5px;background:#fff;box-shadow:0 8px 24px #0002}.erp-date-picker .date-shortcuts{width:115px;padding:6px 0;border-right:1px solid #eee}.erp-date-picker .date-shortcuts button{display:block;width:100%;height:32px;padding:0 14px;border:0;background:#fff;text-align:left;cursor:pointer}.erp-date-picker .date-shortcuts button:hover{background:#f3f6ff;color:#3d68ff}.erp-date-picker .calendar{flex:1}.erp-date-picker .cal-head{height:42px;display:flex;align-items:center;justify-content:space-between;margin:0;padding:0 12px;border-bottom:1px solid #eee}.erp-date-picker .cal-nav{width:auto;height:auto;border:0;background:none;color:#999;cursor:pointer}.erp-date-picker .cal-title{font-weight:600}.erp-date-picker .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;padding:7px 10px 10px}.erp-date-picker .cal-grid span,.erp-date-picker .cal-grid button{height:34px;display:flex;align-items:center;justify-content:center;border:0;background:#fff}.erp-date-picker .cal-grid .weekday{height:27px}.erp-date-picker .cal-day{cursor:pointer;border-radius:4px!important}.erp-date-picker .cal-day:hover{background:#edf2ff!important;color:#3d68ff}.erp-date-picker .cal-day.muted{color:#bbb}.erp-date-picker .cal-day.in-range{background:#f0f4ff}.erp-date-picker .cal-day.selected{border:1px solid #3d68ff!important;color:#3d68ff}';
+    style.textContent += '.erp-batch-search-mask{position:fixed;inset:0;z-index:5000;display:none;align-items:center;justify-content:center;background:#0006}.erp-batch-search-mask.show{display:flex}.erp-batch-search-modal{width:520px;max-width:calc(100vw - 32px);border-radius:6px;background:#fff;box-shadow:0 15px 40px #0003;overflow:hidden;color:#303133}.erp-batch-search-head{height:51px;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid #eee;font-size:15px;font-weight:600}.erp-batch-search-close{margin-left:auto;padding:0;border:0;background:none;color:#888;font-size:18px;cursor:pointer}.erp-batch-search-body{padding:20px 18px 36px}.erp-batch-search-types{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:28px}.erp-batch-search-types label{display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer}.erp-batch-search-types input{width:14px;height:14px;margin:0;accent-color:#3d68ff}.erp-batch-search-field label{display:block;margin-bottom:7px}.erp-batch-search-textarea{display:block;width:100%;height:88px;padding:9px;border:1px solid #dcdfe6;border-radius:5px;resize:vertical;outline:0;font:inherit;color:#303133}.erp-batch-search-textarea:focus{border-color:#3d68ff}.erp-batch-search-textarea::placeholder{color:#909399}.erp-batch-search-foot{height:57px;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 18px;border-top:1px solid #eee}.erp-batch-search-btn{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.erp-batch-search-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}';
+    style.textContent += '.erp-column-trigger{flex:none;height:28px;min-width:44px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer}.erp-column-trigger:hover{border-color:#3d68ff;color:#3d68ff}.erp-column-mask{position:fixed;inset:0;z-index:4900;display:none;background:#0006}.erp-column-mask.show{display:block}.erp-column-drawer{position:absolute;top:0;right:0;bottom:0;width:240px;display:flex;flex-direction:column;background:#fff;box-shadow:-4px 0 20px #0002;color:#303133}.erp-column-head{height:56px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #eee;font-size:16px;font-weight:600}.erp-column-close{margin-right:12px;padding:0;border:0;background:none;color:#909399;font-size:24px;cursor:pointer}.erp-column-list{flex:1;overflow:auto;padding:5px 4px}.erp-column-item{min-height:42px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-bottom:1px solid #eee;background:#fff;transition:opacity .12s,box-shadow .12s}.erp-column-item.dragging{opacity:.45;box-shadow:0 3px 12px #0002}.erp-column-handle{flex:none;color:#909399;letter-spacing:-2px;cursor:grab;user-select:none}.erp-column-handle:active{cursor:grabbing}.erp-column-item label{display:flex;align-items:center;gap:7px;cursor:pointer}.erp-column-item input{width:16px;height:16px;margin:0;accent-color:#3d68ff}.erp-column-foot{height:48px;display:flex;align-items:center;padding:0 16px;border-top:1px solid #eee}.erp-column-reset{height:32px;padding:0 16px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#303133;cursor:pointer}.erp-column-reset:hover{border-color:#3d68ff;color:#3d68ff}';
+    style.textContent += '.erp-oplog-mask{position:fixed;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;padding:12px;background:#0006}.erp-oplog-mask.show{display:flex}.erp-oplog-dialog{width:min(1000px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;border-radius:8px;background:#fff;box-shadow:0 16px 46px #0004;color:#303133}.erp-oplog-head{height:56px;display:flex;align-items:center;padding:0 24px;font-size:16px;font-weight:600}.erp-oplog-close{margin-left:auto;border:0;background:none;color:#909399;font-size:25px;cursor:pointer}.erp-oplog-body{padding:0 24px 20px}.erp-oplog-filters{display:grid;grid-template-columns:220px 220px 290px 1fr;gap:24px;align-items:end;margin-bottom:22px}.erp-oplog-field{position:relative}.erp-oplog-field label{display:block;margin-bottom:8px;color:#303133;font-size:13px}.erp-oplog-select{height:32px;position:relative;border:1px solid #dcdfe6;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-select:focus-within{border-color:#3d68ff}.erp-oplog-select .floating-select{height:30px;min-height:30px;border:0;border-radius:5px}.erp-oplog-date-wrap{position:relative}.erp-oplog-date{height:32px;width:100%;padding:0 30px 0 10px;justify-content:flex-start;white-space:nowrap;overflow:hidden}.erp-oplog-date .dash{margin:0 13px}.erp-oplog-date-icon{position:absolute;right:10px;top:7px;color:#909399;font-style:normal;pointer-events:none}.erp-oplog-date-picker{z-index:5300!important}.erp-oplog-actions{display:flex;justify-content:flex-end;gap:10px;grid-column:1 / -1;margin-top:0}.erp-oplog-btn{height:32px;padding:0 17px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.erp-oplog-btn:hover{border-color:#3d68ff;color:#3d68ff}.erp-oplog-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.erp-oplog-btn.primary:hover{color:#fff}.erp-oplog-table-wrap{overflow:auto;border:1px solid #bfc3c9}.erp-oplog-table{width:100%;min-width:760px;border-collapse:collapse;table-layout:fixed;font-size:14px}.erp-oplog-table th,.erp-oplog-table td{height:60px;padding:10px;border-right:1px solid #bfc3c9;border-bottom:1px solid #bfc3c9;text-align:left;vertical-align:middle;word-break:break-word}.erp-oplog-table th{height:39px;background:#e9e9e9;color:#1f2d3d;font-weight:600}.erp-oplog-table tr>:last-child{border-right:0}.erp-oplog-table tbody tr:last-child td{border-bottom:0}.erp-oplog-table .erp-oplog-index{width:40px;text-align:center}.erp-oplog-empty{text-align:center!important;color:#909399}.erp-oplog-pager{height:42px;display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px}.erp-oplog-page{height:26px;min-width:26px;padding:0 6px;border:1px solid transparent;border-radius:5px;background:#fff;cursor:pointer}.erp-oplog-page.active{border-color:#3d68ff;color:#3d68ff}.erp-oplog-page:disabled{color:#c0c4cc;cursor:not-allowed}.erp-oplog-size{height:28px;min-width:96px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;padding:0 6px}@media(max-width:760px){.erp-oplog-body{padding:0 14px 14px}.erp-oplog-filters{grid-template-columns:1fr;gap:12px}.erp-oplog-actions{grid-column:auto}.erp-oplog-dialog{width:calc(100vw - 16px)}.erp-oplog-head{padding:0 14px}}' +
+      '.erp-sticky-table thead th{position:sticky;top:var(--erp-sticky-header-top,0px);z-index:var(--erp-sticky-header-z-index,30);background:var(--erp-sticky-header-background,#e9e9e9)}';
+    style.textContent += '.floating-select{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:3px;min-height:32px;padding:0 24px 0 8px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;color:#303133;cursor:pointer}.floating-select:focus-within{border-color:#3d68ff}.floating-select .ph{padding:0 2px;color:#c0c4cc;font-size:13px}.floating-select .val{overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.floating-select .caret{position:absolute;top:50%;right:8px;transform:translateY(-50%);color:#999;pointer-events:none}.floating-select .clear{display:none;position:absolute;top:50%;right:25px;transform:translateY(-50%);color:#a0a4ad;font-size:12px}.floating-select .clear.has-v{display:block}.floating-select .tag{display:inline-flex;align-items:center;gap:3px;max-width:110px;height:22px;padding:0 5px;border:1px solid #c9d6ff;border-radius:3px;background:#f5f7ff;color:#3d68ff;font-size:13px}.floating-select .tag i{font-style:normal;cursor:pointer}.dropdown-panel{position:fixed;z-index:2000;min-width:140px;padding:6px;border:1px solid #e4e7ed;border-radius:5px;background:#fff;box-shadow:0 6px 16px #0002;color:#303133}.dropdown-panel .dp-list{max-height:210px;overflow:auto}.dropdown-panel .dp-opt{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;overflow:hidden;border-radius:3px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dropdown-panel .dp-opt:hover,.dropdown-panel .dp-opt.sel{background:#f1f5ff;color:#3d68ff}.dropdown-panel .dp-opt .ck{width:16px;flex:none;color:#3d68ff}.dropdown-panel .dp-empty{padding:12px;text-align:center;color:#909399}.erp-tile-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.erp-tile-group .tile{height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:5px;background:#fff;font-size:13px}.erp-tile-group .tile:hover{border-color:#3d68ff;color:#3d68ff}.erp-tile-group .tile.active{border-color:#3d68ff;background:#3d68ff;color:#fff}';
+    style.textContent += '.warehouse-filter{position:relative}.warehouse-filter-button{position:relative;padding:0 28px 0 9px;text-align:left;cursor:pointer}.warehouse-filter-button:after{position:absolute;right:10px;color:#999;content:"⌄"}.warehouse-filter-button.placeholder{color:#bbb}.warehouse-filter-panel{position:absolute;top:35px;right:0;left:0;z-index:90;min-width:180px;padding:5px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;box-shadow:0 6px 18px #00000018}.warehouse-filter-panel>.erp-disabled-toggle{margin:5px -5px -5px}.warehouse-filter-search{width:100%;height:30px;margin-bottom:5px;padding:0 8px;border:1px solid #dcdfe6;border-radius:4px}.warehouse-filter-options{max-height:220px;overflow:auto}.warehouse-filter-options button{display:block;width:100%;height:30px;padding:0 8px;border:0;border-radius:3px;background:#fff;text-align:left;cursor:pointer}.warehouse-filter-options button:hover,.warehouse-filter-options button.active{background:#f3f6ff;color:#3d68ff}';
+    doc.head.appendChild(style);
+  }
+
+  ensureStyles();
+
+  function element(target, root) {
+    if (!target) return null;
+    if (typeof target !== 'string') return target;
+    return (root || doc).querySelector(target);
+  }
+
+  function elements(target, root) {
+    if (!target) return [];
+    if (typeof target !== 'string') return Array.prototype.slice.call(target);
+    return Array.prototype.slice.call((root || doc).querySelectorAll(target));
+  }
+
+  // Shared list behavior: createStickyTableHeader({ table, wrapper?, scrollContainer?, top? }).
+  // Let the page scroll and keep its table header flush with the visible scrollport edge.
+  function createStickyTableHeader(options) {
+    options = options || {};
+    var target = options.table || options.tables;
+    var tables = typeof target === 'string' ? elements(target, options.root) : (target && target.nodeType ? [target] : elements(target));
+    var zIndex = String(options.zIndex == null ? 30 : options.zIndex);
+    var wrappers = [];
+    function scrollContainerFor(table) {
+      var explicit = element(options.scrollContainer);
+      if (explicit) return explicit;
+      var wrapper = element(options.wrapper) || table.parentElement;
+      var current = table.parentElement;
+      while (current && current !== doc.body) {
+        if (current !== wrapper && /(auto|scroll)/.test(global.getComputedStyle(current).overflowY)) return current;
+        current = current.parentElement;
+      }
+      return doc.scrollingElement || doc.documentElement;
+    }
+    function topFor(table) {
+      if (options.top != null) return typeof options.top === 'number' ? options.top + 'px' : String(options.top);
+      var scroller = scrollContainerFor(table);
+      if (scroller === doc.scrollingElement || scroller === doc.documentElement || scroller === doc.body) {
+        var nav = doc.querySelector('.topbar');
+        return nav && global.getComputedStyle(nav).position === 'fixed' ? nav.getBoundingClientRect().height + 'px' : '0px';
+      }
+      var padding = parseFloat(global.getComputedStyle(scroller).paddingTop) || 0;
+      return padding ? -padding + 'px' : '0px';
+    }
+    function apply() {
+      tables.forEach(function (table) {
+        if (!table || !table.classList) return;
+        table.classList.add('erp-sticky-table');
+        table.style.setProperty('--erp-sticky-header-top', topFor(table));
+        table.style.setProperty('--erp-sticky-header-z-index', zIndex);
+        if (options.background) table.style.setProperty('--erp-sticky-header-background', options.background);
+        var wrapper = element(options.wrapper) || table.parentElement;
+        if (wrapper && wrapper !== table && wrappers.every(function (saved) { return saved.el !== wrapper; })) {
+          wrappers.push({ el: wrapper, overflow: wrapper.style.overflow, maxHeight: wrapper.style.maxHeight, minHeight: wrapper.style.minHeight });
+          wrapper.style.overflow = 'visible';
+          wrapper.style.maxHeight = 'none';
+          wrapper.style.minHeight = '0';
+        }
+      });
+    }
+    function destroy() {
+      global.removeEventListener('resize', apply);
+      tables.forEach(function (table) {
+        if (!table || !table.classList) return;
+        table.classList.remove('erp-sticky-table');
+        table.style.removeProperty('--erp-sticky-header-top');
+        table.style.removeProperty('--erp-sticky-header-z-index');
+        table.style.removeProperty('--erp-sticky-header-background');
+      });
+      wrappers.forEach(function (saved) { saved.el.style.overflow = saved.overflow; saved.el.style.maxHeight = saved.maxHeight; saved.el.style.minHeight = saved.minHeight; });
+    }
+    apply();
+    global.addEventListener('resize', apply);
+    return { apply: apply, refresh: apply, destroy: destroy };
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
+    });
+  }
+
+  function disabledToggleHtml(fieldName, checked, label) {
+    return '<label class="erp-disabled-toggle"><input type="checkbox" data-common-show-disabled ' + (checked ? 'checked' : '') + '> ' + escapeHtml(label || ('显示停用' + fieldName)) + '</label>';
+  }
+
+  function pad(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  function dateZero(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  function dateAdd(date, amount) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + amount);
+    return result;
+  }
+
+  function dateText(date) {
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  }
+
+  function createDateRangePicker(options) {
+    var trigger = element(options.trigger);
+    var panel = element(options.panel);
+    var shortcuts = element(options.shortcuts);
+    var grid = element(options.grid);
+    var title = element(options.title);
+    var startText = element(options.startText);
+    var endText = element(options.endText);
+    trigger.classList.add('erp-date-range');
+    panel.classList.add('erp-date-picker');
+    var state = options.state || { view: new Date(), start: null, end: null };
+    state.view = new Date(state.view.getFullYear(), state.view.getMonth(), 1);
+
+    function sync() {
+      if (state.start) {
+        startText.textContent = dateText(state.start) + (options.startSuffix == null ? '　00:00' : options.startSuffix);
+        startText.className = options.valueClass || 'date-value';
+      } else {
+        startText.textContent = options.startPlaceholder || '开始日期　　开始时间';
+        startText.className = '';
+      }
+      if (state.end) {
+        endText.textContent = dateText(state.end) + (options.endSuffix == null ? '　23:59' : options.endSuffix);
+        endText.className = options.valueClass || 'date-value';
+      } else {
+        endText.textContent = options.endPlaceholder || '结束日期　　结束时间';
+        endText.className = '';
+      }
+      if (options.startInput) element(options.startInput).value = state.start ? dateText(state.start) + ' 00:00:00' : '';
+      if (options.endInput) element(options.endInput).value = state.end ? dateText(state.end) + ' 23:59:59' : '';
+      if (options.onChange) options.onChange(api.getStart(), api.getEnd(), state);
+    }
+
+    function render() {
+      var year = state.view.getFullYear();
+      var month = state.view.getMonth();
+      var first = new Date(year, month, 1);
+      var offset = (first.getDay() + 6) % 7;
+      var calendarStart = dateAdd(first, -offset);
+      var html = ['一', '二', '三', '四', '五', '六', '日'].map(function (day) {
+        return '<span class="weekday">' + day + '</span>';
+      }).join('');
+      for (var index = 0; index < 42; index += 1) {
+        var date = dateAdd(calendarStart, index);
+        var className = 'cal-day' + (date.getMonth() !== month ? ' muted' : '');
+        if (state.start && dateZero(date).getTime() === dateZero(state.start).getTime()) className += ' selected';
+        if (state.end && dateZero(date).getTime() === dateZero(state.end).getTime()) className += ' selected';
+        if (state.start && state.end && date > state.start && date < state.end) className += ' in-range';
+        html += '<button type="button" class="' + className + '" data-date="' + dateText(date) + '">' + date.getDate() + '</button>';
+      }
+      title.textContent = year + '年　' + (month + 1) + '月';
+      grid.innerHTML = html;
+    }
+
+    function close() {
+      panel.classList.add(options.hiddenClass || 'hidden');
+    }
+
+    function setRange(start, end, closeAfter) {
+      state.start = start ? dateZero(start) : null;
+      state.end = end ? dateZero(end) : null;
+      var viewDate = state.end || state.start || new Date();
+      state.view = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
+      sync();
+      render();
+      if (closeAfter) close();
+    }
+
+    trigger.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var hiddenClass = options.hiddenClass || 'hidden';
+      var willOpen = panel.classList.contains(hiddenClass);
+      if (options.closeOthers) options.closeOthers(willOpen ? panel : null);
+      panel.classList.toggle(hiddenClass, !willOpen);
+      if (willOpen) render();
+    });
+    panel.addEventListener('click', function (event) { event.stopPropagation(); });
+    shortcuts.addEventListener('click', function (event) {
+      var button = event.target.closest('button');
+      if (!button) return;
+      var today = dateZero(new Date());
+      var start = today;
+      var end = today;
+      if (button.dataset.days != null) {
+        start = dateAdd(today, -Number(button.dataset.days));
+        end = start;
+      } else if (button.dataset.range) {
+        start = dateAdd(today, -Number(button.dataset.range) + 1);
+      } else {
+        start = dateAdd(today, -90);
+        end = dateAdd(today, -1);
+      }
+      setRange(start, end, true);
+    });
+    grid.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-date]');
+      if (!button) return;
+      var parts = button.dataset.date.split('-');
+      var selected = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      if (!state.start || state.end) {
+        state.start = selected;
+        state.end = null;
+      } else if (selected < state.start) {
+        state.end = state.start;
+        state.start = selected;
+      } else {
+        state.end = selected;
+      }
+      state.view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+      sync();
+      render();
+      if (state.end) close();
+    });
+
+    function move(months, years) {
+      if (months) state.view.setMonth(state.view.getMonth() + months);
+      if (years) state.view.setFullYear(state.view.getFullYear() + years);
+      render();
+    }
+
+    element(options.prevMonth).addEventListener('click', function () { move(-1, 0); });
+    element(options.nextMonth).addEventListener('click', function () { move(1, 0); });
+    element(options.prevYear).addEventListener('click', function () { move(0, -1); });
+    element(options.nextYear).addEventListener('click', function () { move(0, 1); });
+
+    var api = {
+      getStart: function () {
+        return state.start ? new Date(state.start.getFullYear(), state.start.getMonth(), state.start.getDate(), 0, 0, 0).getTime() : null;
+      },
+      getEnd: function () {
+        return state.end ? new Date(state.end.getFullYear(), state.end.getMonth(), state.end.getDate(), 23, 59, 59).getTime() : null;
+      },
+      getState: function () { return state; },
+      setRange: function (start, end) { setRange(start, end, false); },
+      reset: function () {
+        state.start = null;
+        state.end = null;
+        sync();
+        close();
+      },
+      render: render,
+      close: close
+    };
+    sync();
+    return api;
+  }
+
+  function createSearchDropdown(options) {
+    var root = element(options.root || options.control);
+    var button = element(options.button, root) || root;
+    var panel = element(options.panel, root);
+    var search = element(options.search, root);
+    var list = element(options.list, root);
+    if (options.variant === 'warehouse') {
+      root.classList.add('warehouse-filter');
+      button.classList.add('warehouse-filter-button');
+      panel.classList.add('warehouse-filter-panel');
+      list.classList.add('warehouse-filter-options');
+      if (search) search.classList.add('warehouse-filter-search');
+    }
+    var value = options.value == null ? '' : String(options.value);
+    var showDisabled = Boolean(options.showDisabled);
+    var disabledToggle = null;
+    if (options.fieldName || options.disabledLabel) {
+      disabledToggle = doc.createElement('label');
+      disabledToggle.className = 'erp-disabled-toggle';
+      panel.appendChild(disabledToggle);
+    }
+
+    function getItems() {
+      return typeof options.items === 'function' ? options.items(search ? search.value : '') : (options.items || []);
+    }
+
+    function label(item) {
+      return options.getLabel ? options.getLabel(item) : String(item.label == null ? item : item.label);
+    }
+
+    function itemValue(item) {
+      return String(options.getValue ? options.getValue(item) : (item.value == null ? item : item.value));
+    }
+
+    function render() {
+      var allItems = getItems();
+      var items = allItems.filter(function (item) { return showDisabled || (options.getEnabled ? options.getEnabled(item) : item.enabled !== false); });
+      if (search && options.items && typeof options.items !== 'function') {
+        var keyword = search.value.trim().toLowerCase();
+        items = items.filter(function (item) { return !keyword || label(item).toLowerCase().indexOf(keyword) >= 0; });
+      }
+      list.innerHTML = (options.allLabel == null ? '' : '<button type="button" data-common-value="" role="option">' + escapeHtml(options.allLabel) + '</button>') + items.map(function (item) {
+        var itemLabel = label(item);
+        var currentValue = itemValue(item);
+        return '<button type="button" data-common-value="' + escapeHtml(currentValue) + '" role="option" aria-selected="' + (currentValue === value) + '" class="' + (options.itemClass || '') + ' ' + (currentValue === value ? 'active' : '') + '">' + escapeHtml(itemLabel) + '</button>';
+      }).join('') + (!items.length && options.emptyLabel ? '<div class="select-empty">' + escapeHtml(options.emptyLabel) + '</div>' : '');
+      var selected = getItems().find(function (item) { return itemValue(item) === value; });
+      button.textContent = selected ? label(selected) : (value && options.valueLabel ? options.valueLabel(value) : (options.placeholder || '请选择'));
+      button.classList.toggle(options.placeholderClass || 'placeholder', !value);
+      root.dataset.value = value;
+      if (disabledToggle) disabledToggle.innerHTML = '<input type="checkbox" data-common-show-disabled ' + (showDisabled ? 'checked' : '') + '> ' + escapeHtml(options.disabledLabel || ('显示停用' + options.fieldName));
+    }
+
+    function close() {
+      panel.classList.add(options.hiddenClass || 'hidden');
+      button.setAttribute('aria-expanded', 'false');
+    }
+
+    function open() {
+      if (options.closeOthers) options.closeOthers(panel);
+      panel.classList.remove(options.hiddenClass || 'hidden');
+      button.setAttribute('aria-expanded', 'true');
+      if (search) {
+        if (options.clearSearchOnOpen !== false) search.value = '';
+        render();
+        search.focus();
+      }
+    }
+
+    function closeOnOutsideClick(event) {
+      if (options.variant === 'warehouse' && !root.contains(event.target)) close();
+    }
+
+    button.addEventListener('click', function (event) {
+      event.stopPropagation();
+      if (panel.classList.contains(options.hiddenClass || 'hidden')) open(); else close();
+    });
+    panel.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var target = event.target.closest('[data-common-value]');
+      if (!target) return;
+      value = target.dataset.commonValue;
+      render();
+      close();
+      if (options.onChange) options.onChange(value);
+    });
+    panel.addEventListener('change', function (event) {
+      if (!event.target.matches('[data-common-show-disabled]')) return;
+      showDisabled = event.target.checked;
+      render();
+      if (options.onDisabledChange) options.onDisabledChange(showDisabled);
+    });
+    if (search) search.addEventListener('input', render);
+    if (options.variant === 'warehouse') doc.addEventListener('click', closeOnOutsideClick);
+    render();
+
+    return {
+      getValue: function () { return value; },
+      set: function (nextValue, silent) {
+        value = nextValue == null ? '' : String(nextValue);
+        render();
+        if (!silent && options.onChange) options.onChange(value);
+      },
+      render: render,
+      open: open,
+      close: close,
+      destroy: function () {
+        if (options.variant === 'warehouse') doc.removeEventListener('click', closeOnOutsideClick);
+      }
+    };
+  }
+
+  function createWarehouseDropdown(options) {
+    options = Object.assign({}, options || {}, { variant: 'warehouse' });
+    if (!options.fieldName) options.fieldName = '仓库';
+    return createSearchDropdown(options);
+  }
+
+  function createFloatingSelect(options) {
+    var root = options.el;
+    var value = options.multiple ? [] : '';
+    var panel = null;
+    var showDisabled = Boolean(options.showDisabled);
+
+    function closePanels() {
+      if (panel && panel.parentNode) panel.remove();
+      if (activeFloatingPanel && activeFloatingPanel.parentNode) activeFloatingPanel.remove();
+      panel = null;
+      activeFloatingPanel = null;
+      setActivePanel(null);
+      if (options.closePanels) options.closePanels();
+    }
+    function getActivePanel() { return options.getActivePanel ? options.getActivePanel() : null; }
+    function setActivePanel(nextPanel) { if (options.setActivePanel) options.setActivePanel(nextPanel); }
+    function visibleOptions() {
+      return (options.options || []).filter(function (item) {
+        return String(item.label == null ? item.value : item.label).trim() !== '请选择' && (showDisabled || item.enabled !== false);
+      });
+    }
+    function render() {
+      if (options.multiple) {
+        var values = value;
+        var inner = '';
+        if (!values.length) inner = '<span class="ph">' + escapeHtml(options.placeholder || '请选择') + '</span>';
+        else {
+          inner = values.slice(0, 2).map(function (current) { return '<span class="tag" data-v="' + escapeHtml(current) + '">' + escapeHtml(current) + '<i data-del="' + escapeHtml(current) + '">✕</i></span>'; }).join('') + (values.length > 2 ? '<span class="tag more">+' + (values.length - 2) + '</span>' : '');
+        }
+        root.innerHTML = inner + '<span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+        elements('.tag i', root).forEach(function (icon) { icon.addEventListener('click', function (event) { event.stopPropagation(); remove(icon.dataset.del); }); });
+      } else {
+        root.innerHTML = (value ? '<span class="val">' + escapeHtml(value) + '</span>' : '<span class="ph">' + escapeHtml(options.placeholder || '请选择') + '</span>') + '<span class="clear ' + (value ? 'has-v' : '') + '" data-clear>✕</span><span class="caret"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>';
+        var clear = root.querySelector('[data-clear]');
+        if (clear) clear.addEventListener('mousedown', function (event) { event.stopPropagation(); setValue('', true); });
+      }
+    }
+    function remove(current) {
+      value = value.filter(function (item) { return item !== current; });
+      render();
+      renderList();
+      if (options.onChange) options.onChange(value);
+    }
+    function renderList() {
+      if (!panel) return;
+      var list = panel.querySelector('.dp-list');
+      var items = visibleOptions();
+      list.innerHTML = items.length ? items.map(function (item) {
+        var selected = options.multiple ? value.indexOf(item.value) >= 0 : String(value) === String(item.value);
+        return '<div class="dp-opt' + (selected ? ' sel' : '') + '" data-v="' + escapeHtml(item.value) + '">' + (options.multiple ? '<span class="ck">' + (selected ? '✓' : '') + '</span>' : '') + escapeHtml(item.label) + '</div>';
+      }).join('') : '<div class="dp-empty">无匹配数据</div>';
+      elements('.dp-opt', list).forEach(function (itemElement) {
+        itemElement.addEventListener('click', function () {
+          var nextValue = itemElement.dataset.v;
+          if (options.multiple) {
+            if (value.indexOf(nextValue) >= 0) value = value.filter(function (item) { return item !== nextValue; }); else value.push(nextValue);
+            render(); renderList(); if (options.onChange) options.onChange(value);
+          } else {
+            setValue(nextValue, true); closePanels();
+          }
+        });
+      });
+    }
+    function open() {
+      if (panel && (getActivePanel() === panel || activeFloatingPanel === panel)) { closePanels(); return; }
+      closePanels();
+      panel = doc.createElement('div');
+      panel.className = 'dropdown-panel';
+      var minimumWidth = Math.max(root.offsetWidth, 120);
+      panel.style.minWidth = minimumWidth + 'px';
+      panel.innerHTML = '<div class="dp-list"></div>' + ((options.fieldName || options.disabledLabel) ? '<label class="erp-disabled-toggle"><input type="checkbox" data-common-show-disabled ' + (showDisabled ? 'checked' : '') + '> ' + escapeHtml(options.disabledLabel || ('显示停用' + options.fieldName)) + '</label>' : '');
+      doc.body.appendChild(panel);
+      activeFloatingPanel = panel;
+      if (options.panelZIndex) panel.style.zIndex = String(options.panelZIndex);
+      setActivePanel(panel);
+      var rect = root.getBoundingClientRect();
+      var height = panel.offsetHeight || 200;
+      var top = rect.bottom + 4;
+      if (top + Math.min(height, 300) > global.innerHeight - 8) top = Math.max(8, rect.top - height - 8);
+      panel.style.left = Math.min(rect.left, global.innerWidth - minimumWidth - 8) + 'px';
+      panel.style.top = top + 'px';
+      renderList();
+      var toggle = panel.querySelector('[data-common-show-disabled]');
+      if (toggle) toggle.addEventListener('change', function () { showDisabled = toggle.checked; renderList(); });
+    }
+    function setValue(nextValue, fire) {
+      value = nextValue;
+      render();
+      if (fire && options.onChange) options.onChange(value);
+    }
+    function onOutsideClick(event) {
+      if (!activeFloatingPanel || root.contains(event.target) || activeFloatingPanel.contains(event.target)) return;
+      closePanels();
+    }
+    function onRootClick(event) { event.stopPropagation(); if (!event.target.closest('[data-clear]')) open(); }
+    root.addEventListener('click', onRootClick);
+    doc.addEventListener('click', onOutsideClick);
+    render();
+    root.setValue = setValue;
+    root.getValue = function () { return value; };
+    return { setValue: setValue, getValue: function () { return value; }, close: closePanels, destroy: function () { closePanels(); doc.removeEventListener('click', onOutsideClick); root.removeEventListener('click', onRootClick); } };
+  }
+
+  function createTileGroup(options) {
+    options = options || {};
+    var root = element(options.root || options.el);
+    if (!root) throw new Error('createTileGroup requires root');
+    root.classList.add(options.rootClass || 'erp-tile-group');
+    var values = options.options || options.items || [];
+    var value = options.value == null ? '' : String(options.value);
+    function render() {
+      root.innerHTML = values.map(function (item) {
+        var itemValue = String(item.value == null ? item : item.value);
+        var itemLabel = item.label == null ? itemValue : String(item.label);
+        return '<button type="button" class="' + escapeHtml(options.buttonClass || 'tile') + (itemValue === value ? ' active' : '') + '" data-common-tile-value="' + escapeHtml(itemValue) + '">' + escapeHtml(itemLabel) + '</button>';
+      }).join('');
+    }
+    function onClick(event) {
+      var button = event.target.closest('[data-common-tile-value]');
+      if (!button || !root.contains(button)) return;
+      event.stopPropagation();
+      var next = button.dataset.commonTileValue;
+      if (next === value) return;
+      var previous = value;
+      value = next;
+      render();
+      if (!options.onChange) return;
+      options.onChange(value, previous);
+    }
+    root.addEventListener('click', onClick);
+    render();
+    return {
+      render: render,
+      getValue: function () { return value; },
+      setValue: function (next, silent) {
+        value = next == null ? '' : String(next);
+        render();
+        if (!silent && options.onChange) options.onChange(value);
+      },
+      destroy: function () { root.removeEventListener('click', onClick); root.innerHTML = ''; }
+    };
+  }
+
+  function createStaticDropdown(options) {
+    var control = element(options.control);
+    var display = element(options.display, control) || control.querySelector('span');
+    var panel = doc.createElement('div');
+    var value = options.value || '';
+    panel.className = (options.panelClass || 'history-select-panel') + ' ' + (options.hiddenClass || 'hidden');
+    control.appendChild(panel);
+
+    function render() {
+      panel.innerHTML = (options.items || []).map(function (item) {
+        var itemValue = typeof item === 'object' ? item.value : item;
+        var itemLabel = typeof item === 'object' ? item.label : item;
+        return '<button type="button" data-common-value="' + escapeHtml(itemValue) + '" class="' + (String(itemValue) === String(value) ? 'active' : '') + '">' + escapeHtml(itemLabel) + '</button>';
+      }).join('');
+      control.dataset.value = value;
+      display.textContent = value || options.placeholder || '请选择';
+      display.classList.toggle(options.placeholderClass || 'placeholder', !value);
+    }
+
+    control.addEventListener('click', function (event) {
+      event.stopPropagation();
+      if (options.closeOthers) options.closeOthers(panel);
+      panel.classList.toggle(options.hiddenClass || 'hidden');
+    });
+    panel.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var button = event.target.closest('[data-common-value]');
+      if (!button) return;
+      value = button.dataset.commonValue;
+      render();
+      panel.classList.add(options.hiddenClass || 'hidden');
+      if (options.onChange) options.onChange(value);
+    });
+    render();
+    return {
+      getValue: function () { return value; },
+      set: function (nextValue, silent) {
+        value = nextValue || '';
+        render();
+        if (!silent && options.onChange) options.onChange(value);
+      },
+      close: function () { panel.classList.add(options.hiddenClass || 'hidden'); },
+      render: render
+    };
+  }
+
+  function pageItems(page, count, variant) {
+    page = Math.max(1, Math.min(page, count));
+    if (variant === 'category') {
+      var category = [];
+      var categoryIndex;
+      if (count <= 7) for (categoryIndex = 1; categoryIndex <= count; categoryIndex += 1) category.push({ type: 'page', page: categoryIndex, active: categoryIndex === page });
+      else {
+        var categoryValues = page <= 4 ? [1, 2, 3, 4, 5, 'ellipsis', count] : page >= count - 3 ? [1, 'ellipsis', count - 4, count - 3, count - 2, count - 1, count] : [1, 'ellipsis', page - 1, page, page + 1, 'ellipsis', count];
+        category = categoryValues.map(function (value) { return value === 'ellipsis' ? { type: 'ellipsis' } : { type: 'page', page: value, active: value === page }; });
+      }
+      return category;
+    }
+    if (variant === 'neighbor') {
+      var neighborValues = [];
+      if (count <= 7) for (var neighborIndex = 1; neighborIndex <= count; neighborIndex += 1) neighborValues.push(neighborIndex);
+      else {
+        neighborValues.push(1);
+        if (page > 3) neighborValues.push('ellipsis');
+        for (var current = Math.max(2, page - 1); current <= Math.min(count - 1, page + 1); current += 1) neighborValues.push(current);
+        if (page < count - 2) neighborValues.push('ellipsis');
+        neighborValues.push(count);
+      }
+      return neighborValues.map(function (value) { return value === 'ellipsis' ? { type: 'ellipsis' } : { type: 'page', page: value, active: value === page }; });
+    }
+    var numbers = [1, count];
+    var number;
+    for (number = Math.max(1, page - 2); number <= Math.min(count, page + 2); number += 1) numbers.push(number);
+    if (page < 4) for (number = 1; number <= Math.min(5, count); number += 1) numbers.push(number);
+    numbers = Array.from(new Set(numbers)).sort(function (a, b) { return a - b; });
+    var output = [];
+    var last = 0;
+    numbers.forEach(function (current) {
+      if (last && current - last > 1) output.push({ type: 'ellipsis' });
+      output.push({ type: 'page', page: current, active: current === page });
+      last = current;
+    });
+    return output;
+  }
+
+  function createPagination(options) {
+    var numbers = element(options.numbers);
+    var previous = element(options.previous);
+    var next = element(options.next);
+    var jump = element(options.jump);
+
+    function render(state) {
+      var count = Math.max(1, Number(state.pageCount));
+      var page = Math.max(1, Math.min(Number(state.page), count));
+      numbers.innerHTML = pageItems(page, count).map(function (item) {
+        if (item.type === 'ellipsis') return '<span aria-hidden="true">…</span>';
+        return '<button type="button" class="' + (options.buttonClass || 'page-btn') + ' ' + (item.active ? (options.activeClass || 'active') : '') + '" data-common-page="' + item.page + '" aria-label="第' + item.page + '页" ' + (item.active ? 'aria-current="page"' : '') + '>' + item.page + '</button>';
+      }).join('');
+      previous.disabled = page <= 1;
+      next.disabled = page >= count;
+      if (jump) {
+        jump.max = count;
+        jump.value = '';
+      }
+    }
+
+    numbers.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-common-page]');
+      if (button && options.onChange) options.onChange(Number(button.dataset.commonPage));
+    });
+    previous.addEventListener('click', function () { if (options.onPrevious) options.onPrevious(); });
+    next.addEventListener('click', function () { if (options.onNext) options.onNext(); });
+    if (jump) jump.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && options.onChange) options.onChange(Number(jump.value));
+    });
+    return { render: render, items: pageItems };
+  }
+
+  function parseBatch(text) {
+    return Array.from(new Set(String(text || '').split(/[\s,，;；]+/).map(function (value) { return value.trim(); }).filter(Boolean)));
+  }
+
+  function createBatchInput(options) {
+    var source = element(options.source);
+    var textarea = element(options.textarea);
+    var count = element(options.count);
+    var confirm = element(options.confirm);
+
+    function values() { return (options.parse || parseBatch)(textarea.value); }
+    function updateCount() {
+      if (count) count.textContent = (options.countPrefix || '共 ') + values().length + (options.countSuffix || ' 个SKU');
+    }
+    function open() {
+      textarea.value = options.getInitialValue ? options.getInitialValue() : source.value;
+      updateCount();
+      options.open();
+      textarea.focus();
+    }
+    source.addEventListener('dblclick', open);
+    textarea.addEventListener('input', updateCount);
+    confirm.addEventListener('click', function () { if (options.onConfirm) options.onConfirm(values()); });
+    return { open: open, values: values, updateCount: updateCount, parse: options.parse || parseBatch };
+  }
+
+  var batchSearchSeed = 0;
+  function createBatchSearch(options) {
+    var source = element(options.source);
+    var fields = (options.fields || []).map(function (field) {
+      return typeof field === 'string' ? { value: field, label: field } : field;
+    });
+    if (!source || !fields.length) throw new Error('createBatchSearch requires source and fields');
+    var name = 'erp-batch-search-' + (++batchSearchSeed);
+    var root = doc.createElement('div');
+    root.className = 'erp-batch-search-mask';
+    root.setAttribute('role', 'dialog');
+    root.setAttribute('aria-modal', 'true');
+    root.innerHTML = '<div class="erp-batch-search-modal"><div class="erp-batch-search-head"><span>' + escapeHtml(options.title || '批量搜索') + '</span><button type="button" class="erp-batch-search-close" data-batch-close aria-label="关闭">×</button></div><div class="erp-batch-search-body"><div class="erp-batch-search-types">' + fields.map(function (field, index) {
+      return '<label><input type="radio" name="' + name + '" value="' + escapeHtml(field.value) + '" ' + (index === 0 ? 'checked' : '') + '>' + escapeHtml(field.label) + '</label>';
+    }).join('') + '</div><div class="erp-batch-search-field"><label data-batch-label></label><textarea class="erp-batch-search-textarea" data-batch-textarea></textarea></div></div><div class="erp-batch-search-foot"><button type="button" class="erp-batch-search-btn" data-batch-close>取消</button><button type="button" class="erp-batch-search-btn primary" data-batch-confirm>确定</button></div></div>';
+    doc.body.appendChild(root);
+    var textarea = root.querySelector('[data-batch-textarea]');
+    var label = root.querySelector('[data-batch-label]');
+    var selectedField = fields[0];
+
+    function findField(value) {
+      return fields.find(function (field) { return String(field.value) === String(value); }) || fields[0];
+    }
+    function syncField(value) {
+      selectedField = findField(value);
+      Array.prototype.forEach.call(root.querySelectorAll('input[name="' + name + '"]'), function (radio) {
+        radio.checked = String(radio.value) === String(selectedField.value);
+      });
+      label.textContent = selectedField.queryLabel || (selectedField.label + '查询');
+      textarea.placeholder = selectedField.placeholder || ('每行一个' + selectedField.label + '（支持Excel复制粘贴）');
+      if (options.onFieldChange) options.onFieldChange(selectedField.value, selectedField);
+    }
+    function values() { return (options.parse || parseBatch)(textarea.value); }
+    function open() {
+      syncField(options.getInitialField ? options.getInitialField() : selectedField.value);
+      textarea.value = options.getInitialValue ? options.getInitialValue(selectedField.value) : '';
+      root.classList.add('show');
+      textarea.focus();
+      if (options.onOpen) options.onOpen(api);
+    }
+    function close() { root.classList.remove('show'); source.focus(); }
+    root.addEventListener('change', function (event) {
+      if (event.target.name === name) syncField(event.target.value);
+    });
+    root.addEventListener('click', function (event) {
+      if (event.target === root || event.target.closest('[data-batch-close]')) { close(); return; }
+      if (!event.target.closest('[data-batch-confirm]')) return;
+      var result = options.onConfirm ? options.onConfirm(values(), selectedField.value, api) : undefined;
+      if (result !== false) close();
+    });
+    source.addEventListener('dblclick', open);
+    var api = { open: open, close: close, values: values, setField: syncField, root: root, textarea: textarea };
+    return api;
+  }
+
+  /*
+   * 操作日志弹窗：页面只需传入各自的业务操作属性、人员和日志记录。
+   * 操作属性是固定枚举，不显示停用项；操作员复用人员数据并显示“停用人员”。
+   */
+  function createOperationLog(options) {
+    options = options || {};
+    var trigger = element(options.trigger);
+    var sourceRecords = Array.isArray(options.records) ? options.records.slice() : [];
+    var page = 1;
+    var pageSize = Number(options.pageSize) || 100;
+    var pageSizes = options.pageSizes || [10, 20, 30, 50, 100, 200, 500];
+    var filteredRecords = [];
+    var activePanel = null;
+    function normalizedItems(items, preferLabel) {
+      return (items || []).map(function (item) {
+        if (typeof item === 'string') return { value: item, label: item, enabled: true };
+        var label = item.label == null ? (item.name == null ? (item.userName == null ? (item.text == null ? item.value : item.text) : item.userName) : item.name) : item.label;
+        return {
+          value: String(preferLabel || item.value == null ? label : item.value),
+          label: String(label == null ? '' : label),
+          enabled: item.enabled !== false && item.disabled !== true
+        };
+      });
+    }
+
+    function closePanels() {
+      if (activePanel && activePanel.parentNode) activePanel.parentNode.removeChild(activePanel);
+      activePanel = null;
+    }
+
+    function itemTime(record) {
+      var value = record.time == null ? (record.operationTime == null ? (record.createdAt == null ? record.created : record.createdAt) : record.operationTime) : record.time;
+      if (value instanceof Date) return value.getTime();
+      var result = new Date(String(value || '').replace(/-/g, '/')).getTime();
+      return isNaN(result) ? null : result;
+    }
+
+    function recordValue(record, names) {
+      for (var index = 0; index < names.length; index += 1) {
+        if (record[names[index]] != null) return String(record[names[index]]);
+      }
+      return '';
+    }
+
+    var root = doc.createElement('div');
+    root.className = 'erp-oplog-mask';
+    root.innerHTML = '<section class="erp-oplog-dialog" role="dialog" aria-modal="true" aria-label="' + escapeHtml(options.title || '操作日志') + '">' +
+      '<div class="erp-oplog-head"><span>' + escapeHtml(options.title || '操作日志') + '</span><button type="button" class="erp-oplog-close" data-oplog-close aria-label="关闭">×</button></div>' +
+      '<div class="erp-oplog-body"><div class="erp-oplog-filters">' +
+      '<div class="erp-oplog-field"><label>操作属性</label><div class="erp-oplog-select"><div class="floating-select" data-oplog-attribute></div></div></div>' +
+      '<div class="erp-oplog-field"><label>操作员</label><div class="erp-oplog-select"><div class="floating-select" data-oplog-operator></div></div></div>' +
+      '<div class="erp-oplog-field erp-oplog-date-wrap"><label>操作时间</label><div class="erp-oplog-date" data-oplog-date><span data-oplog-start></span><span class="dash">—</span><span data-oplog-end></span><i class="erp-oplog-date-icon">▣</i></div>' +
+      '<div class="erp-oplog-date-picker hidden" data-oplog-date-panel><div class="date-shortcuts" data-oplog-shortcuts><button type="button" data-range="0">今天</button><button type="button" data-range="6">近7天</button><button type="button" data-range="29">近30天</button><button type="button" data-range="89">近90天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" data-oplog-prev-year>«</button><button type="button" class="cal-nav" data-oplog-prev-month>‹</button><span class="cal-title" data-oplog-cal-title></span><button type="button" class="cal-nav" data-oplog-next-month>›</button><button type="button" class="cal-nav" data-oplog-next-year>»</button></div><div class="cal-grid" data-oplog-cal-grid></div></div></div></div>' +
+      '<div class="erp-oplog-actions"><button type="button" class="erp-oplog-btn" data-oplog-reset>重置</button><button type="button" class="erp-oplog-btn primary" data-oplog-query>搜索</button></div>' +
+      '</div><div class="erp-oplog-table-wrap"><table class="erp-oplog-table"><colgroup><col style="width:40px"><col style="width:120px"><col><col style="width:120px"><col style="width:180px"></colgroup><thead><tr><th class="erp-oplog-index"></th><th>操作属性</th><th>操作描述</th><th>操作人</th><th>操作时间</th></tr></thead><tbody data-oplog-body></tbody></table></div>' +
+      '<div class="erp-oplog-pager"><span data-oplog-total></span><button type="button" class="erp-oplog-page" data-oplog-prev>‹</button><span data-oplog-pages></span><button type="button" class="erp-oplog-page" data-oplog-next>›</button><select class="erp-oplog-size" data-oplog-size></select></div>' +
+      '</div></section>';
+    doc.body.appendChild(root);
+
+    var attributeRoot = root.querySelector('[data-oplog-attribute]');
+    var operatorRoot = root.querySelector('[data-oplog-operator]');
+    var body = root.querySelector('[data-oplog-body]');
+    var total = root.querySelector('[data-oplog-total]');
+    var pages = root.querySelector('[data-oplog-pages]');
+    var prev = root.querySelector('[data-oplog-prev]');
+    var next = root.querySelector('[data-oplog-next]');
+    var sizeSelect = root.querySelector('[data-oplog-size]');
+    var datePanel = root.querySelector('[data-oplog-date-panel]');
+
+    var attributeItems = normalizedItems(options.operationAttributes || options.attributes);
+    var operatorItems = normalizedItems(options.operators || options.people, true);
+    var attributeSelect = createFloatingSelect({
+      el: attributeRoot, options: attributeItems, placeholder: '请选择',
+      closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
+    });
+    var operatorSelect = createFloatingSelect({
+      el: operatorRoot, options: operatorItems, placeholder: '请选择', fieldName: '人员', disabledLabel: '显示停用人员',
+      closePanels: closePanels, getActivePanel: function () { return activePanel; }, setActivePanel: function (panel) { activePanel = panel; }, panelZIndex: 5400
+    });
+    var datePicker = createDateRangePicker({
+      trigger: root.querySelector('[data-oplog-date]'), panel: datePanel, shortcuts: root.querySelector('[data-oplog-shortcuts]'), grid: root.querySelector('[data-oplog-cal-grid]'), title: root.querySelector('[data-oplog-cal-title]'),
+      startText: root.querySelector('[data-oplog-start]'), endText: root.querySelector('[data-oplog-end]'), prevMonth: root.querySelector('[data-oplog-prev-month]'), nextMonth: root.querySelector('[data-oplog-next-month]'), prevYear: root.querySelector('[data-oplog-prev-year]'), nextYear: root.querySelector('[data-oplog-next-year]'),
+      state: { view: new Date(), start: null, end: null }, startPlaceholder: '开始日期', endPlaceholder: '结束日期', startSuffix: '', endSuffix: '', closeOthers: function () { closePanels(); }
+    });
+
+    sizeSelect.innerHTML = pageSizes.map(function (size) { return '<option value="' + Number(size) + '"' + (Number(size) === pageSize ? ' selected' : '') + '>' + Number(size) + '条/页</option>'; }).join('');
+
+    function filters() {
+      return { attribute: attributeSelect.getValue(), operator: operatorSelect.getValue(), start: datePicker.getStart(), end: datePicker.getEnd() };
+    }
+
+    function filterRecords(records) {
+      var current = filters();
+      function matches(value, selected, items) {
+        if (!selected) return true;
+        var selectedItem = items.find(function (item) { return String(item.value) === String(selected); });
+        return value === String(selected) || Boolean(selectedItem && value === selectedItem.label);
+      }
+      return (records || []).filter(function (record) {
+        var attribute = recordValue(record, ['attribute', 'action', 'property', 'operationAttribute']);
+        var operator = recordValue(record, ['operator', 'user', 'creator', 'operatorName']);
+        var time = itemTime(record);
+        return matches(attribute, current.attribute, attributeItems) && matches(operator, current.operator, operatorItems) &&
+          (!current.start || (time != null && time >= current.start)) && (!current.end || (time != null && time <= current.end));
+      });
+    }
+
+    function renderPager() {
+      var count = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+      if (page > count) page = count;
+      total.textContent = '共 ' + filteredRecords.length + ' 条';
+      prev.disabled = page <= 1;
+      next.disabled = page >= count;
+      var start = Math.max(1, Math.min(page - 2, count - 4));
+      var end = Math.min(count, start + 4);
+      var html = '';
+      for (var current = start; current <= end; current += 1) html += '<button type="button" class="erp-oplog-page' + (current === page ? ' active' : '') + '" data-oplog-page="' + current + '">' + current + '</button>';
+      pages.innerHTML = html;
+    }
+
+    function render() {
+      var from = (page - 1) * pageSize;
+      var rows = filteredRecords.slice(from, from + pageSize);
+      body.innerHTML = rows.length ? rows.map(function (record, index) {
+        return '<tr><td class="erp-oplog-index">' + (from + index + 1) + '</td><td>' + escapeHtml(recordValue(record, ['attribute', 'action', 'property', 'operationAttribute'])) + '</td><td>' + escapeHtml(recordValue(record, ['description', 'desc', 'detail', 'operationDescription'])) + '</td><td>' + escapeHtml(recordValue(record, ['operator', 'user', 'creator', 'operatorName'])) + '</td><td>' + escapeHtml(recordValue(record, ['time', 'operationTime', 'createdAt', 'created'])) + '</td></tr>';
+      }).join('') : '<tr><td class="erp-oplog-empty" colspan="5">暂无数据</td></tr>';
+      renderPager();
+    }
+
+    function query(resetPage) {
+      if (resetPage !== false) page = 1;
+      var rows = typeof options.getRecords === 'function' ? options.getRecords(filters(), api) : sourceRecords;
+      if (typeof options.onQuery === 'function') {
+        var result = options.onQuery(filters(), api, rows);
+        if (Array.isArray(result)) rows = result;
+      }
+      filteredRecords = filterRecords(Array.isArray(rows) ? rows : sourceRecords);
+      render();
+      return filteredRecords.slice();
+    }
+
+    function reset() {
+      attributeSelect.setValue('');
+      operatorSelect.setValue('');
+      datePicker.reset();
+      if (options.onReset) options.onReset(api);
+      return query(true);
+    }
+
+    function open(records) {
+      if (Array.isArray(records)) sourceRecords = records.slice();
+      root.classList.add('show');
+      query(true);
+      if (options.onOpen) options.onOpen(api);
+    }
+
+    function close() {
+      closePanels();
+      datePanel.classList.add('hidden');
+      root.classList.remove('show');
+      if (trigger) trigger.focus();
+      if (options.onClose) options.onClose(api);
+    }
+
+    root.addEventListener('click', function (event) {
+      if (event.target === root || event.target.closest('[data-oplog-close]')) { close(); return; }
+      if (event.target.closest('[data-oplog-query]')) { query(true); return; }
+      if (event.target.closest('[data-oplog-reset]')) { reset(); return; }
+      var pageButton = event.target.closest('[data-oplog-page]');
+      if (pageButton) { page = Number(pageButton.dataset.oplogPage); render(); return; }
+      if (event.target.closest('[data-oplog-prev]') && page > 1) { page -= 1; render(); return; }
+      if (event.target.closest('[data-oplog-next]') && page * pageSize < filteredRecords.length) { page += 1; render(); }
+    });
+    sizeSelect.addEventListener('change', function () { pageSize = Number(sizeSelect.value) || 100; page = 1; render(); });
+    doc.addEventListener('click', function (event) {
+      if (!root.classList.contains('show')) return;
+      if (!root.contains(event.target) && !(activePanel && activePanel.contains(event.target))) { closePanels(); datePanel.classList.add('hidden'); }
+    });
+    doc.addEventListener('keydown', function (event) { if (event.key === 'Escape' && root.classList.contains('show')) close(); });
+    if (trigger) trigger.addEventListener('click', open);
+
+    var api = {
+      open: open, close: close, query: query, reset: reset, root: root,
+      getFilters: filters,
+      setRecords: function (records) { sourceRecords = Array.isArray(records) ? records.slice() : []; if (root.classList.contains('show')) query(false); },
+      setOperationAttributes: function (items) { attributeItems.splice.apply(attributeItems, [0, attributeItems.length].concat(normalizedItems(items))); attributeSelect.setValue(''); },
+      setOperators: function (items) { operatorItems.splice.apply(operatorItems, [0, operatorItems.length].concat(normalizedItems(items, true))); operatorSelect.setValue(''); }
+    };
+    query(true);
+    return api;
+  }
+
+  function createColumnCustomizer(options) {
+    var pager = element(options.pager);
+    var table = element(options.table);
+    var originalColumns = (options.columns || []).map(function (column) { return Object.assign({}, column); });
+    var columns = originalColumns.slice();
+    if (!pager || !table || !columns.length) throw new Error('createColumnCustomizer requires pager, table and columns');
+    var defaults = columns.filter(function (column) { return column.defaultVisible !== false; }).map(function (column) { return String(column.key); });
+    var visible = new Set(defaults);
+    if (options.storageKey) {
+      try {
+        var saved = JSON.parse(global.localStorage.getItem(options.storageKey) || 'null');
+        if (Array.isArray(saved)) visible = new Set(saved.map(String));
+        else if (saved && typeof saved === 'object') {
+          if (Array.isArray(saved.visible)) visible = new Set(saved.visible.map(String));
+          if (Array.isArray(saved.order)) {
+            var byKey = {};
+            columns.forEach(function (column) { byKey[String(column.key)] = column; });
+            columns = saved.order.map(String).map(function (key) { return byKey[key]; }).filter(Boolean);
+            originalColumns.forEach(function (column) { if (columns.indexOf(column) < 0) columns.push(column); });
+          }
+        }
+      } catch (error) {}
+    }
+    var trigger = doc.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'erp-column-trigger';
+    trigger.title = '自定义列';
+    trigger.setAttribute('aria-label', '自定义列');
+    trigger.textContent = '⚙';
+    pager.appendChild(trigger);
+    var mask = doc.createElement('div');
+    mask.className = 'erp-column-mask';
+    mask.innerHTML = '<aside class="erp-column-drawer" role="dialog" aria-modal="true" aria-label="自定义列"><div class="erp-column-head"><button type="button" class="erp-column-close" aria-label="关闭">×</button><span>' + escapeHtml(options.title || '自定义列') + '</span></div><div class="erp-column-list"></div><div class="erp-column-foot"><button type="button" class="erp-column-reset">重置</button></div></aside>';
+    doc.body.appendChild(mask);
+    var list = mask.querySelector('.erp-column-list');
+
+    function save() {
+      if (!options.storageKey) return;
+      try { global.localStorage.setItem(options.storageKey, JSON.stringify({ visible: Array.from(visible), order: columns.map(function (column) { return String(column.key); }) })); } catch (error) {}
+    }
+    function render() {
+      list.innerHTML = columns.map(function (column) {
+        return '<div class="erp-column-item" data-column-item="' + escapeHtml(column.key) + '"><span class="erp-column-handle" draggable="true" title="拖拽调整字段位置" aria-label="拖拽调整' + escapeHtml(column.label) + '的位置">⠿</span><label><input type="checkbox" data-column-key="' + escapeHtml(column.key) + '" ' + (visible.has(String(column.key)) ? 'checked' : '') + '><span>' + escapeHtml(column.label) + '</span></label></div>';
+      }).join('');
+    }
+    function tagCells(cells) {
+      if (!cells || !cells.length || Array.prototype.some.call(cells, function (cell) { return cell.hasAttribute('data-erp-column-key'); })) return;
+      originalColumns.forEach(function (column) {
+        var cell = cells[Number(column.index) - 1];
+        if (cell) cell.setAttribute('data-erp-column-key', String(column.key));
+      });
+    }
+    function tagStructure() {
+      var colgroup = table.querySelector('colgroup');
+      if (colgroup) tagCells(colgroup.children);
+      Array.prototype.forEach.call(table.tHead ? table.tHead.rows : [], function (row) { tagCells(row.cells); });
+      Array.prototype.forEach.call(table.tBodies, function (tbody) {
+        Array.prototype.forEach.call(tbody.rows, function (row) {
+          if (row.classList.contains('detail-row') || row.cells.length === 1) return;
+          tagCells(row.cells);
+        });
+      });
+    }
+    function reorderChildren(parent, children) {
+      if (!parent || !children || !children.length) return;
+      var slots = originalColumns.map(function (column) { return Number(column.index) - 1; }).sort(function (a, b) { return a - b; });
+      var current = Array.prototype.slice.call(children);
+      var keyed = {};
+      current.forEach(function (node) { var key = node.getAttribute && node.getAttribute('data-erp-column-key'); if (key) keyed[key] = node; });
+      var next = current.slice();
+      columns.forEach(function (column, orderIndex) { if (keyed[String(column.key)] && slots[orderIndex] != null) next[slots[orderIndex]] = keyed[String(column.key)]; });
+      if (current.every(function (node, index) { return node === next[index]; })) return;
+      var fragment = doc.createDocumentFragment();
+      next.forEach(function (node) { fragment.appendChild(node); });
+      parent.appendChild(fragment);
+    }
+    function reorderTable() {
+      var colgroup = table.querySelector('colgroup');
+      if (colgroup) reorderChildren(colgroup, colgroup.children);
+      Array.prototype.forEach.call(table.tHead ? table.tHead.rows : [], function (row) { reorderChildren(row, row.cells); });
+      Array.prototype.forEach.call(table.tBodies, function (tbody) {
+        Array.prototype.forEach.call(tbody.rows, function (row) {
+          if (row.classList.contains('detail-row') || row.cells.length === 1) return;
+          reorderChildren(row, row.cells);
+        });
+      });
+    }
+    function apply() {
+      tagStructure();
+      reorderTable();
+      columns.forEach(function (column) {
+        var show = visible.has(String(column.key));
+        Array.prototype.forEach.call(table.querySelectorAll('[data-erp-column-key]'), function (node) {
+          if (node.getAttribute('data-erp-column-key') === String(column.key)) node.style.display = show ? '' : 'none';
+        });
+      });
+      save();
+      if (options.onChange) options.onChange(Array.from(visible));
+    }
+    function open() { render(); mask.classList.add('show'); }
+    function close() { mask.classList.remove('show'); trigger.focus(); }
+    trigger.addEventListener('click', open);
+    mask.querySelector('.erp-column-close').addEventListener('click', close);
+    mask.addEventListener('click', function (event) { if (event.target === mask) close(); });
+    list.addEventListener('change', function (event) {
+      var input = event.target.closest('[data-column-key]');
+      if (!input) return;
+      if (input.checked) visible.add(String(input.dataset.columnKey)); else visible.delete(String(input.dataset.columnKey));
+      apply();
+    });
+    var draggingItem = null;
+    list.addEventListener('dragstart', function (event) {
+      var handle = event.target.closest('.erp-column-handle');
+      if (!handle) { event.preventDefault(); return; }
+      draggingItem = handle.closest('.erp-column-item');
+      draggingItem.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', draggingItem.dataset.columnItem);
+    });
+    list.addEventListener('dragover', function (event) {
+      if (!draggingItem) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+      var target = event.target.closest('.erp-column-item');
+      if (!target || target === draggingItem) return;
+      var rect = target.getBoundingClientRect();
+      list.insertBefore(draggingItem, event.clientY > rect.top + rect.height / 2 ? target.nextSibling : target);
+    });
+    list.addEventListener('drop', function (event) {
+      if (!draggingItem) return;
+      event.preventDefault();
+      var order = Array.prototype.map.call(list.querySelectorAll('.erp-column-item'), function (item) { return item.dataset.columnItem; });
+      var byKey = {};
+      columns.forEach(function (column) { byKey[String(column.key)] = column; });
+      columns = order.map(function (key) { return byKey[key]; }).filter(Boolean);
+      draggingItem.classList.remove('dragging');
+      draggingItem = null;
+      render();
+      apply();
+    });
+    list.addEventListener('dragend', function () { if (draggingItem) { draggingItem.classList.remove('dragging'); draggingItem = null; render(); } });
+    mask.querySelector('.erp-column-reset').addEventListener('click', function () { visible = new Set(defaults); columns = originalColumns.slice(); render(); apply(); });
+    var observer = new MutationObserver(function () { apply(); });
+    Array.prototype.forEach.call(table.tBodies, function (tbody) { observer.observe(tbody, { childList: true }); });
+    apply();
+    return { open: open, close: close, apply: apply, reset: function () { visible = new Set(defaults); columns = originalColumns.slice(); render(); apply(); }, visible: function () { return Array.from(visible); }, order: function () { return columns.map(function (column) { return String(column.key); }); } };
+  }
+
+  function createWarehouseSelector(options) {
+    var root = element(options.root);
+    var state = options.state || { value: '', panelOpen: false, showDisabled: false };
+
+    function items() { return typeof options.items === 'function' ? options.items() : (options.items || []); }
+    function render() {
+      var all = items();
+      var enabled = all.filter(function (item) { return item.enabled !== false; });
+      var visible = enabled.slice(0, options.inlineLimit == null ? 9 : options.inlineLimit);
+      var overflow = enabled.slice(visible.length);
+      var disabled = all.filter(function (item) { return item.enabled === false; });
+      var moreItems = overflow.concat(state.showDisabled ? disabled : []);
+      var selectedInMore = overflow.concat(disabled).some(function (item) { return String(item.id) === String(state.value); });
+      root.innerHTML = '<button type="button" class="' + (options.buttonClass || 'warehouse-btn') + ' ' + (!state.value ? (options.activeClass || 'active') : '') + '" data-common-warehouse="" aria-pressed="' + (!state.value) + '">' + escapeHtml(options.allLabel || '全部') + '</button>' + visible.map(function (item) {
+        return '<button type="button" class="' + (options.buttonClass || 'warehouse-btn') + ' ' + (String(item.id) === String(state.value) ? (options.activeClass || 'active') : '') + '" data-common-warehouse="' + escapeHtml(item.id) + '" aria-pressed="' + (String(item.id) === String(state.value)) + '">' + escapeHtml(item.name) + '</button>';
+      }).join('') + '<div class="warehouse-more-wrap"><button type="button" class="' + (options.moreButtonClass || 'more-btn') + ' ' + (selectedInMore ? (options.activeClass || 'active') : '') + '" data-common-more aria-expanded="' + state.panelOpen + '">' + escapeHtml(options.moreLabel || '更多') + ' ' + (state.panelOpen ? '⌃' : '⌄') + '</button><div class="warehouse-more-panel ' + (state.panelOpen ? '' : (options.hiddenClass || 'hidden')) + '"><div class="warehouse-more-scroll">' + moreItems.map(function (item) {
+        return '<button type="button" class="warehouse-option ' + (String(item.id) === String(state.value) ? (options.activeClass || 'active') : '') + '" data-common-warehouse="' + escapeHtml(item.id) + '">' + escapeHtml(item.name) + (item.enabled === false ? '（停用）' : '') + '</button>';
+      }).join('') + '</div><label class="warehouse-disabled-toggle"><input type="checkbox" data-common-disabled ' + (state.showDisabled ? 'checked' : '') + '>' + escapeHtml(options.disabledLabel || ('显示停用' + (options.fieldName || '仓库'))) + '</label></div></div>';
+    }
+
+    root.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var warehouse = event.target.closest('[data-common-warehouse]');
+      if (warehouse) {
+        state.value = warehouse.dataset.commonWarehouse;
+        state.panelOpen = false;
+        render();
+        if (options.onChange) options.onChange(state.value, state);
+        return;
+      }
+      if (event.target.closest('[data-common-more]')) {
+        state.panelOpen = !state.panelOpen;
+        render();
+      }
+    });
+    root.addEventListener('change', function (event) {
+      event.stopPropagation();
+      if (!event.target.matches('[data-common-disabled]')) return;
+      state.showDisabled = event.target.checked;
+      state.panelOpen = true;
+      render();
+    });
+    render();
+    return {
+      render: render,
+      getValue: function () { return state.value; },
+      set: function (value, silent) {
+        state.value = value || '';
+        render();
+        if (!silent && options.onChange) options.onChange(state.value, state);
+      },
+      reset: function () { state.value = ''; state.panelOpen = false; state.showDisabled = false; render(); },
+      state: state
+    };
+  }
+
+  function createHistoryExportTasks(options) {
+    function matchesName(name, term, mode) {
+      if (!term) return true;
+      if (mode === '等于') return name === term;
+      if (mode === '包含') return name.indexOf(term) >= 0;
+      if (mode === '结尾是') return name.endsWith(term);
+      return name.startsWith(term);
+    }
+    function filter(tasks, filters) {
+      var filtered = tasks.filter(function (task) {
+        var time = options.timeValue(task[options.timeField || 'started']);
+        return (!filters.start || time >= filters.start) && (!filters.end || time <= filters.end) &&
+          (!filters.status || task.status === filters.status) && matchesName(task.name, filters.name, filters.nameMode) &&
+          (!filters.fileType || task.fileType === filters.fileType) && (!filters.exportType || task.exportType === filters.exportType);
+      });
+      if (options.sort === false) return filtered;
+      return filtered.sort(function (left, right) {
+        return options.timeValue(right[options.timeField || 'started']) - options.timeValue(left[options.timeField || 'started']);
+      });
+    }
+    return { filter: filter, matchesName: matchesName };
+  }
+
+  global.ERPComponents = Object.freeze({
+    version: '1.4.0',
+    element: element,
+    elements: elements,
+    escapeHtml: escapeHtml,
+    disabledToggleHtml: disabledToggleHtml,
+    dateText: dateText,
+    createDateRangePicker: createDateRangePicker,
+    createSearchDropdown: createSearchDropdown,
+    createWarehouseDropdown: createWarehouseDropdown,
+    createFloatingSelect: createFloatingSelect,
+    createTileGroup: createTileGroup,
+    createStaticDropdown: createStaticDropdown,
+    createPagination: createPagination,
+    createBatchInput: createBatchInput,
+    createBatchSearch: createBatchSearch,
+    createOperationLog: createOperationLog,
+    createColumnCustomizer: createColumnCustomizer,
+    createWarehouseSelector: createWarehouseSelector,
+    createHistoryExportTasks: createHistoryExportTasks,
+    createStickyTableHeader: createStickyTableHeader,
+    parseBatch: parseBatch,
+    pageItems: pageItems
+  });
+})(window);
+
+</script>
+<script>
+/* ============================================================
+ * ERP 仓储原型 - 公共布局（顶部导航 + 左侧菜单）
+ * ------------------------------------------------------------
+ * 所有页面通过 <script src="菜单.js"><\/script> 引用本文件，
+ * 顶部导航与左侧菜单的样式、渲染、高亮、折叠、页面跳转全部
+ * 由本文件统一处理，各页面不再各自维护菜单代码。
+ *
+ * 新增页面时只需两步：
+ *   1) 新页面在自身内联 <script> 之前引用本文件：
+ *      <script src="菜单.js"><\/script>
+ *      并保留 <div class="layout"><main class="main">…</main></div> 结构
+ *   2) 在下方 PAGE_LINKS 中补充「菜单名 -> 文件名」映射
+ * ============================================================ */
+(function () {
+  'use strict';
+
+  /* iframe 内只渲染业务内容，避免重复注入菜单并依赖负偏移裁切。 */
+  var isEmbedded = new URLSearchParams(window.location.search).get('_erp_embed') === '1';
+  document.documentElement.classList.add(isEmbedded ? 'erp-embedded' : 'erp-page-loading');
+
+  /* ---------- 菜单与布局样式（原各页面 <style> 中的「顶部导航 / 布局」两节） ---------- */
+  var css = `
+  html { background:#F5F5F5; }
+  body { opacity:1; transition:opacity .16s ease; }
+  html.erp-page-loading body { opacity:0; }
+  .main.erp-content-host { position:relative; height:calc(100vh - 38px); padding:0 !important; overflow:hidden; background:#F5F5F5; }
+  .erp-content-frame { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .18s ease; background:#F5F5F5; }
+  .erp-content-frame.ready { opacity:1; }
+  body.erp-hosting-content .pager,
+  body.erp-hosting-content .pg,
+  body.erp-hosting-content .cc-pager,
+  body.erp-hosting-content .ap-pager,
+  body.erp-hosting-content .selection-bar,
+  body.erp-hosting-content .table-footer,
+  body.erp-hosting-content .pagination-bar,
+  body.erp-hosting-content .ap-form-footer,
+  body.erp-hosting-content .savebar { display:none !important; }
+  html.erp-embedded body { padding-top:0 !important; }
+  html.erp-embedded body::after { inset:0 !important; }
+  html.erp-embedded .layout { min-height:100vh !important; }
+  html.erp-embedded .savebar,
+  html.erp-embedded .table-card > .pager,
+  html.erp-embedded .pager,
+  html.erp-embedded .pg { left:0 !important; }
+  html.erp-embedded .tbl thead th,
+  html.erp-embedded .sku-tbl thead th,
+  html.erp-embedded .main-table > thead > tr > th,
+  html.erp-embedded .scan-card,
+  html.erp-embedded .settings-tabs { top:0 !important; }
+  html.erp-embedded .anchor-nav { top:122px !important; }
+  @media (prefers-reduced-motion: reduce) { body { transition:none; } }
+
+  /* ============ 顶部导航 ============ */
+  .topbar { height:38px; background:#273542; display:flex; align-items:center; padding:0 14px; position:fixed; top:0; left:0; right:0; z-index:100; }
+  .logo { width:124px; flex:none; display:flex; align-items:center; gap:7px; margin-right:0; color:#fff; font-size:14px; font-weight:500; letter-spacing:0; }
+  .logo svg { flex:none; }
+  .top-menu { display:flex; height:38px; flex:1; }
+  .top-menu .tm { width:64px; flex:none; padding:0; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.88); font-size:16px; font-weight:600; cursor:pointer; user-select:none; }
+  .top-menu .tm:hover { color:#fff; }
+  .top-menu .tm.active { background:#3D68FF; color:#fff; }
+  .top-right { display:flex; align-items:center; gap:14px; }
+  .top-right .icon-btn { width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:4px; cursor:pointer; color:rgba(255,255,255,.75); }
+  .top-right .icon-btn:hover { background:rgba(255,255,255,.12); color:#fff; }
+  .user-box { display:flex; align-items:center; gap:7px; cursor:pointer; padding:4px 6px; border-radius:4px; }
+  .user-box:hover { background:rgba(255,255,255,.1); }
+  .avatar { width:24px; height:24px; border-radius:50%; background:#3D68FF; color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center; font-weight:600; }
+  .user-name { color:rgba(255,255,255,.88); font-size:14px; }
+
+  /* ============ 布局 ============ */
+  .layout { display:flex; min-height:calc(100vh - 38px); }
+  .sider { width:170px; height:calc(100vh - 38px); position:sticky; top:38px; align-self:flex-start; background:#fff; border-right:1px solid #e8e8e8; flex:none; padding:7px 0; transition:width .18s; overflow:hidden auto; z-index:91; }
+  .sider.collapsed { width:44px; }
+  .fold-btn { display:flex; align-items:center; gap:8px; height:34px; padding:0 13px; color:#555; cursor:pointer; white-space:nowrap; }
+  .fold-btn:hover { color:#3D68FF; }
+  .sider.collapsed .fold-btn { padding:0 14px; }
+  .menu-group .g-head { display:flex; align-items:center; gap:8px; height:36px; padding:0 13px; color:#333; font-size:14px; cursor:pointer; white-space:nowrap; user-select:none; }
+  .menu-group .g-head:hover { color:#3D68FF; }
+  .menu-group .g-head .arrow { margin-left:auto; transform:rotate(180deg); transition:transform .18s; color:#777; }
+  .menu-group.open .g-head { margin:1px 6px; padding:0 7px; border-radius:8px; background:#F3F3F3; }
+  .menu-group.open .g-head .arrow { transform:rotate(0); }
+  .menu-group .g-sub { display:none; }
+  .menu-group.open .g-sub { display:block; }
+  .g-sub .sub-item { display:flex; align-items:center; height:42px; padding:0 12px 0 34px; color:#555; font-size:14px; cursor:pointer; white-space:nowrap; margin:1px 3px; border-radius:6px; }
+  .g-sub .sub-item:hover { color:#3D68FF; background:#F5F7FF; }
+  .g-sub .sub-item.active { color:#3D68FF; background:transparent; font-weight:500; }
+  .g-sub .sub-label { padding:4px 12px 2px 22px; color:#a8a8a8; font-size:14px; white-space:nowrap; margin:1px 3px; user-select:none; }
+  .menu-group .g-head.cur { color:#3D68FF; background:transparent; border-radius:6px; margin:1px 3px; font-weight:500; }
+  .sider-item { display:flex; align-items:center; gap:8px; height:36px; padding:0 13px; color:#333; font-size:14px; cursor:pointer; white-space:nowrap; user-select:none; }
+  .sider-item:hover { color:#3D68FF; }
+  .sider.collapsed .txt, .sider.collapsed .arrow, .sider.collapsed .g-sub { display:none !important; }
+  .sider.collapsed .g-head, .sider.collapsed .sider-item { padding:0 14px; }
+
+  .main { flex:1; padding:6px 13px 38px 7px; min-width:0; }
+  `;
+  var styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
+
+  if (isEmbedded) return;
+
+  /* ---------- 菜单数据 ---------- */
+  var TOP_MENUS = ['首页', '商品', '订单', '供应链', '仓储', '物流', '报表', '设置'];
+
+  var ICONS = {
+    in:      '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8 7.4v3.4M8 10.8l-1.4-1.4M8 10.8l1.4-1.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    ship:    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.6 7.4 6.2 3l4.6 4.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.2 6.8V13h6V6.8" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.6 10h6M12.6 8.2l1.8 1.8-1.8 1.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    direct:  '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3.2" y="2.6" width="9.6" height="11.4" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M6 2h4v2.2H6V2Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M5.8 7.2h4.4M5.8 9.8h4.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>',
+    box:     '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+    boxes:   '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><rect x="5.6" y="8.6" width="2.1" height="2.1" stroke="currentColor" stroke-width="1"/><rect x="8.3" y="8.6" width="2.1" height="2.1" stroke="currentColor" stroke-width="1"/></svg>',
+    hot:     '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.3 7.6c.15 1-.5 1.5-1 2.1-.45.55-.7 1-.7 1.6a1.7 1.7 0 0 0 3.4 0c0-.7-.35-1.2-.65-1.65-.2.3-.45.5-.8.6.25-.9-.05-2.1-.25-2.65Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>',
+    fast:    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.7 7.6 6.9 10h1.6l-.8 2.6 2-2.7H8.1l.6-2.3Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>',
+    other:   '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.6" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2.9" stroke="currentColor" stroke-width="1.1"/><circle cx="8" cy="8" r="0.9" fill="currentColor"/></svg>',
+    manage:  '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7.2 8 2.2l6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6.6V13h8V6.6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8 11.6V8.2M8 8.2 6.6 9.6M8 8.2l1.4 1.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    config:  '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>',
+    log:     '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 1.8h6l2.2 2.2v10H4V1.8Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 1.8V4h2.2" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 7h4M6 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>'
+  };
+
+  var SIDE_MENUS = [
+    { icon: 'in',     text: '入库',     children: ['入库签收', '入库上架', '入库单', '历史入库单', '快递签收', '退包签收', '退包分拣'] },
+    { icon: 'ship',   text: '仓库发货', children: ['仓库订单', '仓库任务'] },
+    { icon: 'direct', text: '入库直发', children: ['订制品直发'] },
+    { icon: 'box',    text: '单品出库', children: ['配货', '发货'] },
+    { icon: 'boxes',  text: '多品出库', children: ['配货', '分拣', '发货'] },
+    { icon: 'hot',    text: '爆款出库', children: ['爆款配货', '单品爆款发货', '多品爆款发货'] },
+    { icon: 'fast',   text: '快速发货', children: ['单品快速发货', '多品快速分拣', '多品快速发货'] },
+    { icon: 'other',  text: '其他出库', children: ['称重出库', '手工出库单', '历史手工出库单'] },
+    { icon: 'manage', text: '库内管理', children: [
+        { label: '调拨' },     '调拨列表', '调拨出库', '调拨入库',
+        { label: '盘点' },     '库存盘点',
+        { label: '修改仓位' }, '手动修改仓位', '任务管理', '任务修改仓位',
+        { label: '商品查询' }, '商品信息查询'
+      ] },
+    { icon: 'config', text: '基础配置', children: ['仓库列表', '篮子列表', '任务码', '仓储设置', '发货分类', '仓库审批设置', '仓库推荐货架'] },
+    { icon: 'log',    text: '日志',     children: ['入库日志', '历史入库日志', '订单出库日志', '历史订单出库日志', '商品出库日志', '历史商品出库日志', '修改仓位日志', '历史修改仓位日志', '盘点日志', '历史盘点日志', '库内上架日志'] }
+  ];
+
+  /* 页面跳转映射：左侧子菜单 -> 对应 html 文件（新增页面在此补充） */
+  var PAGE_LINKS = {
+    '仓库订单': '仓库订单.html',
+    '仓库列表': '../其他内容/仓库列表.html',
+    '仓库审批设置': '../其他内容/仓库审批设置.html',
+    '篮子列表': '../其他内容/篮子列表.html',
+    '任务码': '../其他内容/任务码.html',
+    '仓库推荐货架': '仓库推荐货架.html',
+    '入库签收': '入库签收.html',
+    '入库上架': '入库上架.html',
+    '入库单': '入库单.html',
+    '历史入库单': '历史入库单.html',
+    '快递签收': '快递签收.html',
+    '退包签收': '退包签收.html',
+    '订制品直发': '../其他内容/订制品直发.html',
+    '仓储设置': '仓储设置.html',
+    '发货分类': '../其他内容/发货分类.html',
+    '库内上架日志': '库内上架日志.html',
+    '盘点日志': '盘点日志.html',
+    '历史盘点日志': '历史盘点日志.html',
+    '入库日志': '入库日志.html',
+    '历史入库日志': '历史入库日志.html',
+    '订单出库日志': '订单出库日志.html',
+    '历史订单出库日志': '历史订单出库日志.html',
+    '商品出库日志': '商品出库日志.html',
+    '历史商品出库日志': '历史商品出库日志.html',
+    '修改仓位日志': '修改仓位日志.html',
+    '历史修改仓位日志': '历史仓位修改日志.html'
+  };
+
+  /* ---------- 当前页判断（按文件名自动高亮对应菜单） ---------- */
+  var file = decodeURIComponent(location.pathname.split('/').pop() || '');
+  var current = '';
+  Object.keys(PAGE_LINKS).forEach(function (k) { if (PAGE_LINKS[k] === file) current = k; });
+  if (['仓库新增.html', '仓库详情.html', '货架新增.html', '货架详情.html', '货架编辑.html'].indexOf(file) >= 0) current = '仓库列表';
+  if (['仓库审批新增.html', '仓库审批编辑.html'].indexOf(file) >= 0) current = '仓库审批设置';
+  var contentFrame = null;
+  var frameTimer = null;
+
+  function tip(type, msg) { if (window.toast) window.toast(type, msg); }
+
+  function switchContent(link, label, aside) {
+    var main = document.querySelector('.layout > .main');
+    if (!main) return;
+    document.body.classList.add('erp-hosting-content');
+    aside.querySelectorAll('.sub-item.active').forEach(function (item) { item.classList.remove('active'); });
+    var targetItem = Array.from(aside.querySelectorAll('.sub-item')).find(function (item) { return item.textContent.trim() === label; });
+    if (targetItem) targetItem.classList.add('active');
+    if (!contentFrame) {
+      contentFrame = document.createElement('iframe');
+      contentFrame.className = 'erp-content-frame';
+      contentFrame.title = label;
+      main.innerHTML = '';
+      main.classList.add('erp-content-host');
+      main.appendChild(contentFrame);
+    }
+    clearTimeout(frameTimer);
+    contentFrame.classList.remove('ready');
+    contentFrame.title = label;
+    contentFrame.onload = function () { contentFrame.classList.add('ready'); };
+    /* 子页面使用嵌入模式：不重复渲染顶部与侧栏，也不再使用负偏移裁切。 */
+    frameTimer = setTimeout(function () {
+      contentFrame.src = link + (link.indexOf('?') >= 0 ? '&' : '?') + '_erp_embed=1&_t=' + Date.now();
+    }, 70);
+    document.title = 'ERP - 仓储 - 入库 - ' + label;
+  }
+
+  /* ---------- 渲染 ---------- */
+  function render() {
+    /* 顶部导航 */
+    var header = document.createElement('header');
+    header.className = 'topbar';
+    header.innerHTML =
+      '<div class="logo">'
+      + '<svg width="20" height="20" viewBox="0 0 20 20"><rect x="1" y="1" width="18" height="18" rx="4" fill="#3D68FF"/><path d="M6 7.2v5.6M6 7.2 10 4l4 3.2M10 6v10M14 9.5v3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>'
+      + 'ERP</div>'
+      + '<nav class="top-menu" id="topMenu"></nav>'
+      + '<div class="top-right">'
+      + '<span class="icon-btn" title="消息"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.2 4.2 0 0 0-4.2 4.2c0 3-1.3 4.3-1.3 4.3h11s-1.3-1.3-1.3-4.3A4.2 4.2 0 0 0 8 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.8 13.2a1.3 1.3 0 0 0 2.4 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>'
+      + '<span class="icon-btn" title="帮助"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="currentColor" stroke-width="1.3"/><path d="M6.4 6.2c0-1 .8-1.7 1.7-1.7.9 0 1.6.7 1.6 1.6 0 1.2-1.6 1.3-1.6 2.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8.05" cy="11.3" r=".8" fill="currentColor"/></svg></span>'
+      + '<div class="user-box" title="个人中心"><div class="avatar">XW</div><span class="user-name">XWD</span></div>'
+      + '</div>';
+    document.body.insertBefore(header, document.body.firstChild);
+
+    var topMenu = header.querySelector('#topMenu');
+    topMenu.innerHTML = TOP_MENUS.map(function (m) {
+      return '<div class="tm' + (m === '仓储' ? ' active' : '') + '">' + m + '</div>';
+    }).join('');
+    topMenu.querySelectorAll('.tm').forEach(function (t) {
+      t.addEventListener('click', function () {
+        if (t.classList.contains('active')) return;
+        tip('info', '原型演示：本次仅实现【仓储】模块相关页面');
+      });
+    });
+
+    /* 左侧菜单 */
+    var layout = document.querySelector('.layout');
+    if (!layout) return;
+    var aside = document.createElement('aside');
+    aside.className = 'sider';
+    aside.id = 'sider';
+    aside.innerHTML =
+      '<div class="fold-btn" id="foldBtn"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 3.5h12M2 8h12M2 12.5h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span class="txt">折叠面板</span></div>'
+      + SIDE_MENUS.map(function (m, i) {
+          var hasCurrent = m.children && m.children.some(function (c) { return typeof c === 'string' && c === current; });
+          var html = '<div class="' + (m.children ? 'menu-group' + (hasCurrent ? ' open' : '') : 'sider-item') + '" data-idx="' + i + '">';
+          html += '<div class="g-head' + (hasCurrent ? ' cur' : '') + '">' + ICONS[m.icon] + '<span class="txt">' + m.text + '</span>'
+               + (m.children ? '<span class="arrow"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 6.5 5 3l3.5 3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg></span>' : '')
+               + '</div>';
+          if (m.children) {
+            html += '<div class="g-sub">' + m.children.map(function (c) {
+              if (typeof c === 'object' && c.label) return '<div class="sub-label">' + c.label + '</div>';
+              return '<div class="sub-item' + (c === current ? ' active' : '') + '">' + c + '</div>';
+            }).join('') + '</div>';
+          }
+          return html + '</div>';
+        }).join('');
+    layout.insertBefore(aside, layout.firstChild);
+
+    /* 菜单事件 */
+    aside.querySelector('#foldBtn').addEventListener('click', function () {
+      aside.classList.toggle('collapsed');
+    });
+    aside.querySelectorAll('.g-head, .sider-item, .sub-item').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (el.classList.contains('g-head')) {
+          var group = el.parentElement;
+          var willOpen = !group.classList.contains('open');
+          aside.querySelectorAll('.menu-group.open').forEach(function (item) { item.classList.remove('open'); });
+          if (willOpen) group.classList.add('open');
+          return;
+        }
+        /* 仓库详情/货架详情在列表 iframe 内打开时，重按菜单回到列表。 */
+        if (el.classList.contains('active') && el.textContent.trim() !== '仓库列表') return;
+        var link = PAGE_LINKS[el.textContent.trim()];
+        if (link) {
+          switchContent(link, el.textContent.trim(), aside);
+          return;
+        }
+        tip('info', '该菜单页面将在后续原型中补充');
+      });
+    });
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.documentElement.classList.remove('erp-page-loading');
+      });
+    });
+  }
+
+  window.addEventListener('pageshow', function () {
+    document.documentElement.classList.remove('erp-page-loading');
+  });
+
+  if (document.body) render();
+  else document.addEventListener('DOMContentLoaded', render);
+})();
+
+</script>
+<style>
+.rs-page{height:calc(100vh - 52px);display:grid;grid-template-columns:minmax(360px,34%) minmax(580px,1fr);gap:8px;overflow:hidden}.rs-card{background:#fff;border-radius:4px}.rs-warehouse{height:100%;padding:14px;overflow:hidden}.rs-search{position:relative;margin-bottom:8px}.rs-search input{width:100%;height:30px;padding:0 40px 0 10px;border:1px solid #d8dce5;border-radius:4px;outline:0}.rs-search input:focus{border-color:#3d68ff}.rs-search button{position:absolute;top:0;right:0;width:36px;height:30px;border:0;border-left:1px solid #d8dce5;background:#fff;color:#8c939d}.rs-warehouse-list{height:calc(100% - 38px);overflow:auto;padding-right:4px}.rs-warehouse-item{display:block;width:100%;height:43px;padding:0 10px;border:0;border-radius:3px;background:#fff;color:#303133;text-align:left}.rs-warehouse-item:hover{background:#f5f7fa}.rs-warehouse-item.active{background:#eef4ff;color:#315efb}.rs-content{align-self:start;padding:14px}.rs-filter{display:grid;grid-template-columns:276px 276px 1fr;gap:8px;align-items:end;margin-bottom:13px}.rs-field{position:relative}.rs-field>label{display:block;height:20px}.rs-input,.rs-select-trigger{width:100%;height:30px;padding:0 10px;border:1px solid #d8dce5;border-radius:5px;background:#fff;color:#303133;outline:0}.rs-input::placeholder,.rs-select-trigger.placeholder{color:#b8bdc7}.rs-input:focus,.rs-select-trigger:focus{border-color:#3d68ff}.rs-select-trigger{position:relative;text-align:left}.rs-select-trigger:after{content:'⌄';position:absolute;right:10px;color:#a6abb4}.rs-filter-actions{display:flex;justify-content:flex-end;gap:8px}.rs-btn{height:29px;padding:0 14px;border:1px solid #d8dce5;border-radius:5px;background:#fff;color:#303133}.rs-btn:hover{border-color:#3d68ff;color:#315efb}.rs-btn.primary{border-color:#3d68ff;background:#3d68ff;color:#fff}.rs-toolbar{height:36px}.rs-table-wrap{overflow:visible}.rs-table{width:100%;border-collapse:collapse;table-layout:fixed}.rs-table th,.rs-table td{height:40px;padding:6px 8px;border:1px solid #bfc3ca;text-align:left}.rs-table th{height:36px;background:#ededed;font-weight:600}.rs-center{text-align:center!important}.rs-row-active td{background:#fff8f1}.rs-category-cell{position:relative}.rs-category-value{color:#303133}.rs-edit{margin-left:12px;border:0;background:none;color:#315efb}.rs-pager{height:42px;display:flex;align-items:center;justify-content:flex-end;gap:7px}.rs-pager button{width:24px;height:24px;border:0;background:transparent}.rs-pager .active{border:1px solid #315efb;border-radius:5px;color:#315efb}.rs-pager select{height:24px;border:1px solid #d8dce5;border-radius:4px}.rs-picker{position:absolute;z-index:100;width:460px;padding:8px;border:1px solid #e2e5eb;border-radius:5px;background:#fff;box-shadow:0 7px 20px #0002}.rs-picker.filter-picker{top:53px;left:0}.rs-picker.row-picker{top:40px;left:8px}.rs-picker-search{position:relative;margin-bottom:6px}.rs-picker-search input{width:100%;height:29px;padding:0 34px 0 9px;border:1px solid #3d68ff;border-radius:4px;outline:0}.rs-picker-search span{position:absolute;right:10px;top:6px;color:#a4a9b1}.rs-tree{max-height:180px;overflow:auto}.rs-tree-row{display:flex;align-items:center;min-height:29px;padding:3px 6px;border-radius:3px}.rs-tree-row:hover{background:#f5f6f8}.rs-tree-row.child{padding-left:26px}.rs-tree-row input{margin-right:8px}.rs-tree-row .arrow{margin-left:auto;color:#7d838d}.rs-picker-foot{display:flex;justify-content:flex-end;gap:7px;padding-top:8px;border-top:1px solid #eee}.rs-empty{height:120px!important;text-align:center!important;color:#a3a8b1}.rs-mask{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#0006}.rs-modal{width:480px;padding:18px;border-radius:7px;background:#fff;box-shadow:0 10px 30px #0003}.rs-modal-head{display:flex;justify-content:space-between;margin-bottom:15px;font-size:16px;font-weight:600}.rs-modal-head button{border:0;background:none;font-size:20px;color:#8d929b}.rs-modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.rs-toast{position:fixed;top:54px;left:50%;z-index:3000;transform:translateX(-50%);padding:9px 18px;border-radius:4px;background:#303133;color:#fff;box-shadow:0 4px 14px #0003}@media(max-width:1100px){.rs-page{grid-template-columns:300px minmax(570px,1fr)}.rs-filter{grid-template-columns:1fr 1fr}.rs-filter-actions{grid-column:1/-1}}
+</style>
+<style>
+.rs-picker.cascade-picker{width:auto;min-width:360px;padding:0;overflow:hidden}.rs-cascade-hint{display:flex;align-items:center;height:42px;padding:0 12px;border-bottom:1px solid #e3e7ee;background:#f8faff;color:#7f8da3;white-space:nowrap}.rs-cascade{display:flex;min-height:174px;max-height:244px;padding:6px;overflow:auto}.rs-cascade-column{width:190px;flex:none;padding:3px;border-right:1px solid #ebeef2;overflow:auto}.rs-cascade-column:last-child{border-right:0}.rs-cascade-item{display:flex;align-items:center;height:31px;border-radius:3px;color:#303133}.rs-cascade-item:hover{background:#f4f6fa}.rs-cascade-item.in-path,.rs-cascade-item.in-path:hover,.rs-cascade-item.selected,.rs-cascade-item.selected:hover{background:#dfeaff;color:#315efb;font-weight:600;box-shadow:inset 3px 0 #315efb}.rs-category-name{height:100%;min-width:0;flex:1;padding:0 8px;border:0;background:transparent;color:inherit;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rs-category-expand{width:28px;height:100%;border:0;background:transparent;color:#9096a0;font-size:18px}.rs-category-display{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rs-input-clear{position:absolute;right:29px;top:50%;z-index:2;display:flex;align-items:center;justify-content:center;width:16px;height:16px;transform:translateY(-50%);border-radius:50%;background:#c2c7cf;color:#fff;font-size:12px;line-height:1;cursor:pointer}.rs-select-trigger.has-clear .rs-category-display,.rs-batch-trigger.has-clear .rs-category-display{padding-right:38px}.rs-table-category-trigger{position:relative;display:flex;align-items:center;width:420px;max-width:100%;height:30px;padding:0 30px 0 8px;border:1px solid #d8dce5;border-radius:5px;background:#fff;color:#303133;text-align:left}.rs-table-category-trigger:after{content:'⌄';position:absolute;right:10px;color:#a6abb4}.rs-table-category-trigger .rs-input-clear{right:25px}.rs-batch-field{position:relative}.rs-batch-field .rs-picker{top:52px;left:0}.rs-batch-trigger{position:relative;display:flex;align-items:center;justify-content:space-between;text-align:left}.rs-batch-trigger:after{content:'⌄';color:#a6abb4}
+</style>
+<style>.rs-modal.rs-cascade-modal{width:min(586px,calc(100vw - 32px));padding:22px 26px 18px;overflow:visible}</style>
+<style>
+.rs-category-input-wrap{position:relative;width:100%}.rs-category-search-input{width:100%;height:30px;padding:0 50px 0 10px;border:1px solid #d8dce5;border-radius:5px;background:#fff;color:#303133;outline:0}.rs-category-search-input:focus{border-color:#3d68ff;box-shadow:0 0 0 1px #3d68ff}.rs-category-search-input:disabled{background:#f5f6f8;color:#b8bdc7;cursor:not-allowed}.rs-category-search-input::placeholder{color:#b8bdc7}.rs-category-input-wrap .rs-input-arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#a6abb4;pointer-events:none}.rs-category-input-wrap .rs-input-clear{right:29px}.rs-table-category-wrap{width:420px;max-width:100%}.rs-cascade-unset{position:sticky;top:0;z-index:2;background:#fff}.rs-category-search-results{min-width:390px;max-height:244px;padding:6px;overflow:auto}.rs-category-search-item{display:flex;align-items:center;width:100%;min-height:32px;padding:4px 9px;border:0;border-radius:3px;background:#fff;color:#303133;text-align:left}.rs-category-search-item:hover,.rs-category-search-item.selected{background:#f4f6fa}.rs-category-search-item.selected{box-shadow:inset 3px 0 #315efb}.rs-search-level{flex:none;margin-right:8px;padding:1px 5px;border-radius:3px;background:#eef2f8;color:#7b8798;font-size:11px}.rs-search-path{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rs-search-hit{color:#f04444;font-weight:600}.rs-category-search-empty{display:flex;align-items:center;justify-content:center;height:96px;color:#a3a8b1}.rs-batch-summary{margin:-2px 0 20px;color:#4b4f56;line-height:24px}.rs-batch-summary strong{color:#315efb;font-weight:500}.rs-batch-controls{display:flex;align-items:center;gap:10px}.rs-batch-category-control{position:relative;width:260px}.rs-batch-category-control .rs-picker{top:34px;left:0}.rs-clear-existing{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#4b4f56}.rs-clear-existing input{width:18px;height:18px}.rs-cascade-modal .rs-modal-foot{margin-top:40px}
+</style>
+</head>
+<body data-code-page="warehouse-recommendation">
+<div class="layout"><main class="main"><div id="recommendShelfPage"></div></main></div>
+<div id="codeModalHost"></div>
+<script>
+(function(){
+  'use strict';
+  if(document.body.dataset.codePage==='warehouse-recommendation')return;
+  const type=document.body.dataset.codePage==='task'?'task':'basket';
+  const isTask=type==='task';
+  const name=isTask?'任务码':'篮子列表';
+  const root=document.getElementById('codePage');
+  const modalHost=document.getElementById('codeModalHost');
+  const E=window.ERPComponents;
+  const storeKey='erp-code-list-'+type+'-v1';
+  const basketSeed=[
+    ['SXY','发货分拣篮子','smileying123','XWD','2026-08-03 09:35:40'],['47','发货分拣篮子','WSQ','WSQ','2026-07-31 17:21:19'],['AUT','发货分拣篮子','HF','','2026-07-31 15:04:10'],['54','退货分拣篮子','WSQ','','2026-07-21 11:24:36'],['fh','发货分拣篮子','LS','LS','2026-04-14 16:44:10'],['fj','退货分拣篮子','LS','','2026-04-01 17:56:10'],['fj','发货分拣篮子','LS','','2026-03-30 14:52:57'],['SXY','退货分拣篮子','SXY','','2026-03-05 11:10:19'],['3','发货分拣篮子','XWD','','2026-02-08 21:27:54'],['xu','发货分拣篮子','XWD','','2026-01-22 09:25:12'],['clr','发货分拣篮子','HF','','2025-09-11 17:58:21'],['AAA','退货分拣篮子','HF','','2025-08-12 14:48:23'],['AAA','发货分拣篮子','HF','','2025-08-12 14:47:53'],['ddd','发货分拣篮子','HF','','2025-08-12 14:47:11'],['cc','退货分拣篮子','11t','','2025-08-12 14:43:45'],['ypp','发货分拣篮子','Laity','Laity,11t','2025-06-30 11:31:03'],['YCS','发货分拣篮子','YCS','YCS','2025-06-17 14:52:15'],['s','发货分拣篮子','smileying123','','2025-06-14 11:05:35']
+  ];
+  const taskSeed=[
+    ['clfy','配货任务','mysql玲-auto-勿动','2026-09-13 17:06:58'],['wang','上架任务','WSQ','2026-08-20 09:34:49'],['AUTO','配货任务','HF','2026-07-27 15:45:15'],['wsq','配货任务','WSQ','2026-07-20 17:04:24'],['zzy','配货任务','zy','2026-07-08 14:31:03'],['dong','上架任务','smileying123','2026-05-25 11:09:59'],['yz','配货任务','YYT','2026-05-18 11:30:16'],['rkk','上架任务','LS','2026-04-14 17:57:25'],['YCSP','配货任务','YCS','2026-04-07 15:44:37'],['rk','上架任务','LS','2026-04-01 14:23:08'],['ph','配货任务','LS','2026-03-30 14:43:10'],['CD','配货任务','11t','2026-03-25 18:15:07'],['ls','上架任务','LS','2026-03-25 15:25:54'],['ck01','配货任务','LS','2026-03-19 14:13:48'],['SHEN','配货任务','SXY','2026-03-16 02:34:33'],['KOP','上架任务','test006','2026-03-12 17:17:16'],['SXY','上架任务','SXY','2026-03-09 16:42:21'],['ck','配货任务','XWD','2026-01-22 10:27:03']
+  ];
+  const seed=(isTask?taskSeed:basketSeed).map((entry,i)=>isTask?{id:'t'+i,code:entry[0],category:entry[1],operator:entry[2],time:entry[3]}:{id:'b'+i,code:entry[0],category:entry[1],operator:entry[2],sender:entry[3],time:entry[4]});
+  for(let i=seed.length;i<(isTask?104:60);i++){
+    const ref=seed[i%seed.length];
+    seed.push(Object.assign({},ref,{id:(isTask?'t':'b')+i,code:ref.code+(Math.floor(i/18)+1),time:'2025-05-'+String(30-(i%25)).padStart(2,'0')+' 10:00:00'}));
+  }
+  let rows;
+  try{rows=JSON.parse(localStorage.getItem(storeKey))||seed;}catch(_){rows=seed;}
+  if(!Array.isArray(rows))rows=seed;
+  let page=1,size=100,filtered=rows.slice(),datePicker,typeSelect;
+  const escape=v=>E.escapeHtml(v==null?'':String(v));
+  function save(){try{localStorage.setItem(storeKey,JSON.stringify(rows));}catch(_){}}
+  function toast(message){const el=document.createElement('div');el.className='cc-toast';el.textContent=message;document.body.appendChild(el);setTimeout(()=>el.remove(),2200);}
+  function dateMarkup(){return '<div class="cc-time"><div class="cc-time-trigger" id="ccDateTrigger"><span id="ccDateStart">开始日期　　开始时间</span><span class="dash">~</span><span id="ccDateEnd">结束日期　　结束时间</span></div><div class="erp-date-picker hidden" id="ccDatePanel"><div class="date-shortcuts" id="ccDateShortcuts"><button type="button" data-days="0">今天</button><button type="button" data-days="1">昨天</button><button type="button" data-range="7">近7天</button><button type="button" data-range="30">近30天</button><button type="button" data-range="90">近90天</button></div><div class="calendar"><div class="cal-head"><button type="button" class="cal-nav" id="ccPrevYear">≪</button><button type="button" class="cal-nav" id="ccPrevMonth">‹</button><span class="cal-title" id="ccCalTitle"></span><button type="button" class="cal-nav" id="ccNextMonth">›</button><button type="button" class="cal-nav" id="ccNextYear">≫</button></div><div class="cal-grid" id="ccCalGrid"></div></div></div></div>';}
+  function skeleton(){
+    const filterName=isTask?'任务头':'篮子头';
+    const categories=isTask?['配货任务','上架任务']:['发货分拣篮子','退货分拣篮子'];
+    root.innerHTML='<div class="cc-page-'+type+'"><section class="cc-card cc-filter"><div class="cc-filter-grid"><div class="cc-field"><label>'+filterName+'</label><input class="cc-input" id="ccFilterCode" placeholder="请输入"></div><div class="cc-field"><label>'+(!isTask?'篮子类型':'任务类型')+'</label><div class="floating-select" id="ccTypeSelect"></div></div><div class="cc-field cc-time"><label>操作时间</label>'+dateMarkup()+'</div><div class="cc-filter-actions"><button class="cc-btn" id="ccReset">重置</button><button class="cc-btn primary" id="ccSearch">查询</button></div></div></section><section class="cc-card cc-table-card"><div class="cc-toolbar"><button class="cc-btn primary" id="ccAdd">新增'+(isTask?'任务头':'篮子')+'</button><button class="cc-btn link" id="ccPrintSettings">▣ 打印设置</button></div><div class="cc-table-wrap"><table class="cc-table">'+(isTask?'<colgroup><col style="width:42px"><col style="width:84px"><col style="width:84px"><col><col style="width:167px"><col style="width:217px"></colgroup><thead><tr><th>序号</th><th>任务头</th><th>任务类型</th><th>操作人</th><th class="cc-center">操作时间</th><th class="cc-center">操作</th></tr></thead>':'<colgroup><col style="width:67px"><col style="width:66px"><col style="width:100px"><col><col><col style="width:167px"><col style="width:217px"></colgroup><thead><tr><th>序号</th><th>篮子头</th><th>篮子类型</th><th>操作人</th><th>发货员</th><th class="cc-center">操作时间</th><th class="cc-center">操作</th></tr></thead>')+'<tbody id="ccBody"></tbody></table></div></section></div>';
+    const pager=document.createElement('div');pager.className='cc-pager';pager.id='ccPager';document.body.appendChild(pager);
+    E.createStickyTableHeader({table:'.cc-table',wrapper:'.cc-table-wrap',scrollContainer:'.layout > .main',zIndex:20});
+    typeSelect=E.createFloatingSelect({el:root.querySelector('#ccTypeSelect'),placeholder:'请选择',options:categories.map(x=>({value:x,label:x}))});
+    datePicker=E.createDateRangePicker({trigger:'#ccDateTrigger',panel:'#ccDatePanel',shortcuts:'#ccDateShortcuts',grid:'#ccCalGrid',title:'#ccCalTitle',startText:'#ccDateStart',endText:'#ccDateEnd',prevMonth:'#ccPrevMonth',nextMonth:'#ccNextMonth',prevYear:'#ccPrevYear',nextYear:'#ccNextYear'});
+    document.addEventListener('click',e=>{if(!e.target.closest('.cc-time'))datePicker.close();});
+  }
+  function applyFilter(){const code=root.querySelector('#ccFilterCode').value.trim().toLowerCase();const category=typeSelect.getValue();const start=datePicker.getStart(),end=datePicker.getEnd();filtered=rows.filter(row=>(!code||row.code.toLowerCase().includes(code))&&(!category||row.category===category)&&(!start||new Date(row.time.replace(/-/g,'/')).getTime()>=start)&&(!end||new Date(row.time.replace(/-/g,'/')).getTime()<=end));page=1;renderTable();}
+  function renderTable(){
+    const totalPages=Math.max(1,Math.ceil(filtered.length/size));page=Math.max(1,Math.min(page,totalPages));
+    const visible=filtered.slice((page-1)*size,page*size);
+    root.querySelector('#ccBody').innerHTML=visible.length?visible.map((row,i)=>'<tr><td>'+((page-1)*size+i+1)+'</td><td>'+escape(row.code)+'</td><td>'+escape(row.category)+'</td><td>'+escape(row.operator)+'</td>'+(isTask?'':'<td>'+escape(row.sender||'')+' <a class="cc-edit-person" data-action="edit-sender" data-id="'+escape(row.id)+'" title="编辑发货员">✎</a></td>')+'<td class="cc-center">'+escape(row.time)+'</td><td class="cc-actions"><div class="cc-ops"><a data-action="preview" data-id="'+escape(row.id)+'">有效'+(isTask?'任务码':'篮子码')+'</a><a data-action="print" data-id="'+escape(row.id)+'">打印'+(isTask?'任务':'篮子')+'条码</a><a class="cc-delete" data-action="delete" data-id="'+escape(row.id)+'">删除</a></div></td></tr>').join(''):'<tr><td class="cc-empty" colspan="'+(isTask?6:7)+'">暂无数据</td></tr>';
+    const pageButtons=[];const left=Math.max(1,page-2),right=Math.min(totalPages,Math.max(page+2,5));for(let p=left;p<=right;p++)pageButtons.push('<button data-page="'+p+'" class="'+(p===page?'active':'')+'">'+p+'</button>');
+    document.getElementById('ccPager').innerHTML='<span>共 '+filtered.length+' 条</span><button data-page="'+(page-1)+'"'+(page<=1?' disabled':'')+'>‹</button>'+pageButtons.join('')+(right<totalPages?'<span>…</span><button data-page="'+totalPages+'">'+totalPages+'</button>':'')+'<button data-page="'+(page+1)+'"'+(page>=totalPages?' disabled':'')+'>›</button><select id="ccPageSize"><option value="20"'+(size===20?' selected':'')+'>20 条/页</option><option value="50"'+(size===50?' selected':'')+'>50 条/页</option><option value="100"'+(size===100?' selected':'')+'>100 条/页</option></select><span>跳至</span><input id="ccJump" type="number" min="1" max="'+totalPages+'"><span>页</span>';
+  }
+  function modal(title,content,confirm){modalHost.innerHTML='<div class="cc-modal-mask"><div class="cc-modal" role="dialog" aria-modal="true"><div class="cc-modal-head"><span>'+title+'</span><button class="cc-modal-close" data-close>×</button></div>'+content+'<div class="cc-modal-foot"><button class="cc-btn" data-close>取消</button><button class="cc-btn primary" id="ccModalConfirm">确定</button></div></div></div>';modalHost.querySelector('#ccModalConfirm').addEventListener('click',confirm);const first=modalHost.querySelector('input');if(first)first.focus();}
+  function closeModal(){modalHost.innerHTML='';}
+  function addRow(){
+    const categories=isTask?['上架任务','配货任务']:['发货分拣篮子','退货分拣篮子'];
+    const content='<div class="cc-modal-field"><label><span class="cc-required">*</span> '+(isTask?'任务头':'篮子头')+'</label><input class="cc-input" id="ccNewCode" placeholder="请输入"></div>'+
+      '<div class="cc-modal-field"><label><span class="cc-required">*</span> '+(isTask?'任务类型':'篮子类型')+'</label><select class="cc-select" id="ccNewType">'+categories.map(x=>'<option>'+x+'</option>').join('')+'</select></div>'+
+      (isTask?'':'<div class="cc-modal-field"><label>发货员</label><select class="cc-select" id="ccNewSender"><option value="" disabled hidden selected>请选择</option>'+['XWD','WSQ','HF','LS','SXY','Laity'].map(x=>'<option>'+x+'</option>').join('')+'</select></div>');
+    modal(isTask?'新增任务类型':'新增篮子',content,()=>{
+      const code=modalHost.querySelector('#ccNewCode').value.trim();
+      if(!code){toast('请输入'+(isTask?'任务头':'篮子头'));modalHost.querySelector('#ccNewCode').focus();return;}
+      const category=modalHost.querySelector('#ccNewType').value;
+      if(!category){toast('请选择'+(isTask?'任务类型':'篮子类型'));return;}
+      const row={id:type+Date.now(),code,category,operator:'XWD',time:new Date().toLocaleString('sv-SE').replace('T',' ')};
+      if(!isTask)row.sender=modalHost.querySelector('#ccNewSender').value;
+      rows.unshift(row);save();closeModal();applyFilter();
+    });
+    modalHost.querySelector('.cc-modal').classList.add('cc-modal-create');
+  }
+  function preview(row,printing){modal('有效'+(isTask?'任务码':'篮子码'),'<div class="cc-modal-note">'+(isTask?'任务头':'篮子头')+'：'+escape(row.code)+'</div><div class="cc-barcode" aria-hidden="true"></div><div class="cc-code-text">'+escape(row.code)+'</div>',()=>{if(printing)window.print();closeModal();});}
+  root.addEventListener('click',e=>{
+    const el=e.target.closest('[data-action],#ccSearch,#ccReset,#ccAdd,#ccPrintSettings');if(!el)return;
+    if(el.id==='ccSearch')return applyFilter();
+    if(el.id==='ccReset'){root.querySelector('#ccFilterCode').value='';typeSelect.setValue('');datePicker.reset();return applyFilter();}
+    if(el.id==='ccAdd')return addRow();
+    if(el.id==='ccPrintSettings')return modal('打印设置','<div class="cc-modal-field"><label>打印份数</label><input class="cc-input" type="number" min="1" value="1"></div>',()=>{closeModal();toast('打印设置已保存');});
+    const row=rows.find(x=>x.id===el.dataset.id);if(!row)return;
+    if(el.dataset.action==='delete'){if(!confirm('确定删除 '+row.code+' 吗？'))return;rows=rows.filter(x=>x.id!==row.id);save();applyFilter();return;}
+    if(el.dataset.action==='preview')return preview(row,false);
+    if(el.dataset.action==='print')return preview(row,true);
+    if(el.dataset.action==='edit-sender')return modal('编辑发货员','<div class="cc-modal-field"><label>发货员</label><input class="cc-input" id="ccSender" value="'+escape(row.sender||'')+'" placeholder="请输入"></div>',()=>{row.sender=modalHost.querySelector('#ccSender').value.trim();save();closeModal();renderTable();});
+  });
+  modalHost.addEventListener('click',e=>{if(e.target.classList.contains('cc-modal-mask')||e.target.closest('[data-close]'))closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+  document.body.addEventListener('click',e=>{const btn=e.target.closest('#ccPager [data-page]');if(!btn||btn.disabled)return;page=Number(btn.dataset.page);renderTable();});
+  document.body.addEventListener('change',e=>{if(e.target.id==='ccPageSize'){size=Number(e.target.value);page=1;renderTable();}});
+  document.body.addEventListener('keydown',e=>{if(e.target.id==='ccJump'&&e.key==='Enter'){page=Math.max(1,Number(e.target.value)||1);renderTable();}});
+  skeleton();renderTable();
+})();
+
+</script>
+<script>
+(function(){
+  'use strict';
+  return;
+  const root=document.getElementById('recommendShelfPage');
+  const modalHost=document.getElementById('codeModalHost');
+  const warehouseNames=['LF-1014','接口自动化测试3仓库（勿选）','验证仓','云县中仓','618清仓大甩卖','接口自动化测试2仓库（勿选）','虚拟仓','甜品仓','HQ','ck03','ck02','ck01','接口自动化测试1仓库（勿选）','仓库003','仓库002','仓库001','XWD仓','采购2','马甲二','广州仓','海外仓','测试仓'];
+  const categoryNames=['肯德基','麦当劳','AutDx_更新分类fa577','AutDx_更新分类a1888','AutDx_商品一级分类26cec','AutDx_商品一级分类75051','服装','家居用品','数码配件'];
+  const shelfRows={};
+  warehouseNames.forEach(function(name,index){shelfRows[name]=[{id:'s-'+index+'-1',code:index===3?'A01':'A'+String(index+1).padStart(2,'0'),category:index===3?'':categoryNames[index%categoryNames.length]}]});
+  shelfRows['验证仓'].push({id:'s-2-2',code:'B02',category:'数码配件'});
+  let currentWarehouse='云县中仓',filterCategory='',appliedShelf='',appliedCategory='',openPicker=null,selected=new Set();
+  const escapeHtml=function(value){return String(value==null?'':value).replace(/[&<>'"]/g,function(char){return{'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]})};
+  function toast(message){const old=document.querySelector('.rs-toast');if(old)old.remove();const el=document.createElement('div');el.className='rs-toast';el.textContent=message;document.body.appendChild(el);setTimeout(function(){el.remove()},1800)}
+  function pickerMarkup(kind,rowId){return '<div class="rs-picker '+(kind==='filter'?'filter-picker':'row-picker')+'" data-picker><div class="rs-picker-search"><input data-picker-search placeholder="请选择"><span>⌕</span></div><div class="rs-tree">'+categoryNames.map(function(name,index){return '<label class="rs-tree-row" data-category-row="'+escapeHtml(name.toLowerCase())+'"><input type="checkbox" data-category-option="'+escapeHtml(name)+'" '+((kind==='filter'?filterCategory:(shelfRows[currentWarehouse].find(function(row){return row.id===rowId})||{}).category)===name?'checked':'')+'><span>'+escapeHtml(name)+'</span>'+(index<2?'<span class="arrow">›</span>':'')+'</label>'}).join('')+'</div><div class="rs-picker-foot"><button class="rs-btn" type="button" data-picker-clear>清空</button><button class="rs-btn primary" type="button" data-picker-close>确定</button></div></div>'}
+  function shell(){root.innerHTML='<div class="rs-page"><section class="rs-card rs-warehouse"><div class="rs-search"><input id="warehouseSearch" placeholder="请输入名称搜索"><button type="button" aria-label="搜索">⌕</button></div><div class="rs-warehouse-list" id="warehouseList"></div></section><section class="rs-card rs-content"><div class="rs-filter"><div class="rs-field"><label for="shelfFilter">货架编号</label><input class="rs-input" id="shelfFilter" placeholder="双击可批量查询"></div><div class="rs-field"><label>商品分类</label><button class="rs-select-trigger placeholder" id="categoryFilter" type="button">请选择</button><div id="filterPickerHost"></div></div><div class="rs-filter-actions"><button class="rs-btn" id="resetButton" type="button">重置</button><button class="rs-btn primary" id="searchButton" type="button">查询</button></div></div><div class="rs-toolbar"><button class="rs-btn primary" id="batchButton" type="button">批量修改</button></div><div class="rs-table-wrap"><table class="rs-table"><colgroup><col style="width:42px"><col style="width:42px"><col style="width:162px"><col></colgroup><thead><tr><th class="rs-center"><input id="selectAll" type="checkbox"></th><th class="rs-center">序号</th><th>货架编号　<span style="float:right;color:#a4a9b1">◆</span></th><th>商品分类 <span style="float:right;color:#a4a9b1">◆</span></th></tr></thead><tbody id="shelfBody"></tbody></table></div><div class="rs-pager"><span id="totalText">共 0 条</span><button type="button">‹</button><button class="active" type="button">1</button><button type="button">›</button><select><option>100 条/页</option></select></div></section></div>'}
+  function renderWarehouses(){const keyword=document.getElementById('warehouseSearch').value.trim().toLowerCase();document.getElementById('warehouseList').innerHTML=warehouseNames.filter(function(name){return !keyword||name.toLowerCase().includes(keyword)}).map(function(name){return '<button class="rs-warehouse-item '+(name===currentWarehouse?'active':'')+'" type="button" data-warehouse="'+escapeHtml(name)+'">'+escapeHtml(name)+'</button>'}).join('')||'<div class="rs-empty">暂无匹配仓库</div>'}
+  function filteredRows(){return (shelfRows[currentWarehouse]||[]).filter(function(row){return(!appliedShelf||row.code.toLowerCase().includes(appliedShelf))&&(!appliedCategory||row.category===appliedCategory)})}
+  function renderFilter(){const button=document.getElementById('categoryFilter');button.textContent=filterCategory||'请选择';button.classList.toggle('placeholder',!filterCategory);document.getElementById('filterPickerHost').innerHTML=openPicker&&openPicker.kind==='filter'?pickerMarkup('filter',''):''}
+  function renderTable(){const rows=filteredRows();document.getElementById('shelfBody').innerHTML=rows.length?rows.map(function(row,index){return '<tr class="'+(openPicker&&openPicker.rowId===row.id?'rs-row-active':'')+'"><td class="rs-center"><input type="checkbox" data-row-select="'+escapeHtml(row.id)+'" '+(selected.has(row.id)?'checked':'')+'></td><td class="rs-center">'+(index+1)+'</td><td>'+escapeHtml(row.code)+'</td><td class="rs-category-cell"><span class="rs-category-value">'+escapeHtml(row.category||'--')+'</span><button class="rs-edit" type="button" data-edit-category="'+escapeHtml(row.id)+'" aria-label="修改商品分类">⌕</button>'+(openPicker&&openPicker.kind==='row'&&openPicker.rowId===row.id?pickerMarkup('row',row.id):'')+'</td></tr>'}).join(''):'<tr><td class="rs-empty" colspan="4">暂无数据</td></tr>';document.getElementById('totalText').textContent='共 '+rows.length+' 条';document.getElementById('selectAll').checked=rows.length>0&&rows.every(function(row){return selected.has(row.id)})}
+  function closePicker(){openPicker=null;renderFilter();renderTable()}
+  function openBatch(){if(!selected.size){toast('请先勾选货架');return}modalHost.innerHTML='<div class="rs-mask"><div class="rs-modal" role="dialog" aria-modal="true"><div class="rs-modal-head"><span>批量修改商品分类</span><button type="button" data-modal-close>×</button></div><div class="rs-field"><label>商品分类</label><select class="rs-input" id="batchCategory"><option value="">请选择</option>'+categoryNames.map(function(name){return '<option>'+escapeHtml(name)+'</option>'}).join('')+'</select></div><div class="rs-modal-foot"><button class="rs-btn" type="button" data-modal-close>取消</button><button class="rs-btn primary" id="batchConfirm" type="button">确定</button></div></div></div>'}
+  shell();renderWarehouses();renderFilter();renderTable();
+  root.addEventListener('input',function(event){if(event.target.id==='warehouseSearch')renderWarehouses();if(event.target.matches('[data-picker-search]')){const keyword=event.target.value.trim().toLowerCase();event.target.closest('[data-picker]').querySelectorAll('[data-category-row]').forEach(function(row){row.hidden=!!keyword&&!row.dataset.categoryRow.includes(keyword)})}});
+  root.addEventListener('change',function(event){if(event.target.matches('[data-row-select]')){event.target.checked?selected.add(event.target.dataset.rowSelect):selected.delete(event.target.dataset.rowSelect);renderTable();return}if(event.target.id==='selectAll'){filteredRows().forEach(function(row){event.target.checked?selected.add(row.id):selected.delete(row.id)});renderTable();return}if(event.target.matches('[data-category-option]')){const value=event.target.dataset.categoryOption;if(openPicker.kind==='filter'){filterCategory=value;openPicker=null;renderFilter()}else{const row=shelfRows[currentWarehouse].find(function(item){return item.id===openPicker.rowId});if(row)row.category=value;openPicker=null;renderTable();toast('商品分类已更新')}}});
+  root.addEventListener('click',function(event){const warehouse=event.target.closest('[data-warehouse]');if(warehouse){currentWarehouse=warehouse.dataset.warehouse;selected.clear();openPicker=null;appliedShelf='';appliedCategory='';document.getElementById('shelfFilter').value='';filterCategory='';renderWarehouses();renderFilter();renderTable();return}const edit=event.target.closest('[data-edit-category]');if(edit){openPicker={kind:'row',rowId:edit.dataset.editCategory};renderFilter();renderTable();return}if(event.target.closest('#categoryFilter')){openPicker=openPicker&&openPicker.kind==='filter'?null:{kind:'filter'};renderFilter();renderTable();return}if(event.target.closest('[data-picker-clear]')){if(openPicker.kind==='filter'){filterCategory='';openPicker=null;renderFilter()}else{const row=shelfRows[currentWarehouse].find(function(item){return item.id===openPicker.rowId});if(row)row.category='';openPicker=null;renderTable()}return}if(event.target.closest('[data-picker-close]')){closePicker();return}if(event.target.closest('#searchButton')){appliedShelf=document.getElementById('shelfFilter').value.trim().toLowerCase();appliedCategory=filterCategory;selected.clear();closePicker();return}if(event.target.closest('#resetButton')){document.getElementById('shelfFilter').value='';filterCategory='';appliedShelf='';appliedCategory='';selected.clear();closePicker();return}if(event.target.closest('#batchButton'))openBatch()});
+  modalHost.addEventListener('click',function(event){if(event.target.classList.contains('rs-mask')||event.target.closest('[data-modal-close]')){modalHost.innerHTML='';return}if(event.target.id==='batchConfirm'){const category=document.getElementById('batchCategory').value;if(!category){toast('请选择商品分类');return}Object.keys(shelfRows).forEach(function(key){shelfRows[key].forEach(function(row){if(selected.has(row.id))row.category=category})});modalHost.innerHTML='';renderTable();toast('批量修改成功')}});
+  document.addEventListener('click',function(event){if(openPicker&&!event.target.closest('[data-picker],#categoryFilter,[data-edit-category]'))closePicker()});
+})();
+</script>
+<script>
+(function(){
+  'use strict';
+  const root=document.getElementById('recommendShelfPage');
+  const modalHost=document.getElementById('codeModalHost');
+  const warehouses=['LF-1014','接口自动化测试3仓库（勿选）','验证仓','云县中仓','618清仓大甩卖','接口自动化测试2仓库（勿选）','虚拟仓','甜品仓','HQ','ck03','ck02','ck01','接口自动化测试1仓库（勿选）','仓库003','仓库002','仓库001','XWD仓','采购2','马甲二','广州仓','海外仓','测试仓'];
+  const categoryTree=[
+    {name:'肯德基',children:[{name:'食品',children:[{name:'炸鸡'},{name:'汉堡'}]},{name:'饮品',children:[{name:'咖啡'},{name:'果汁'}]}]},
+    {name:'麦当劳',children:[{name:'食品',children:[{name:'薯条'},{name:'汉堡'}]},{name:'玩具'}]},
+    {name:'AutDx_更新分类fa577',children:[{name:'测试子分类A'},{name:'测试子分类B'}]},
+    {name:'AutDx_更新分类a1888',children:[{name:'一级子类',children:[{name:'二级子类'}]}]},
+    {name:'AutDx_商品一级分类26cec',children:[{name:'服饰'},{name:'配件'}]},
+    {name:'AutDx_商品一级分类75051'},
+    {name:'服装',children:[{name:'女装'},{name:'男装'}]},
+    {name:'家居用品',children:[{name:'收纳'},{name:'清洁'}]},
+    {name:'数码配件',children:[{name:'手机配件'},{name:'电脑配件'}]}
+  ];
+  const escapeHtml=value=>String(value==null?'':value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+  const samePath=(a,b)=>a.length===b.length&&a.every((part,index)=>part===b[index]);
+  const pathStartsWith=(path,prefix)=>prefix.every((part,index)=>path[index]===part);
+  function nodeAt(path){let nodes=categoryTree,node=null;for(const name of path){node=nodes.find(item=>item.name===name);if(!node)return null;nodes=node.children||[]}return node}
+  function selection(path){const node=nodeAt(path);return node?{path:path.slice(),includeChildren:!!(node.children&&node.children.length)}:null}
+  function displayCategory(value){if(value&&value.unset)return '未设置分类';return value&&value.path.length?value.path.join(' / ')+(value.includeChildren?'（含全部下级）':''):'--'}
+  function flattenCategories(nodes,parentPath,result){result=result||[];(nodes||[]).forEach(node=>{const path=parentPath.concat(node.name);result.push({path,level:path.length});flattenCategories(node.children||[],path,result)});return result}
+  const flatCategories=[{path:[],level:0,unset:true}].concat(flattenCategories(categoryTree,[]));
+  function highlightSearch(text,query){const source=String(text),needle=String(query).toLowerCase();if(!needle)return escapeHtml(source);let html='',cursor=0,index=source.toLowerCase().indexOf(needle);while(index>=0){html+=escapeHtml(source.slice(cursor,index))+'<span class="rs-search-hit">'+escapeHtml(source.slice(index,index+needle.length))+'</span>';cursor=index+needle.length;index=source.toLowerCase().indexOf(needle,cursor)}return html+escapeHtml(source.slice(cursor))}
+  function encodedPath(path){return escapeHtml(encodeURIComponent(JSON.stringify(path)))}
+  function decodedPath(value){try{return JSON.parse(decodeURIComponent(value))}catch(_){return[]}}
+  const shelfRows={};
+  warehouses.forEach((name,index)=>{const first=categoryTree[index%categoryTree.length];shelfRows[name]=[{id:'s-'+index+'-1',code:index===3?'A01':'A'+String(index+1).padStart(2,'0'),category:index===3?null:selection([first.name])}]});
+  shelfRows['验证仓'].push({id:'s-2-2',code:'B02',category:selection(['数码配件','手机配件'])});
+  let currentWarehouse='云县中仓',filterCategory=null,appliedShelf='',appliedCategory=null,openPicker=null,batchCategory=null,batchClearExisting=false,selected=new Set();
+  function toast(message){document.querySelector('.rs-toast')?.remove();const el=document.createElement('div');el.className='rs-toast';el.textContent=message;document.body.appendChild(el);setTimeout(()=>el.remove(),1800)}
+  function selectedValue(kind,rowId){if(kind==='filter')return filterCategory;if(kind==='batch')return batchCategory;return (shelfRows[currentWarehouse].find(row=>row.id===rowId)||{}).category||null}
+  function openCascade(kind,rowId){const value=selectedValue(kind,rowId);openPicker={kind,rowId:rowId||'',expandedPath:value?value.path.slice():[],query:'',openedAt:Date.now()}}
+  function restoreSelectedView(){requestAnimationFrame(()=>{document.querySelectorAll('[data-picker] .rs-cascade-item.in-path,[data-picker] .rs-cascade-item.selected').forEach(item=>item.scrollIntoView({block:'nearest',inline:'nearest'}))})}
+  function focusCategoryInput(kind,rowId,selectText){requestAnimationFrame(()=>{const scope=kind==='batch'?modalHost:root,input=scope.querySelector('[data-category-search="'+kind+'"]'+(rowId?'[data-row-id="'+CSS.escape(rowId)+'"]':''));if(!input)return;input.focus();if(selectText)input.select()})}
+  function cascadeMarkup(kind,rowId){
+    const value=selectedValue(kind,rowId),expanded=openPicker?openPicker.expandedPath:[],query=openPicker?openPicker.query.trim():'',columns=[];
+    if(query){const lowered=query.toLowerCase(),results=flatCategories.filter(item=>(kind==='filter'||!item.unset)&&(item.unset?'未设置分类':item.path.join(' / ')).toLowerCase().includes(lowered));return '<div class="rs-picker cascade-picker '+(kind==='filter'?'filter-picker':kind==='row'?'row-picker':'batch-picker')+'" data-picker><div class="rs-category-search-results">'+(results.length?results.map(item=>{const fullPath=item.unset?'未设置分类':item.path.join(' / '),isSelected=item.unset?!!(value&&value.unset):!!value&&!value.unset&&samePath(value.path,item.path);return '<button class="rs-category-search-item '+(isSelected?'selected':'')+'" type="button" '+(item.unset?'data-category-unset':'data-category-select="'+encodedPath(item.path)+'"')+' title="'+escapeHtml(fullPath)+'"><span class="rs-search-path">'+highlightSearch(fullPath,query)+'</span></button>'}).join(''):'<div class="rs-category-search-empty">暂无匹配分类</div>')+'</div></div>'}
+    let nodes=categoryTree,parentPath=[];
+    while(nodes&&nodes.length){
+      const items=nodes.map(node=>{const itemPath=parentPath.concat(node.name),hasChildren=!!(node.children&&node.children.length),isSelected=!!value&&samePath(value.path,itemPath),inPath=pathStartsWith(expanded,itemPath);return '<div class="rs-cascade-item '+(isSelected?'selected ':'')+(inPath?'in-path':'')+'" data-cascade-item="'+encodedPath(itemPath)+'"><button class="rs-category-name" type="button" data-category-select="'+encodedPath(itemPath)+'" title="'+escapeHtml(node.name)+'">'+escapeHtml(node.name)+'</button>'+(hasChildren?'<button class="rs-category-expand" type="button" data-category-expand="'+encodedPath(itemPath)+'" aria-label="展开下一级">›</button>':'')+'</div>'}).join('');
+      const unsetItem=parentPath.length||kind!=='filter'?'':'<div class="rs-cascade-item rs-cascade-unset '+(value&&value.unset?'selected':'')+'"><button class="rs-category-name" type="button" data-category-unset>未设置分类</button></div>';
+      columns.push('<div class="rs-cascade-column">'+unsetItem+items+'</div>');
+      const nextName=expanded[parentPath.length],nextNode=nodes.find(node=>node.name===nextName);if(!nextNode||!nextNode.children||!nextNode.children.length)break;parentPath=parentPath.concat(nextNode.name);nodes=nextNode.children;
+    }
+    return '<div class="rs-picker cascade-picker '+(kind==='filter'?'filter-picker':kind==='row'?'row-picker':'batch-picker')+'" data-picker><div class="rs-cascade-hint">悬浮或点击箭头展开下级；点击分类名称直接选择</div><div class="rs-cascade">'+columns.join('')+'</div></div>';
+  }
+  function shell(){root.innerHTML='<div class="rs-page"><section class="rs-card rs-warehouse"><div class="rs-search"><input id="warehouseSearch" placeholder="请输入名称搜索"><button type="button" aria-label="搜索">⌕</button></div><div class="rs-warehouse-list" id="warehouseList"></div></section><section class="rs-card rs-content"><div class="rs-filter"><div class="rs-field"><label for="shelfFilter">货架编号</label><input class="rs-input" id="shelfFilter" placeholder="双击可批量查询"></div><div class="rs-field"><label>商品分类</label><div class="rs-category-input-wrap" data-category-trigger="filter"><input class="rs-category-search-input" id="categoryFilter" data-category-search="filter" placeholder="请选择" autocomplete="off"><span class="rs-input-clear" id="filterCategoryClear" data-input-clear="filter" role="button" aria-label="清空商品分类" hidden>×</span><span class="rs-input-arrow">⌄</span></div><div id="filterPickerHost"></div></div><div class="rs-filter-actions"><button class="rs-btn" id="resetButton" type="button">重置</button><button class="rs-btn primary" id="searchButton" type="button">查询</button></div></div><div class="rs-toolbar"><button class="rs-btn primary" id="batchButton" type="button">批量修改</button></div><div class="rs-table-wrap"><table class="rs-table"><colgroup><col style="width:42px"><col style="width:42px"><col style="width:162px"><col></colgroup><thead><tr><th class="rs-center"><input id="selectAll" type="checkbox"></th><th class="rs-center">序号</th><th>货架编号　<span style="float:right;color:#a4a9b1">◆</span></th><th>商品分类 <span style="float:right;color:#a4a9b1">◆</span></th></tr></thead><tbody id="shelfBody"></tbody></table></div><div class="rs-pager"><span id="totalText">共 0 条</span><button type="button">‹</button><button class="active" type="button">1</button><button type="button">›</button><select><option>100 条/页</option></select></div></section></div>'}
+  function renderWarehouses(){const keyword=document.getElementById('warehouseSearch').value.trim().toLowerCase();document.getElementById('warehouseList').innerHTML=warehouses.filter(name=>!keyword||name.toLowerCase().includes(keyword)).map(name=>'<button class="rs-warehouse-item '+(name===currentWarehouse?'active':'')+'" type="button" data-warehouse="'+escapeHtml(name)+'">'+escapeHtml(name)+'</button>').join('')||'<div class="rs-empty">暂无匹配仓库</div>'}
+  function categoryMatches(value,filter){if(!filter)return true;if(filter.unset)return !value;if(!value)return false;return filter.includeChildren?pathStartsWith(value.path,filter.path):samePath(value.path,filter.path)}
+  function filteredRows(){return(shelfRows[currentWarehouse]||[]).filter(row=>(!appliedShelf||row.code.toLowerCase().includes(appliedShelf))&&categoryMatches(row.category,appliedCategory))}
+  function renderFilter(){const input=document.getElementById('categoryFilter'),searching=openPicker&&openPicker.kind==='filter'&&openPicker.query,text=filterCategory?displayCategory(filterCategory):'';input.value=searching?openPicker.query:text;input.title=filterCategory?text:'';document.getElementById('filterCategoryClear').hidden=!filterCategory;document.getElementById('filterPickerHost').innerHTML=openPicker&&openPicker.kind==='filter'?cascadeMarkup('filter',''):''}
+  function renderTable(){const rows=filteredRows();document.getElementById('shelfBody').innerHTML=rows.length?rows.map((row,index)=>{const isOpen=openPicker&&openPicker.kind==='row'&&openPicker.rowId===row.id,inputValue=isOpen&&openPicker.query?openPicker.query:(row.category?displayCategory(row.category):'');return '<tr class="'+(isOpen?'rs-row-active':'')+'"><td class="rs-center"><input type="checkbox" data-row-select="'+escapeHtml(row.id)+'" '+(selected.has(row.id)?'checked':'')+'></td><td class="rs-center">'+(index+1)+'</td><td>'+escapeHtml(row.code)+'</td><td class="rs-category-cell"><div class="rs-category-input-wrap rs-table-category-wrap" data-category-trigger="row" data-row-id="'+escapeHtml(row.id)+'"><input class="rs-category-search-input" data-category-search="row" data-row-id="'+escapeHtml(row.id)+'" value="'+escapeHtml(inputValue)+'" placeholder="请选择" autocomplete="off" title="'+escapeHtml(row.category?displayCategory(row.category):'')+'">'+(row.category?'<span class="rs-input-clear" data-input-clear="row" data-row-id="'+escapeHtml(row.id)+'" role="button" aria-label="清空商品分类">×</span>':'')+'<span class="rs-input-arrow">⌄</span></div><div data-picker-host>'+(isOpen?cascadeMarkup('row',row.id):'')+'</div></td></tr>'}).join(''):'<tr><td class="rs-empty" colspan="4">暂无数据</td></tr>';document.getElementById('totalText').textContent='共 '+rows.length+' 条';document.getElementById('selectAll').checked=rows.length>0&&rows.every(row=>selected.has(row.id))}
+  function renderPagePickers(){renderFilter();renderTable()}
+  function renderBatchModal(){const searching=openPicker&&openPicker.kind==='batch'&&openPicker.query,inputValue=searching?openPicker.query:(batchCategory?displayCategory(batchCategory):'');modalHost.innerHTML='<div class="rs-mask"><div class="rs-modal rs-cascade-modal" role="dialog" aria-modal="true"><div class="rs-modal-head"><span>批量修改</span><button type="button" data-modal-close>×</button></div><div class="rs-batch-summary">已选 <strong>'+selected.size+'</strong> 个货架，请选择商品分类，<br>如需清空货架已有分类，请选择[清空原有分类]</div><div class="rs-field rs-batch-field"><label>商品分类</label><div class="rs-batch-controls"><div class="rs-category-input-wrap rs-batch-category-control" data-category-trigger="batch"><input class="rs-category-search-input" id="batchCategoryTrigger" data-category-search="batch" value="'+escapeHtml(inputValue)+'" placeholder="请选择" autocomplete="off" '+(batchClearExisting?'disabled':'')+'>'+(batchCategory&&!batchClearExisting?'<span class="rs-input-clear" data-input-clear="batch" role="button" aria-label="清空商品分类">×</span>':'')+'<span class="rs-input-arrow">⌄</span><div data-picker-host>'+(openPicker&&openPicker.kind==='batch'?cascadeMarkup('batch',''):'')+'</div></div><label class="rs-clear-existing"><input id="batchClearExisting" type="checkbox" '+(batchClearExisting?'checked':'')+'>清空原有分类</label></div></div><div class="rs-modal-foot"><button class="rs-btn" type="button" data-modal-close>取消</button><button class="rs-btn primary" id="batchConfirm" type="button">确定</button></div></div></div>'}
+  function closePicker(){const wasBatch=openPicker&&openPicker.kind==='batch';openPicker=null;wasBatch?renderBatchModal():renderPagePickers()}
+  function applyCategory(path){const value=selection(path);if(!value)return;if(openPicker.kind==='filter')filterCategory=value;else if(openPicker.kind==='batch')batchCategory=value;else{const row=shelfRows[currentWarehouse].find(item=>item.id===openPicker.rowId);if(row)row.category=value}closePicker()}
+  function applyUnsetCategory(){if(openPicker.kind==='filter')filterCategory={unset:true,path:[],includeChildren:false};else if(openPicker.kind==='batch')batchCategory={unset:true,path:[],includeChildren:false};else{const row=shelfRows[currentWarehouse].find(item=>item.id===openPicker.rowId);if(row)row.category=null}closePicker()}
+  function clearInput(kind,rowId){if(kind==='filter')filterCategory=null;else if(kind==='batch')batchCategory=null;else{const row=shelfRows[currentWarehouse].find(item=>item.id===rowId);if(row)row.category=null}openPicker=null;kind==='batch'?renderBatchModal():renderPagePickers()}
+  function expandCategory(path){const node=nodeAt(path);if(!node||!node.children||!node.children.length)return;if(samePath(openPicker.expandedPath,path))return;openPicker.expandedPath=path.slice();openPicker.kind==='batch'?renderBatchModal():renderPagePickers()}
+  function categoryAction(event){if(event.target.closest('[data-category-unset]')){applyUnsetCategory();return true}const selectButton=event.target.closest('[data-category-select]');if(selectButton){applyCategory(decodedPath(selectButton.dataset.categorySelect));return true}const expandButton=event.target.closest('[data-category-expand]');if(expandButton){expandCategory(decodedPath(expandButton.dataset.categoryExpand));return true}return false}
+  function categoryHover(event){const item=event.target.closest('[data-cascade-item]');if(!item||!openPicker||openPicker.query||Date.now()-openPicker.openedAt<300)return;expandCategory(decodedPath(item.dataset.cascadeItem))}
+  function updateCategorySearch(event){const input=event.target.closest('[data-category-search]');if(!input)return false;const kind=input.dataset.categorySearch,rowId=input.dataset.rowId||'';if(!openPicker||openPicker.kind!==kind||openPicker.rowId!==rowId)openCascade(kind,rowId);openPicker.query=input.value;const host=kind==='filter'?document.getElementById('filterPickerHost'):input.closest(kind==='batch'?'.rs-batch-field':'.rs-category-cell').querySelector('[data-picker-host]');host.innerHTML=cascadeMarkup(kind,rowId);return true}
+  function activateCategoryInput(event){const input=event.target.closest('[data-category-search]');if(!input)return;const kind=input.dataset.categorySearch,rowId=input.dataset.rowId||'';if(openPicker&&openPicker.kind===kind&&openPicker.rowId===rowId)return;openCascade(kind,rowId);kind==='batch'?renderBatchModal():renderPagePickers();restoreSelectedView();focusCategoryInput(kind,rowId,true)}
+  function openBatch(){if(!selected.size){toast('请先勾选货架');return}batchCategory=null;batchClearExisting=false;openPicker=null;renderBatchModal()}
+  shell();renderWarehouses();renderFilter();renderTable();
+  root.addEventListener('input',event=>{if(event.target.id==='warehouseSearch'){renderWarehouses();return}updateCategorySearch(event)});
+  root.addEventListener('focusin',activateCategoryInput);
+  root.addEventListener('mouseover',categoryHover);
+  root.addEventListener('change',event=>{if(event.target.matches('[data-row-select]')){event.target.checked?selected.add(event.target.dataset.rowSelect):selected.delete(event.target.dataset.rowSelect);renderTable();return}if(event.target.id==='selectAll'){filteredRows().forEach(row=>event.target.checked?selected.add(row.id):selected.delete(row.id));renderTable()}});
+  root.addEventListener('click',event=>{const clear=event.target.closest('[data-input-clear]');if(clear){event.preventDefault();event.stopPropagation();clearInput(clear.dataset.inputClear,clear.dataset.rowId||'');return}if(categoryAction(event))return;const warehouse=event.target.closest('[data-warehouse]');if(warehouse){currentWarehouse=warehouse.dataset.warehouse;selected.clear();openPicker=null;appliedShelf='';appliedCategory=null;filterCategory=null;document.getElementById('shelfFilter').value='';renderWarehouses();renderPagePickers();return}const trigger=event.target.closest('[data-category-trigger]');if(trigger){const kind=trigger.dataset.categoryTrigger,rowId=trigger.dataset.rowId||'';if(!openPicker||openPicker.kind!==kind||openPicker.rowId!==rowId){openCascade(kind,rowId);renderPagePickers();restoreSelectedView()}focusCategoryInput(kind,rowId,event.target.closest('.rs-input-arrow')!==null);return}if(event.target.closest('#searchButton')){appliedShelf=document.getElementById('shelfFilter').value.trim().toLowerCase();appliedCategory=filterCategory?{path:filterCategory.path.slice(),includeChildren:filterCategory.includeChildren,unset:!!filterCategory.unset}:null;selected.clear();closePicker();return}if(event.target.closest('#resetButton')){document.getElementById('shelfFilter').value='';filterCategory=null;appliedShelf='';appliedCategory=null;selected.clear();closePicker();return}if(event.target.closest('#batchButton'))openBatch()});
+  modalHost.addEventListener('mouseover',categoryHover);
+  modalHost.addEventListener('input',updateCategorySearch);
+  modalHost.addEventListener('focusin',activateCategoryInput);
+  modalHost.addEventListener('change',event=>{if(event.target.id!=='batchClearExisting')return;batchClearExisting=event.target.checked;if(batchClearExisting){batchCategory=null;openPicker=null}renderBatchModal()});
+  modalHost.addEventListener('click',event=>{const clear=event.target.closest('[data-input-clear]');if(clear){event.preventDefault();event.stopPropagation();clearInput(clear.dataset.inputClear,'');return}if(categoryAction(event))return;if(event.target.classList.contains('rs-mask')||event.target.closest('[data-modal-close]')){modalHost.innerHTML='';openPicker=null;return}const trigger=event.target.closest('[data-category-trigger="batch"]');if(trigger){if(batchClearExisting)return;if(!openPicker||openPicker.kind!=='batch'){openCascade('batch','');renderBatchModal();restoreSelectedView()}focusCategoryInput('batch','',event.target.closest('.rs-input-arrow')!==null);return}if(event.target.id==='batchConfirm'){if(!batchClearExisting&&!batchCategory){toast('请选择商品分类');return}Object.values(shelfRows).flat().forEach(row=>{if(selected.has(row.id))row.category=batchClearExisting?null:{path:batchCategory.path.slice(),includeChildren:batchCategory.includeChildren}});modalHost.innerHTML='';openPicker=null;renderTable();toast('批量修改成功')}});
+  document.addEventListener('click',event=>{if(openPicker&&!event.target.closest('[data-picker],[data-category-trigger]'))closePicker()});
+})();
+</script>
+<script src="账号菜单.js"></script>
+</body>
+</html>
